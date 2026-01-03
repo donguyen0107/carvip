@@ -146,13 +146,11 @@ class VercelStorage {
         try {
             console.log('📤 Đang lưu', posts.length, 'bài viết...');
             
-            // Lưu từng bài một (hoặc có thể tạo batch API)
+            // Lưu từng bài một
             for (const post of posts) {
-                if (!post.id) {
-                    await this.createPost(post);
-                } else {
-                    await this.updatePost(post.id, post);
-                }
+                // Luôn tạo mới (không cần check ID)
+                // Vì khi viết bài mới, bài chưa có trên Redis
+                await this.createPost(post);
             }
             
             console.log('✅ Đã lưu tất cả bài viết');
