@@ -440,6 +440,19 @@
                         <label class="form-label">
                             <i class="fas fa-edit"></i> Nội dung bài viết
                         </label>
+                        <div style="background: var(--color-accent); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--color-border);">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-info-circle" style="color: var(--color-white);"></i>
+                                <strong style="color: var(--color-white);">Hướng dẫn sử dụng Editor</strong>
+                            </div>
+                            <ul style="margin: 0; padding-left: 1.5rem; color: var(--color-gray-light); font-size: 0.9rem; line-height: 1.6;">
+                                <li>Sử dụng thanh công cụ phía trên để format text (in đậm, nghiêng, gạch chân, v.v.)</li>
+                                <li>Chọn <strong>Header</strong> để tạo tiêu đề (H1 - H6)</li>
+                                <li>Thay đổi <strong>kích thước chữ</strong> và <strong>màu sắc</strong> theo ý muốn</li>
+                                <li>Chèn <strong>link, hình ảnh, video</strong> trực tiếp vào nội dung</li>
+                                <li>Editor tự động lưu nội dung dưới dạng <strong>HTML</strong></li>
+                            </ul>
+                        </div>
                         <div class="editor-content">
                             <div id="editor"></div>
                         </div>
@@ -525,14 +538,20 @@
         // Initialize Quill editor
         const quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Bắt đầu viết nội dung bài viết của bạn...',
+            placeholder: 'Bắt đầu viết nội dung bài viết của bạn... (Hỗ trợ HTML: in đậm, in nghiêng, header, màu sắc, v.v.)',
             modules: {
                 toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
                     ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                     [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
                     [{ 'align': [] }],
+                    ['blockquote', 'code-block'],
                     ['link', 'image', 'video'],
                     ['clean']
                 ]
