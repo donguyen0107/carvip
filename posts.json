@@ -1,0 +1,53 @@
+[
+  {
+    "id": "1767428976334",
+    "title": "Carvipp",
+    "slug": "a",
+    "excerpt": "a",
+    "category": "tin-tuc",
+    "image": "a",
+    "content": "<p>a</p>",
+    "status": "published",
+    "updatedAt": "2026-01-03T08:46:38.226Z"
+  },
+  {
+    "id": "1767428985738",
+    "title": "Carvipp",
+    "slug": "a",
+    "excerpt": "a",
+    "category": "tin-tuc",
+    "image": "a",
+    "content": "<p>a</p>",
+    "status": "published",
+    "updatedAt": "2026-01-03T08:29:45.738Z"
+  },
+  {
+    "id": "1767427515276",
+    "title": "ANTONY",
+    "slug": "antony",
+    "excerpt": "ANTONY",
+    "category": "tin-tuc",
+    "image": "ANTONY",
+    "content": "<p>ANTONY</p>",
+    "status": "published",
+    "updatedAt": "2026-01-03T08:05:15.276Z"
+  },
+  {
+    "id": "1767418503986",
+    "title": "f",
+    "slug": "f",
+    "excerpt": "f",
+    "category": "tin-tuc",
+    "image": "s",
+    "content": "<p>f</p>",
+    "status": "published",
+    "updatedAt": "2026-01-03T05:35:03.986Z"
+  },
+  {
+    "id": "1767416473837",
+    "title": "Test Post - 12:01:13 3/1/2026",
+    "content": "Đây là bài test để kiểm tra GitHub API",
+    "status": "published",
+    "createdAt": "2026-01-03T05:01:13.837Z"
+  }
+]
