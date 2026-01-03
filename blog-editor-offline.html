@@ -712,14 +712,27 @@
             
             // Save to storage
             if (storage) {
-                const success = await storage.savePosts(posts);
+                let success;
+                
+                // Nếu bài đã tồn tại (update), gọi updatePost
+                // Nếu bài mới (create), gọi createPost
+                if (existingIndex >= 0) {
+                    success = await storage.updatePost(postData.id, postData);
+                } else {
+                    success = await storage.createPost(postData);
+                }
+                
                 if (success) {
+                    // Backup vào LocalStorage
+                    localStorage.setItem('blogPosts', JSON.stringify(posts));
                     showAlert(
-                        status === 'published' ? '✅ Đã xuất bản lên GitHub!' : '💾 Đã lưu nháp lên GitHub!',
+                        status === 'published' ? '✅ Đã xuất bản lên Vercel!' : '💾 Đã lưu nháp lên Vercel!',
                         'success'
                     );
                 } else {
-                    showAlert('⚠️ Lưu GitHub thất bại, đã lưu vào LocalStorage', 'info');
+                    showAlert('⚠️ Lưu Vercel thất bại, đã lưu vào LocalStorage', 'info');
+                    // Vẫn lưu vào LocalStorage
+                    localStorage.setItem('blogPosts', JSON.stringify(posts));
                 }
             } else {
                 localStorage.setItem('blogPosts', JSON.stringify(posts));
