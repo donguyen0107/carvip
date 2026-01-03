@@ -297,25 +297,46 @@
             window.location.href = 'blog.html';
         }
 
-        // Load post
+        // Load post từ Vercel KV API
         async function loadPost() {
             try {
-                const response = await fetch(`/api/blog/posts?slug=${slug}`);
+                console.log('📥 Đang tải bài viết từ Vercel KV...');
+                
+                const response = await fetch('/api/posts');
                 
                 if (response.ok) {
                     const posts = await response.json();
-                    const post = posts[0];
+                    // Tìm bài viết theo ID hoặc slug
+                    const post = posts.find(p => p.id === slug || p.slug === slug);
                     
                     if (post) {
+                        console.log('✅ Đã tải bài viết:', post.title);
                         displayPost(post);
                     } else {
+                        console.warn('⚠️ Không tìm thấy bài viết với ID/slug:', slug);
                         displayNotFound();
                     }
                 } else {
-                    displayNotFound();
+                    console.error('❌ Lỗi API:', response.status);
+                    // Fallback: Thử load từ LocalStorage
+                    loadPostFromLocalStorage();
                 }
             } catch (error) {
-                console.error('Error loading post:', error);
+                console.error('❌ Lỗi khi tải bài viết:', error);
+                // Fallback: Thử load từ LocalStorage
+                loadPostFromLocalStorage();
+            }
+        }
+
+        // Fallback: Load từ LocalStorage
+        function loadPostFromLocalStorage() {
+            const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+            const post = posts.find(p => p.id === slug || p.slug === slug);
+            
+            if (post) {
+                console.log('💾 Hiển thị bài viết từ LocalStorage (cache)');
+                displayPost(post);
+            } else {
                 displayNotFound();
             }
         }

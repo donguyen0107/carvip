@@ -553,19 +553,18 @@
 
     <!-- Quill Editor JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <!-- GitHub Storage - Phiên bản bảo mật -->
-    <script src="github-config.js"></script>
-    <script src="github-storage-secure.js"></script>
+    <!-- Vercel Storage - Không cần GitHub -->
+    <script src="vercel-storage.js"></script>
     <script>
-        // Initialize GitHub Storage Secure
+        // Initialize Vercel Storage
         let storage;
-        if (window.GITHUB_CONFIG && window.GITHUB_CONFIG.owner !== 'YOUR_GITHUB_USERNAME') {
-            storage = new GitHubStorageSecure(window.GITHUB_CONFIG);
-            console.log('✅ Sử dụng GitHub Storage Secure (Token qua popup)');
-        } else {
-            console.log('⚠️ Chưa cấu hình GitHub, sử dụng LocalStorage');
-            storage = null;
-        }
+        const VERCEL_CONFIG = {
+            apiUrl: '/api/posts'  // API endpoint trên Vercel
+        };
+        
+        storage = new VercelStorage(VERCEL_CONFIG);
+        console.log('✅ Sử dụng Vercel Storage (Không cần token!)');
+    
 
         // Initialize Quill editor
         const quill = new Quill('#editor', {

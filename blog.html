@@ -493,81 +493,53 @@
     </button>
 
     <script src="script.js"></script>
-    <!-- GitHub Storage -->
-    <script src="github-config.js"></script>
-    <script src="github-storage.js"></script>
+    <!-- Vercel API Storage -->
     <script>
         let allPosts = [];
         let currentCategory = 'all';
-        let storage;
 
-        // Initialize GitHub Storage
-        if (window.GITHUB_CONFIG && window.GITHUB_CONFIG.owner !== 'YOUR_GITHUB_USERNAME') {
-            storage = new GitHubStorage(window.GITHUB_CONFIG);
-            console.log('✅ Sử dụng GitHub Storage');
-        } else {
-            storage = null;
-        }
-
-        // Load posts (from GitHub OR server OR localStorage)
+        // Load posts từ Vercel KV API
         async function loadPosts() {
-            // Try GitHub first
-            if (storage) {
-                const githubPosts = await storage.getPosts();
-                const publishedPosts = githubPosts.filter(post => post.status === 'published');
+            try {
+                console.log('📥 Đang tải bài viết từ Vercel KV...');
                 
-                if (publishedPosts.length > 0) {
-                    console.log('💾 Hiển thị bài viết từ GitHub');
+                const response = await fetch('/api/posts');
+                
+                if (response.ok) {
+                    const posts = await response.json();
+                    const publishedPosts = posts.filter(post => post.status === 'published');
+                    
+                    console.log('✅ Đã tải', publishedPosts.length, 'bài viết từ Vercel KV');
+                    
                     allPosts = publishedPosts;
                     displayPosts(allPosts);
                     updateCategoryCounts(allPosts);
                     displayRecentPosts(allPosts.slice(0, 5));
-                    return;
+                    
+                    // Backup vào LocalStorage
+                    localStorage.setItem('blogPosts', JSON.stringify(allPosts));
+                } else {
+                    console.warn('⚠️ Không thể tải từ API, dùng LocalStorage');
+                    loadFromLocalStorage();
                 }
+            } catch (error) {
+                console.error('❌ Lỗi khi tải từ API:', error);
+                loadFromLocalStorage();
             }
-            
-            // Load from localStorage SECOND for instant display
+        }
+
+        // Fallback: Load từ LocalStorage
+        function loadFromLocalStorage() {
             const localPosts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
-            const publishedLocalPosts = localPosts.filter(post => post.status === 'published');
+            const publishedPosts = localPosts.filter(post => post.status === 'published');
             
-            if (publishedLocalPosts.length > 0) {
-                console.log('💾 Hiển thị bài viết từ LocalStorage');
-                allPosts = publishedLocalPosts;
+            if (publishedPosts.length > 0) {
+                console.log('💾 Hiển thị bài viết từ LocalStorage (cache)');
+                allPosts = publishedPosts;
                 displayPosts(allPosts);
                 updateCategoryCounts(allPosts);
                 displayRecentPosts(allPosts.slice(0, 5));
-            }
-            
-            // Then try to load from server in background (with timeout)
-            try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
-                
-                const response = await fetch('/api/blog/posts?status=published', {
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                
-                if (response.ok) {
-                    const serverPosts = await response.json();
-                    console.log('📡 Đã tải bài viết từ server');
-                    
-                    // Only update if server has posts
-                    if (serverPosts.length > 0) {
-                        allPosts = serverPosts;
-                        displayPosts(allPosts);
-                        updateCategoryCounts(allPosts);
-                        displayRecentPosts(allPosts.slice(0, 5));
-                    }
-                }
-            } catch (error) {
-                // Server not available or timeout - already showing localStorage data
-                console.log('💾 Sử dụng bài viết từ LocalStorage (Server không khả dụng)');
-            }
-            
-            // If still no posts, show empty message
-            if (allPosts.length === 0) {
+            } else {
                 displayNoPosts();
             }
         }
