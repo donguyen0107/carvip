@@ -1,7 +1,20 @@
 // API endpoint để CRUD bài viết trên Vercel
-// Sử dụng Vercel KV (Redis) để lưu trữ
+// Sử dụng Redis để lưu trữ
 
-import { kv } from '@vercel/kv';
+import { createClient } from 'redis';
+
+// Initialize Redis client
+let redis = null;
+
+async function getRedisClient() {
+  if (!redis) {
+    redis = createClient({
+      url: process.env.KV_URL || process.env.REDIS_URL
+    });
+    await redis.connect();
+  }
+  return redis;
+}
 
 // CORS headers
 const corsHeaders = {
@@ -21,9 +34,12 @@ export default async function handler(req, res) {
   }
 
   try {
+    const redis = await getRedisClient();
+
     // GET - Lấy tất cả bài viết
     if (req.method === 'GET') {
-      const posts = await kv.get('blog_posts') || [];
+      const data = await redis.get('blog_posts');
+      const posts = data ? JSON.parse(data) : [];
       return res.status(200).json(posts);
     }
 
@@ -39,7 +55,8 @@ export default async function handler(req, res) {
       }
 
       // Lấy danh sách hiện tại
-      const posts = await kv.get('blog_posts') || [];
+      const data = await redis.get('blog_posts');
+      const posts = data ? JSON.parse(data) : [];
       
       // Thêm bài mới
       const post = {
@@ -57,8 +74,8 @@ export default async function handler(req, res) {
 
       posts.unshift(post);
       
-      // Lưu vào KV
-      await kv.set('blog_posts', posts);
+      // Lưu vào Redis
+      await redis.set('blog_posts', JSON.stringify(posts));
       
       return res.status(201).json({ 
         success: true, 
@@ -75,7 +92,8 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Thiếu ID bài viết' });
       }
 
-      const posts = await kv.get('blog_posts') || [];
+      const data = await redis.get('blog_posts');
+      const posts = data ? JSON.parse(data) : [];
       const index = posts.findIndex(p => p.id === id);
 
       if (index === -1) {
@@ -89,7 +107,7 @@ export default async function handler(req, res) {
         updatedAt: new Date().toISOString(),
       };
 
-      await kv.set('blog_posts', posts);
+      await redis.set('blog_posts', JSON.stringify(posts));
 
       return res.status(200).json({ 
         success: true, 
@@ -105,14 +123,15 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Thiếu ID bài viết' });
       }
 
-      const posts = await kv.get('blog_posts') || [];
+      const data = await redis.get('blog_posts');
+      const posts = data ? JSON.parse(data) : [];
       const newPosts = posts.filter(p => p.id !== id);
 
       if (posts.length === newPosts.length) {
         return res.status(404).json({ error: 'Không tìm thấy bài viết' });
       }
 
-      await kv.set('blog_posts', newPosts);
+      await redis.set('blog_posts', JSON.stringify(newPosts));
 
       return res.status(200).json({ 
         success: true, 
