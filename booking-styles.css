@@ -1,0 +1,633 @@
+/* ===== BOOKING PAGE STYLES ===== */
+
+.booking-hero {
+    padding: 8rem 0 3rem;
+    background: var(--color-primary);
+    text-align: center;
+}
+
+.booking-hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #ffffff 0%, #f5f5f5 10%, #d0d0d0 25%, #a8a8a8 40%, #c8c8c8 55%, #f0f0f0 70%, #e0e0e0 85%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% auto;
+    animation: shimmer 4s ease-in-out infinite;
+    letter-spacing: 2px;
+}
+
+.booking-hero-description {
+    font-size: 1.125rem;
+    color: var(--color-gray);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.booking-section {
+    padding: var(--spacing-xl) 0;
+}
+
+.booking-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+/* ===== BOOKING FORM ===== */
+.booking-form-wrapper {
+    background-color: var(--color-secondary);
+    border-radius: 24px;
+    padding: var(--spacing-xl);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--color-border);
+}
+
+.form-step {
+    display: none;
+    animation: fadeInUp 0.5s ease;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.form-step-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    background: linear-gradient(90deg, #ffffff 0%, #f5f5f5 10%, #d0d0d0 25%, #a8a8a8 40%, #c8c8c8 55%, #f0f0f0 70%, #e0e0e0 85%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 250% auto;
+    animation: shimmer 4s ease-in-out infinite;
+    letter-spacing: 1px;
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    color: #000000 !important;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-bold);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    -webkit-text-fill-color: #000000 !important;
+    background-clip: border-box !important;
+    -webkit-background-clip: border-box !important;
+}
+
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-weight: var(--font-weight-semibold);
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-white);
+    letter-spacing: 0.3px;
+}
+
+.form-label i {
+    color: var(--color-gray);
+}
+
+.form-control {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 10px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 0.975rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-white);
+    background-color: rgba(255, 255, 255, 0.03);
+    transition: all var(--transition-base);
+    letter-spacing: 0.2px;
+}
+
+/* Fix for input number controls, date/time inputs - ensure black text on white background */
+.form-control::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+.form-control::-webkit-inner-spin-button,
+.form-control::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+/* Ensure select dropdown options have proper contrast */
+.form-control option {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+    padding: 0.5rem;
+}
+
+/* For better visibility in light mode dropdown */
+select.form-control {
+    color: var(--color-white);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Style the dropdown arrow for better visibility */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 300;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-1px);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 140px;
+    line-height: 1.7;
+    padding: 1.25rem;
+}
+
+.form-control::placeholder {
+    color: var(--color-gray-light);
+}
+
+.form-control.error {
+    border-color: #e74c3c;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+}
+
+/* Radio and Checkbox Groups */
+.radio-group,
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.radio-label,
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition-base);
+    background-color: var(--color-accent);
+}
+
+.radio-label:hover,
+.checkbox-label:hover {
+    border-color: var(--color-white);
+    background-color: var(--color-secondary);
+}
+
+.radio-label input,
+.checkbox-label input {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.radio-label input:checked,
+.checkbox-label input:checked {
+    accent-color: var(--color-white);
+}
+
+.radio-label span,
+.checkbox-label span {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-white);
+}
+
+.checkbox-label.terms {
+    border: none;
+    padding: 0;
+}
+
+.checkbox-label.terms span {
+    font-size: 0.875rem;
+    color: var(--color-gray);
+}
+
+.checkbox-label.terms a {
+    color: var(--color-white);
+    text-decoration: underline;
+}
+
+.checkbox-label.terms a:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Promo Code Input */
+.promo-input {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.promo-input .form-control {
+    flex: 1;
+}
+
+.promo-input .btn {
+    white-space: nowrap;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.form-actions .btn {
+    flex: 1;
+}
+
+.btn-submit {
+    background: var(--gradient-primary);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===== BOOKING SUMMARY ===== */
+.booking-summary {
+    position: sticky;
+    top: 100px;
+    background-color: var(--color-secondary);
+    border-radius: 24px;
+    padding: var(--spacing-lg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--color-border);
+}
+
+.summary-title {
+    font-size: 1.75rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+    background: linear-gradient(90deg, #ffffff 0%, #f5f5f5 10%, #d0d0d0 25%, #a8a8a8 40%, #c8c8c8 55%, #f0f0f0 70%, #e0e0e0 85%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: shimmer 4s ease-in-out infinite;
+    letter-spacing: 1px;
+}
+
+.summary-section {
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.summary-section:last-of-type {
+    border-bottom: none;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.summary-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.summary-value {
+    font-weight: var(--font-weight-medium);
+    color: var(--color-white);
+}
+
+.summary-value.discount {
+    color: #27ae60;
+}
+
+.summary-subtitle {
+    font-size: 1rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-white);
+}
+
+.summary-divider {
+    height: 2px;
+    background-color: var(--color-border);
+    margin: var(--spacing-sm) 0;
+}
+
+.summary-pricing {
+    padding: var(--spacing-sm) 0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    border-top: 2px solid var(--color-white);
+}
+
+.summary-total .summary-label {
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+}
+
+.summary-total .summary-value {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+}
+
+.summary-note {
+    display: flex;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    background-color: var(--color-accent);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-sm) 0;
+    border: 1px solid var(--color-border);
+}
+
+.summary-note i {
+    color: var(--color-white);
+    margin-top: 0.125rem;
+}
+
+.summary-note p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.summary-contact {
+    margin-top: var(--spacing-sm);
+}
+
+.contact-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+    padding: 0.875rem;
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-medium);
+    transition: var(--transition-base);
+}
+
+.contact-btn:hover {
+    background-color: var(--color-white-pure);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
+}
+
+/* ===== MODAL ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--color-secondary);
+    border-radius: 24px;
+    padding: var(--spacing-xl);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    animation: fadeInUp 0.5s ease;
+    border: 2px solid var(--color-border);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.modal-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 3rem;
+}
+
+.modal-icon.success {
+    background-color: #d4edda;
+    color: #27ae60;
+}
+
+.modal-title {
+    font-size: 1.75rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-white);
+}
+
+.modal-text {
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.6;
+}
+
+.modal-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.modal-actions .btn {
+    flex: 1;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 968px) {
+    .booking-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .booking-summary {
+        position: relative;
+        top: 0;
+        order: -1;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .booking-hero {
+        padding: 6rem 0 2rem;
+    }
+    
+    .booking-form-wrapper {
+        padding: var(--spacing-md);
+    }
+    
+    .form-step-title {
+        font-size: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .promo-input {
+        flex-direction: column;
+    }
+}
+
+/* ===== LOADING STATE ===== */
+.btn.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--color-white);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* ===== STEP INDICATOR ===== */
+.step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.step-indicator::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-border);
+    z-index: 0;
+}
+
+.step-indicator-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.step-indicator-number {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--color-border);
+    border-radius: 50%;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    transition: var(--transition-base);
+}
+
+.step-indicator-item.active .step-indicator-number {
+    background-color: var(--color-white);
+    border-color: var(--color-white);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.step-indicator-item.completed .step-indicator-number {
+    background-color: #27ae60;
+    border-color: #27ae60;
+    color: var(--color-white);
+}
+
+.step-indicator-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: var(--font-weight-medium);
+}
+
+.step-indicator-item.active .step-indicator-label {
+    color: var(--color-white);
+}

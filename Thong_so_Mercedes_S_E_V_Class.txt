@@ -1,0 +1,57 @@
+THÔNG SỐ KỸ THUẬT (tham khảo theo cấu hình/phiên bản đại diện; thông số có thể thay đổi theo thị trường & trang bị)
+Đơn vị: tăng tốc 0–100 km/h (hoặc 0–62 mph nếu nguồn công bố như vậy), tốc độ tối đa km/h, tiêu hao nhiên liệu WLTP (l/100 km).
+
+================================================================================
+1) MERCEDES-BENZ S-CLASS (W223) – phiên bản đại diện: S 450 d 4MATIC Long (UK)
+- Động cơ: Diesel 6 xy-lanh thẳng hàng, dung tích 2.925 cc
+- Công suất: 372 PS (367 bhp)
+- Mô-men xoắn cực đại: 750 Nm
+- Hộp số: 9G-TRONIC, tự động 9 cấp
+- Dẫn động: AWD (4MATIC)
+- Tăng tốc: 0–62 mph: 5,4 giây
+- Tốc độ tối đa: 155 mph (≈ 250 km/h)
+- Tiêu hao (WLTP): 7,30 l/100 km (combined)
+
+Nguồn: Mercedes-Benz UK (tax.mercedes-benz.co.uk) – trang “Vehicle details” cho S 450 d 4MATIC Long AMG Line Premium 9G-TRONIC.
+
+================================================================================
+2) MERCEDES-BENZ E-CLASS (W214) – phiên bản đại diện: E 200 (E-Class Saloon New, UK)
+- Động cơ: Xăng mild-hybrid, 4 xy-lanh, dung tích 1.999 cc
+- Công suất: 230 PS (227 bhp)
+- Mô-men xoắn cực đại: 320 Nm
+- Hộp số: 9G-TRONIC PLUS, tự động 9 cấp
+- Dẫn động: RWD (cầu sau)
+- Tăng tốc: 0–62 mph: 7,5 giây
+- Tốc độ tối đa: 149 mph (≈ 240 km/h)
+- Tiêu hao (WLTP): 6,41 l/100 km (combined)
+
+Nguồn: Mercedes-Benz UK (tax.mercedes-benz.co.uk) – trang “Vehicle details” cho E 200 AMG Line Premium Plus 9G-TRONIC PLUS.
+
+================================================================================
+3) MERCEDES-BENZ V-CLASS (W447 facelift 01/2024+) – 2 phiên bản phổ biến (Đức, ADAC)
+3.1) V 220 d lang 9G-TRONIC (01/24 – 06/25)
+- Động cơ: Diesel, dung tích 1.950 cc (motorcode 654), 4 xy-lanh
+- Công suất: 120 kW (163 PS)
+- Mô-men xoắn cực đại: 380 Nm
+- Hộp số: Tự động 9 cấp (9G-TRONIC)
+- Dẫn động: Hinterrad (RWD/cầu sau)
+- Tăng tốc: 0–100 km/h: 10,7 giây
+- Tốc độ tối đa: 193 km/h
+- Tiêu hao (WLTP): 7,1 l/100 km (combined)
+
+3.2) V 300 d lang Style 9G-TRONIC (01/24 – 06/25)
+- Động cơ: Diesel, dung tích 1.950 cc (motorcode 654), 4 xy-lanh
+- Công suất: 174 kW (237 PS)
+- Mô-men xoắn cực đại: 500 Nm
+- Hộp số: Tự động 9 cấp (9G-TRONIC)
+- Dẫn động: Hinterrad (RWD/cầu sau)
+- Tăng tốc: 0–100 km/h: 7,4 giây
+- Tốc độ tối đa: 220 km/h
+- Tiêu hao (WLTP): 7,3 l/100 km (combined)
+
+Nguồn: ADAC Autokatalog – trang kỹ thuật cho “V 220 d lang 9G-TRONIC (01/24–06/25)” và “V 300 d lang Style 9G-TRONIC (01/24–06/25)”.
+
+================================================================================
+Ghi chú:
+- WLTP là chu trình thử nghiệm chuẩn châu Âu; tiêu hao thực tế phụ thuộc điều kiện vận hành.
+- Nếu bạn cần đúng “phiên bản bán tại Việt Nam” (ví dụ: S 450 4MATIC, E 300 AMG, V 250…), hãy cho mình biết tên phiên bản và năm model để mình xuất đúng thông số theo cấu hình đó.
