@@ -585,13 +585,13 @@
                 <article class="blog-card" onclick="viewPost('${post.id || post.slug}')">
                     ${post.image ? `<img src="${post.image}" alt="${post.title}" class="blog-card-image">` : ''}
                     <div class="blog-card-content">
-                        <span class="blog-card-category">${getCategoryName(post.category)}</span>
+                        <span class="blog-card-category">${getCategoryName(post.category || 'tin-tuc')}</span>
                         <div class="blog-card-meta">
-                            <span><i class="fas fa-calendar"></i> ${formatDate(post.updatedAt)}</span>
+                            <span><i class="fas fa-calendar"></i> ${formatDate(post.updatedAt || post.createdAt || new Date().toISOString())}</span>
                             <span><i class="fas fa-user"></i> Admin</span>
                         </div>
                         <h2 class="blog-card-title">${post.title}</h2>
-                        <p class="blog-card-excerpt">${post.excerpt || getExcerpt(post.content)}</p>
+                        <p class="blog-card-excerpt">${post.excerpt || getExcerpt(post.content || '')}</p>
                         <a href="javascript:void(0)" class="blog-card-link">
                             Đọc thêm <i class="fas fa-arrow-right"></i>
                         </a>
@@ -638,10 +638,10 @@
                             <i class="fas fa-arrow-left"></i> Đóng cửa sổ
                         </a>
                         <div class="post-header">
-                            <span class="post-category">${getCategoryName(post.category)}</span>
+                            <span class="post-category">${getCategoryName(post.category || 'tin-tuc')}</span>
                             <h1 class="post-title">${post.title}</h1>
                             <div class="post-meta">
-                                <span><i class="fas fa-calendar"></i> ${formatDate(post.updatedAt)}</span>
+                                <span><i class="fas fa-calendar"></i> ${formatDate(post.updatedAt || post.createdAt || new Date().toISOString())}</span>
                                 <span><i class="fas fa-user"></i> Admin</span>
                             </div>
                         </div>
@@ -704,7 +704,7 @@
                     ${post.image ? `<img src="${post.image}" alt="${post.title}" class="recent-post-image">` : '<div class="recent-post-image"></div>'}
                     <div class="recent-post-content">
                         <div class="recent-post-title">${post.title}</div>
-                        <div class="recent-post-date">${formatDate(post.updatedAt)}</div>
+                        <div class="recent-post-date">${formatDate(post.updatedAt || post.createdAt || new Date().toISOString())}</div>
                     </div>
                 </a>
             `).join('');
