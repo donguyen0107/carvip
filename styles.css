@@ -793,7 +793,7 @@ button {
 }
 
 .service-card:hover .service-icon {
-    transform: rotateY(360deg);
+    transform: scale(1.1);
 }
 
 .service-title {
