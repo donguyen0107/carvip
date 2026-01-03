@@ -553,15 +553,15 @@
 
     <!-- Quill Editor JS -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <!-- GitHub Storage -->
+    <!-- GitHub Storage - Phiên bản bảo mật -->
     <script src="github-config.js"></script>
-    <script src="github-storage.js"></script>
+    <script src="github-storage-secure.js"></script>
     <script>
-        // Initialize GitHub Storage
+        // Initialize GitHub Storage Secure
         let storage;
         if (window.GITHUB_CONFIG && window.GITHUB_CONFIG.owner !== 'YOUR_GITHUB_USERNAME') {
-            storage = new GitHubStorage(window.GITHUB_CONFIG);
-            console.log('✅ Sử dụng GitHub Storage');
+            storage = new GitHubStorageSecure(window.GITHUB_CONFIG);
+            console.log('✅ Sử dụng GitHub Storage Secure (Token qua popup)');
         } else {
             console.log('⚠️ Chưa cấu hình GitHub, sử dụng LocalStorage');
             storage = null;
