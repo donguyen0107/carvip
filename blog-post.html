@@ -126,15 +126,23 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.875rem;
             transition: var(--transition-base);
+        }
+
+        .share-btn i {
+            font-size: 1rem;
+            animation: none !important;
+            transform: none !important;
         }
 
         .share-btn:hover {
             transform: translateY(-2px);
+            opacity: 0.9;
         }
 
         .share-facebook {
