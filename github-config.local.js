@@ -7,7 +7,7 @@ const GITHUB_CONFIG = {
     branch: 'main',
     
     // ⚠️ Token thật - File này được .gitignore bảo vệ
-    token: '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'
+    token: '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'
 };
 
 // Export config

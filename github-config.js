@@ -12,7 +12,7 @@ const GITHUB_CONFIG = {
     branch: 'main',
     
     // Bước 4: Personal Access Token (để có thể sửa bài)
-    token: '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'  // Token của bạn
+    token: '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'  // Token của bạn
 };
 
 /*
