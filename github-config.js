@@ -12,9 +12,7 @@ const GITHUB_CONFIG = {
     branch: 'main',
     
     // Bước 4: Personal Access Token (để có thể sửa bài)
-    // ⚠️ KHÔNG điền token trực tiếp vào đây khi commit lên GitHub!
-    // Xem hướng dẫn bên dưới để sử dụng token an toàn
-    token: ''  // ⚠️ Để trống khi commit, chỉ điền khi dùng local
+    token: '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'  // Token của bạn
 };
 
 /*

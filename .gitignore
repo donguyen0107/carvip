@@ -13,6 +13,7 @@ backups/
 
 # GitHub Config với Token (BẢO MẬT - KHÔNG COMMIT)
 github-config.local.js
+github-config.js
 
 # OS files
 .DS_Store
