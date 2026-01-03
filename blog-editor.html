@@ -426,13 +426,45 @@
                     <div class="form-group">
                         <label class="form-label" for="postImage">
                             <i class="fas fa-image"></i> Ảnh đại diện
+                            <div style="float: right; display: flex; gap: 0.5rem;">
+                                <button type="button" id="toggleImageMode" class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background: var(--color-accent); border: 1px solid var(--color-border);">
+                                    <i class="fas fa-exchange-alt"></i> <span id="imageModeText">Upload File</span>
+                                </button>
+                            </div>
                         </label>
-                        <input 
-                            type="text" 
-                            id="postImage" 
-                            class="form-input" 
-                            placeholder="https://example.com/image.jpg"
-                        >
+                        
+                        <!-- URL Input Mode -->
+                        <div id="imageUrlMode" style="display: block;">
+                            <input 
+                                type="text" 
+                                id="postImage" 
+                                class="form-input" 
+                                placeholder="https://example.com/image.jpg hoặc /sources/image.jpg"
+                            >
+                            <small style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
+                                Nhập URL ảnh từ internet hoặc đường dẫn local (VD: /sources/header.png)
+                            </small>
+                        </div>
+                        
+                        <!-- File Upload Mode -->
+                        <div id="imageUploadMode" style="display: none;">
+                            <div style="position: relative;">
+                                <input 
+                                    type="file" 
+                                    id="postImageFile" 
+                                    accept="image/*"
+                                    style="display: none;"
+                                >
+                                <button type="button" id="uploadImageBtn" class="btn" style="width: 100%; padding: 1rem; background: var(--color-accent); border: 2px dashed var(--color-border); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Click để chọn ảnh hoặc kéo thả vào đây</span>
+                                </button>
+                            </div>
+                            <small style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
+                                Ảnh sẽ được chuyển thành Base64 và lưu trực tiếp vào bài viết
+                            </small>
+                        </div>
+                        
                         <img id="imagePreview" class="featured-image-preview" alt="Preview">
                     </div>
 
@@ -604,14 +636,99 @@
             }
         });
 
-        // Image preview
-        document.getElementById('postImage').addEventListener('input', (e) => {
-            const preview = document.getElementById('imagePreview');
-            if (e.target.value) {
-                preview.src = e.target.value;
-                preview.classList.add('show');
+        // Toggle Image Mode (URL vs Upload)
+        let isImageUploadMode = false;
+        document.getElementById('toggleImageMode').addEventListener('click', () => {
+            const urlMode = document.getElementById('imageUrlMode');
+            const uploadMode = document.getElementById('imageUploadMode');
+            const modeText = document.getElementById('imageModeText');
+            
+            isImageUploadMode = !isImageUploadMode;
+            
+            if (isImageUploadMode) {
+                urlMode.style.display = 'none';
+                uploadMode.style.display = 'block';
+                modeText.textContent = 'Dùng URL';
             } else {
-                preview.classList.remove('show');
+                uploadMode.style.display = 'none';
+                urlMode.style.display = 'block';
+                modeText.textContent = 'Upload File';
+            }
+        });
+
+        // Upload Image Button Click
+        document.getElementById('uploadImageBtn').addEventListener('click', () => {
+            document.getElementById('postImageFile').click();
+        });
+
+        // Handle File Upload
+        document.getElementById('postImageFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Vui lòng chọn file ảnh!');
+                    return;
+                }
+                
+                // Check file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 2MB.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const base64Image = event.target.result;
+                    document.getElementById('postImage').value = base64Image;
+                    
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = base64Image;
+                    preview.classList.add('show');
+                    
+                    document.getElementById('uploadImageBtn').innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <span>Đã tải lên: ${file.name}</span>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and Drop for Image Upload
+        const uploadBtn = document.getElementById('uploadImageBtn');
+        uploadBtn.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBtn.style.borderColor = 'var(--color-gold)';
+            uploadBtn.style.background = 'var(--color-primary)';
+        });
+
+        uploadBtn.addEventListener('dragleave', () => {
+            uploadBtn.style.borderColor = 'var(--color-border)';
+            uploadBtn.style.background = 'var(--color-accent)';
+        });
+
+        uploadBtn.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBtn.style.borderColor = 'var(--color-border)';
+            uploadBtn.style.background = 'var(--color-accent)';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                document.getElementById('postImageFile').files = e.dataTransfer.files;
+                document.getElementById('postImageFile').dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Image preview for URL mode
+        document.getElementById('postImage').addEventListener('input', (e) => {
+            if (!isImageUploadMode) {
+                const preview = document.getElementById('imagePreview');
+                if (e.target.value) {
+                    preview.src = e.target.value;
+                    preview.classList.add('show');
+                } else {
+                    preview.classList.remove('show');
+                }
             }
         });
 
