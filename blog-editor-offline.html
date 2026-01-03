@@ -692,14 +692,10 @@
                 return;
             }
 
-            // Get existing posts
-            let posts;
-            if (storage) {
-                showAlert('⏳ Đang lưu lên GitHub...', 'info');
-                posts = await storage.getPosts();
-            } else {
-                posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
-            }
+            // Get existing posts từ LocalStorage (để sync UI)
+            // KHÔNG gọi storage.getPosts() vì sẽ load TẤT CẢ bài từ Redis
+            // và tạo duplicate khi lưu!
+            let posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
             
             // Find if post exists
             const existingIndex = posts.findIndex(p => p.id === postData.id);
@@ -830,18 +826,26 @@
                 return;
             }
 
-            let posts;
             if (storage) {
-                posts = await storage.getPosts();
-                posts = posts.filter(p => p.id !== postId);
-                await storage.savePosts(posts);
+                // Gọi API DELETE - CHỈ xóa 1 bài
+                const success = await storage.deletePost(postId);
+                if (success) {
+                    showAlert('🗑️ Đã xóa bài viết!', 'success');
+                    // Xóa khỏi LocalStorage backup
+                    const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                    const filtered = posts.filter(p => p.id !== postId);
+                    localStorage.setItem('blogPosts', JSON.stringify(filtered));
+                } else {
+                    showAlert('⚠️ Xóa thất bại!', 'error');
+                }
             } else {
-                posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
-                posts = posts.filter(p => p.id !== postId);
-                localStorage.setItem('blogPosts', JSON.stringify(posts));
+                // Fallback: Xóa từ LocalStorage
+                const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                const filtered = posts.filter(p => p.id !== postId);
+                localStorage.setItem('blogPosts', JSON.stringify(filtered));
+                showAlert('🗑️ Đã xóa bài viết!', 'success');
             }
             
-            showAlert('🗑️ Đã xóa bài viết!', 'success');
             loadPosts();
         }
 
