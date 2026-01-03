@@ -468,6 +468,9 @@
                     <div class="form-group">
                         <label class="form-label">
                             <i class="fas fa-edit"></i> Nội dung bài viết
+                            <button type="button" id="toggleHtmlMode" class="btn" style="float: right; padding: 0.5rem 1rem; font-size: 0.875rem; background: var(--color-accent); border: 1px solid var(--color-border);">
+                                <i class="fas fa-code"></i> <span id="htmlModeText">Chế độ HTML</span>
+                            </button>
                         </label>
                         <div style="background: var(--color-accent); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--color-border);">
                             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
@@ -479,12 +482,14 @@
                                 <li>Chọn <strong>Header</strong> để tạo tiêu đề (H1 - H6)</li>
                                 <li>Thay đổi <strong>kích thước chữ</strong> và <strong>màu sắc</strong> theo ý muốn</li>
                                 <li>Chèn <strong>link, hình ảnh, video</strong> trực tiếp vào nội dung</li>
+                                <li>Click <strong>"Chế độ HTML"</strong> để paste/edit code HTML trực tiếp</li>
                                 <li>Editor tự động lưu nội dung dưới dạng <strong>HTML</strong></li>
                             </ul>
                         </div>
-                        <div class="editor-content">
+                        <div class="editor-content" id="editorWrapper">
                             <div id="editor"></div>
                         </div>
+                        <textarea id="htmlEditor" style="display: none; width: 100%; min-height: 400px; padding: 1rem; background: var(--color-primary); color: var(--color-white); border: 2px solid var(--color-border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9rem; resize: vertical;"></textarea>
                     </div>
                 </form>
 
@@ -602,6 +607,30 @@
             }
         });
 
+        // Toggle HTML Mode
+        let isHtmlMode = false;
+        document.getElementById('toggleHtmlMode').addEventListener('click', () => {
+            const editorWrapper = document.getElementById('editorWrapper');
+            const htmlEditor = document.getElementById('htmlEditor');
+            const htmlModeText = document.getElementById('htmlModeText');
+            
+            isHtmlMode = !isHtmlMode;
+            
+            if (isHtmlMode) {
+                // Switch to HTML mode
+                htmlEditor.value = quill.root.innerHTML;
+                editorWrapper.style.display = 'none';
+                htmlEditor.style.display = 'block';
+                htmlModeText.textContent = 'Chế độ Visual';
+            } else {
+                // Switch back to visual mode
+                quill.root.innerHTML = htmlEditor.value;
+                htmlEditor.style.display = 'none';
+                editorWrapper.style.display = 'block';
+                htmlModeText.textContent = 'Chế độ HTML';
+            }
+        });
+
         // Auto-generate slug from title
         document.getElementById('postTitle').addEventListener('input', (e) => {
             const slug = e.target.value
@@ -694,6 +723,14 @@
 
         // Save post function
         async function savePost(status) {
+            // Get content from current mode
+            let content;
+            if (isHtmlMode) {
+                content = document.getElementById('htmlEditor').value;
+            } else {
+                content = quill.root.innerHTML;
+            }
+            
             const postData = {
                 id: document.getElementById('postId').value || Date.now().toString(),
                 title: document.getElementById('postTitle').value,
@@ -701,7 +738,7 @@
                 excerpt: document.getElementById('postExcerpt').value,
                 category: document.getElementById('postCategory').value,
                 image: document.getElementById('postImage').value,
-                content: quill.root.innerHTML,
+                content: content,
                 status: status,
                 updatedAt: new Date().toISOString()
             };
