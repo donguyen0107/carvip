@@ -11,8 +11,11 @@ const GITHUB_CONFIG = {
     // Bước 3: Branch (mặc định là main)
     branch: 'main',
     
-    // Bước 4: Personal Access Token (để có thể sửa bài)
-    token: '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'  // Token của bạn
+    // Bước 4: Personal Access Token
+    // ⚠️ KHÔNG điền token vào đây!
+    // Nếu dùng GitHub Actions: Không cần token trong code
+    // Nếu viết bài trên web: Dùng github-storage-secure.js (nhập token qua popup)
+    token: ''  // Để trống - an toàn
 };
 
 /*
