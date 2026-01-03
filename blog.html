@@ -582,7 +582,7 @@
             }
 
             blogGrid.innerHTML = posts.map(post => `
-                <article class="blog-card" onclick="viewPost('${post.id || post.slug}')">
+                <article class="blog-card" onclick="window.location.href='blog-post.html?id=${post.id || post.slug}'">
                     ${post.image ? `<img src="${post.image}" alt="${post.title}" class="blog-card-image">` : ''}
                     <div class="blog-card-content">
                         <span class="blog-card-category">${getCategoryName(post.category || 'tin-tuc')}</span>
@@ -700,7 +700,7 @@
             }
 
             recentPosts.innerHTML = posts.map(post => `
-                <a onclick="viewPost('${post.id || post.slug}')" class="recent-post-item" style="cursor: pointer;">
+                <a href="blog-post.html?id=${post.id || post.slug}" class="recent-post-item">
                     ${post.image ? `<img src="${post.image}" alt="${post.title}" class="recent-post-image">` : '<div class="recent-post-image"></div>'}
                     <div class="recent-post-content">
                         <div class="recent-post-title">${post.title}</div>
