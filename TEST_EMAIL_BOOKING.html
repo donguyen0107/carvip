@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test EmailJS Booking</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .status-box {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .status-box.info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #1565c0;
+        }
+
+        .status-box.success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .status-box.error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+        }
+
+        .status-box.warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            color: #e65100;
+        }
+
+        .config-status {
+            margin: 20px 0;
+        }
+
+        .config-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .config-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .config-value {
+            font-family: monospace;
+            color: #333;
+            background: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .config-value.valid {
+            color: #4caf50;
+        }
+
+        .config-value.invalid {
+            color: #f44336;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-test {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-test:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-test:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-config {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-config:hover {
+            background: #f57c00;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .instructions {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #d63384;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📧 Test Email Booking</h1>
+        <p class="subtitle">Kiểm tra cấu hình EmailJS</p>
+
+        <div id="statusBox" class="status-box info">
+            ℹ️ Đang kiểm tra cấu hình...
+        </div>
+
+        <div class="config-status" id="configStatus"></div>
+
+        <button class="btn-test" id="testBtn" onclick="sendTestEmail()">
+            🚀 Gửi Email Test
+        </button>
+
+        <button class="btn-config" onclick="openConfig()">
+            ⚙️ Mở File Cấu Hình
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px;">Đang gửi email...</p>
+        </div>
+
+        <div class="result" id="result"></div>
+
+        <div class="instructions">
+            <h3>📝 Hướng dẫn:</h3>
+            <ol>
+                <li>Đảm bảo đã setup EmailJS theo file <code>HUONG_DAN_SETUP_EMAIL_BOOKING.md</code></li>
+                <li>Cập nhật <code>emailjs-config.js</code> với thông tin của bạn</li>
+                <li>Click "Gửi Email Test" để kiểm tra</li>
+                <li>Kiểm tra inbox (và spam folder) trong email của bạn</li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="emailjs-config.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Check configuration on load
+        window.addEventListener('load', function() {
+            checkConfiguration();
+        });
+
+        function checkConfiguration() {
+            const statusBox = document.getElementById('statusBox');
+            const configStatus = document.getElementById('configStatus');
+            const testBtn = document.getElementById('testBtn');
+
+            if (typeof EMAILJS_CONFIG === 'undefined') {
+                statusBox.className = 'status-box error';
+                statusBox.innerHTML = '❌ Không tìm thấy file emailjs-config.js';
+                testBtn.disabled = true;
+                return;
+            }
+
+            let html = '<h3 style="margin-bottom: 15px;">🔍 Trạng thái cấu hình:</h3>';
+            let allValid = true;
+
+            const checks = [
+                { 
+                    label: 'Public Key', 
+                    value: EMAILJS_CONFIG.publicKey,
+                    isValid: EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY'
+                },
+                { 
+                    label: 'Service ID', 
+                    value: EMAILJS_CONFIG.serviceId,
+                    isValid: EMAILJS_CONFIG.serviceId !== 'YOUR_SERVICE_ID'
+                },
+                { 
+                    label: 'Template ID', 
+                    value: EMAILJS_CONFIG.templateId,
+                    isValid: EMAILJS_CONFIG.templateId !== 'YOUR_TEMPLATE_ID'
+                },
+                { 
+                    label: 'Admin Email', 
+                    value: EMAILJS_CONFIG.adminEmail,
+                    isValid: EMAILJS_CONFIG.adminEmail !== 'YOUR_ADMIN_EMAIL@example.com' && EMAILJS_CONFIG.adminEmail.includes('@')
+                }
+            ];
+
+            checks.forEach(check => {
+                const statusIcon = check.isValid ? '✅' : '❌';
+                const statusClass = check.isValid ? 'valid' : 'invalid';
+                const displayValue = check.isValid ? check.value : 'Chưa cấu hình';
+                
+                html += `
+                    <div class="config-item">
+                        <span class="config-label">${statusIcon} ${check.label}:</span>
+                        <span class="config-value ${statusClass}">${displayValue}</span>
+                    </div>
+                `;
+
+                if (!check.isValid) allValid = false;
+            });
+
+            configStatus.innerHTML = html;
+
+            if (allValid) {
+                statusBox.className = 'status-box success';
+                statusBox.innerHTML = '✅ Cấu hình hoàn tất! Sẵn sàng gửi email test.';
+                testBtn.disabled = false;
+            } else {
+                statusBox.className = 'status-box warning';
+                statusBox.innerHTML = '⚠️ Vui lòng cập nhật file emailjs-config.js trước khi test!';
+                testBtn.disabled = true;
+            }
+        }
+
+        async function sendTestEmail() {
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const testBtn = document.getElementById('testBtn');
+
+            // Show loading
+            loading.classList.add('show');
+            result.classList.remove('show');
+            testBtn.disabled = true;
+
+            // Prepare test booking data
+            const testData = {
+                carType: 's-class',
+                rentalType: 'daily',
+                duration: '3',
+                pickupDate: new Date(Date.now() + 86400000).toISOString(),
+                returnDate: new Date(Date.now() + 259200000).toISOString(),
+                driver: 'with-driver',
+                fullName: 'Nguyễn Văn Test',
+                phone: '0901234567',
+                email: 'test@example.com',
+                idNumber: '079012345678',
+                pickupLocation: 'Sân bay Tân Sơn Nhất',
+                returnLocation: 'Sân bay Tân Sơn Nhất',
+                services: ['wifi', 'airport'],
+                specialRequests: 'Đây là email test từ hệ thống',
+                promoCode: ''
+            };
+
+            try {
+                // Send email
+                const response = await sendBookingEmail(testData);
+
+                // Hide loading
+                loading.classList.remove('show');
+                result.classList.add('show');
+                testBtn.disabled = false;
+
+                if (response.success) {
+                    result.className = 'result show status-box success';
+                    result.innerHTML = `
+                        <strong>✅ Gửi email thành công!</strong><br><br>
+                        📧 Email đã được gửi đến: <code>${EMAILJS_CONFIG.adminEmail}</code><br><br>
+                        <strong>Tiếp theo:</strong><br>
+                        1. Kiểm tra inbox của bạn<br>
+                        2. Nếu không thấy, check spam folder<br>
+                        3. Nếu nhận được email → Setup thành công! 🎉
+                    `;
+                } else {
+                    result.className = 'result show status-box error';
+                    result.innerHTML = `
+                        <strong>❌ Gửi email thất bại!</strong><br><br>
+                        ${response.message}<br><br>
+                        <strong>Kiểm tra lại:</strong><br>
+                        1. Các thông tin trong emailjs-config.js<br>
+                        2. Console log (F12) để xem lỗi chi tiết<br>
+                        3. EmailJS Dashboard → Logs
+                    `;
+                }
+            } catch (error) {
+                loading.classList.remove('show');
+                result.classList.add('show');
+                result.className = 'result show status-box error';
+                result.innerHTML = `
+                    <strong>❌ Lỗi không mong muốn!</strong><br><br>
+                    ${error.message}<br><br>
+                    Vui lòng kiểm tra console log (F12) để xem chi tiết.
+                `;
+                testBtn.disabled = false;
+                console.error('Test error:', error);
+            }
+        }
+
+        function openConfig() {
+            alert('Vui lòng mở file "emailjs-config.js" bằng text editor để chỉnh sửa cấu hình.');
+        }
+    </script>
+</body>
+</html>

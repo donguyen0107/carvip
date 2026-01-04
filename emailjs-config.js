@@ -7,16 +7,18 @@
 
 const EMAILJS_CONFIG = {
     // Thay YOUR_PUBLIC_KEY bằng Public Key từ EmailJS Dashboard
-    publicKey: 'YOUR_PUBLIC_KEY',
+    publicKey: 'Gfej9tcaaQEDJ0ASz',
     
     // Thay YOUR_SERVICE_ID bằng Service ID từ EmailJS Dashboard  
-    serviceId: 'YOUR_SERVICE_ID',
+    serviceId: 'service_c1fcyxa',
     
     // Thay YOUR_TEMPLATE_ID bằng Template ID từ EmailJS Dashboard
-    templateId: 'YOUR_TEMPLATE_ID',
+    // ⚠️ LƯU Ý: Template ID phải tồn tại trong EmailJS Dashboard
+    // Vào https://dashboard.emailjs.com/admin/templates để kiểm tra
+    templateId: 'template_p1atqb7',  // ← THAY ĐỔI Template ID MỚI TẠI ĐÂY
     
     // Email admin nhận thông báo
-    adminEmail: 'YOUR_ADMIN_EMAIL@example.com'
+    adminEmail: 'donguyen072010@gmail.com'
 };
 
 // Load EmailJS SDK
@@ -43,6 +45,15 @@ async function sendBookingEmail(bookingData) {
             return { success: true, message: 'Booking đã được lưu (EmailJS chưa cấu hình)' };
         }
         
+        // Check if emailjs is loaded
+        if (typeof emailjs === 'undefined') {
+            console.error('❌ EmailJS SDK chưa được load. Vui lòng chạy qua HTTP server.');
+            return { 
+                success: false, 
+                message: 'Lỗi: Vui lòng chạy website qua HTTP server (không mở trực tiếp file HTML)' 
+            };
+        }
+
         // Prepare email template parameters
         const templateParams = {
             to_email: EMAILJS_CONFIG.adminEmail,
@@ -64,6 +75,11 @@ async function sendBookingEmail(bookingData) {
             booking_id: `MB${Date.now()}`
         };
         
+        console.log('📧 Sending email with params:', templateParams);
+        console.log('📧 Using Service ID:', EMAILJS_CONFIG.serviceId);
+        console.log('📧 Using Template ID:', EMAILJS_CONFIG.templateId);
+        console.log('📧 Using Public Key:', EMAILJS_CONFIG.publicKey);
+        
         // Send email via EmailJS
         const response = await emailjs.send(
             EMAILJS_CONFIG.serviceId,
@@ -76,6 +92,8 @@ async function sendBookingEmail(bookingData) {
         
     } catch (error) {
         console.error('❌ Error sending email:', error);
+        console.error('❌ Error details:', error.text || error.message);
+        console.error('❌ Error status:', error.status);
         
         // Still save booking data even if email fails
         console.log('📧 Thông tin booking (email failed):');

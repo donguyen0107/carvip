@@ -69,11 +69,41 @@ function validateStep(step) {
     const currentStepElement = document.querySelector(`.form-step[data-step="${step}"]`);
     const requiredFields = currentStepElement.querySelectorAll('[required]');
     let isValid = true;
+    let errorMessages = [];
     
     requiredFields.forEach(field => {
-        if (!field.value.trim()) {
+        // Check checkbox (terms checkbox)
+        if (field.type === 'checkbox') {
+            if (!field.checked) {
+                field.classList.add('error');
+                isValid = false;
+                errorMessages.push('Bạn phải đồng ý với điều khoản dịch vụ');
+                
+                // Highlight terms label
+                const label = field.closest('label');
+                if (label) {
+                    label.style.border = '2px solid #e74c3c';
+                    label.style.padding = '10px';
+                    label.style.borderRadius = '8px';
+                    label.style.backgroundColor = '#fee';
+                }
+            } else {
+                field.classList.remove('error');
+                const label = field.closest('label');
+                if (label) {
+                    label.style.border = '';
+                    label.style.padding = '';
+                    label.style.backgroundColor = '';
+                }
+            }
+        } 
+        // Check text/select/email/tel fields
+        else if (!field.value || !field.value.trim()) {
             field.classList.add('error');
             isValid = false;
+            
+            const fieldName = field.placeholder || field.id || 'Trường này';
+            errorMessages.push(`${fieldName} không được để trống`);
             
             // Show error message
             if (!field.nextElementSibling?.classList.contains('error-message')) {
@@ -81,6 +111,8 @@ function validateStep(step) {
                 errorMsg.className = 'error-message';
                 errorMsg.style.color = '#e74c3c';
                 errorMsg.style.fontSize = '0.875rem';
+                errorMsg.style.display = 'block';
+                errorMsg.style.marginTop = '5px';
                 errorMsg.textContent = 'Vui lòng điền thông tin này';
                 field.parentNode.insertBefore(errorMsg, field.nextSibling);
             }
@@ -94,7 +126,15 @@ function validateStep(step) {
     });
     
     if (!isValid) {
-        alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+        const firstError = errorMessages[0] || 'Vui lòng điền đầy đủ thông tin bắt buộc!';
+        alert('⚠️ ' + firstError);
+        
+        // Scroll to first error field
+        const firstErrorField = currentStepElement.querySelector('[required].error');
+        if (firstErrorField) {
+            firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstErrorField.focus();
+        }
     }
     
     return isValid;
@@ -329,9 +369,27 @@ document.querySelectorAll('input[name="services"]').forEach(checkbox => {
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    if (!validateStep(3)) {
-        return;
+    console.log('🚀 Form submitted!');
+    
+    // Validate ALL steps before submitting
+    let allValid = true;
+    
+    for (let step = 1; step <= 3; step++) {
+        if (!validateStep(step)) {
+            console.log(`❌ Validation failed on step ${step}`);
+            allValid = false;
+            
+            // Show the step with error
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+            currentStep = step;
+            
+            alert(`⚠️ Vui lòng quay lại bước ${step} và điền đầy đủ thông tin!`);
+            return;
+        }
     }
+    
+    console.log('✅ All validations passed!');
     
     // Get form data
     const formData = {
@@ -354,8 +412,12 @@ form.addEventListener('submit', async (e) => {
     
     // Show loading state
     const submitBtn = form.querySelector('.btn-submit');
-    submitBtn.classList.add('loading');
-    submitBtn.disabled = true;
+    if (submitBtn) {
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+    }
+    
+    console.log('⏳ Loading state activated');
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -364,11 +426,23 @@ form.addEventListener('submit', async (e) => {
     window.carRental.saveFormData('booking', formData);
     
     // Send email notification
-    let emailResult = { success: true, message: 'Email sẽ được gửi khi cấu hình EmailJS' };
-    if (typeof sendBookingEmail === 'function') {
-        emailResult = await sendBookingEmail(formData);
-    } else {
-        console.log('📧 Thông tin booking:', formData);
+    let emailResult = { success: true, message: '✅ Đặt xe thành công! Chúng tôi sẽ liên hệ với bạn sớm.' };
+    
+    try {
+        if (typeof sendBookingEmail === 'function') {
+            console.log('📧 Đang gửi email...');
+            emailResult = await sendBookingEmail(formData);
+            console.log('📧 Kết quả gửi email:', emailResult);
+        } else {
+            console.warn('⚠️ sendBookingEmail function không tồn tại');
+            console.log('📧 Thông tin booking:', formData);
+        }
+    } catch (error) {
+        console.error('❌ Lỗi khi gửi email:', error);
+        emailResult = { 
+            success: false, 
+            message: '✅ Đặt xe thành công! Email thông báo sẽ được gửi sau.' 
+        };
     }
     
     // Show success modal
@@ -381,8 +455,12 @@ form.addEventListener('submit', async (e) => {
     document.querySelector('.form-step[data-step="1"]').classList.add('active');
     
     // Remove loading state
-    submitBtn.classList.remove('loading');
-    submitBtn.disabled = false;
+    if (submitBtn) {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    }
+    
+    console.log('✅ Booking process completed!');
 });
 
 // ===== MODAL FUNCTIONS =====
