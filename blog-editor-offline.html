@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bài Viết | BOOKCARVIP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        body {
+            background: var(--color-primary);
+        }
+
+        .editor-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .editor-header {
+            background: var(--color-secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .editor-title {
+            font-size: 2rem;
+            color: var(--color-white);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .editor-main {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .editor-form {
+            background: var(--color-secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--color-white);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 1rem;
+            background: var(--color-accent);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            color: var(--color-white);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition-base);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--color-white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--color-gray);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Quill Editor Styling */
+        .editor-content {
+            background: var(--color-accent);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #editor {
+            min-height: 400px;
+            background: var(--color-accent);
+        }
+
+        .ql-toolbar {
+            background: var(--color-secondary);
+            border: 1px solid var(--color-border) !important;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .ql-container {
+            border: 1px solid var(--color-border) !important;
+            border-top: none !important;
+            border-radius: 0 0 10px 10px;
+            font-size: 1rem;
+        }
+
+        .ql-editor {
+            color: var(--color-white);
+            min-height: 400px;
+        }
+
+        .ql-editor.ql-blank::before {
+            color: var(--color-gray);
+        }
+
+        /* Sidebar */
+        .editor-sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-card {
+            background: var(--color-secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            color: var(--color-white);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .publish-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn-publish,
+        .btn-draft,
+        .btn-preview {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: var(--transition-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-publish {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .btn-publish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-draft {
+            background: var(--color-accent);
+            color: var(--color-white);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-draft:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-preview {
+            background: transparent;
+            color: var(--color-white);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-preview:hover {
+            background: var(--color-accent);
+        }
+
+        .sidebar-info {
+            color: var(--color-gray);
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .info-label {
+            color: var(--color-gray);
+        }
+
+        .info-value {
+            color: var(--color-white);
+        }
+
+        .featured-image-preview {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .featured-image-preview.show {
+            display: block;
+        }
+
+        .posts-list {
+            margin-top: 1rem;
+        }
+
+        .post-item {
+            padding: 1rem;
+            background: var(--color-accent);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--color-border);
+            transition: var(--transition-base);
+        }
+
+        .post-item:hover {
+            border-color: var(--color-white);
+        }
+
+        .post-item-title {
+            color: var(--color-white);
+            font-weight: var(--font-weight-medium);
+            margin-bottom: 0.5rem;
+        }
+
+        .post-item-meta {
+            color: var(--color-gray);
+            font-size: 0.85rem;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .post-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-edit,
+        .btn-delete {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .btn-edit {
+            background: var(--color-secondary);
+            color: var(--color-white);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-edit:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-delete {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 0, 0, 0.5);
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: var(--font-weight-medium);
+        }
+
+        .status-published {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .status-draft {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #4CAF50;
+        }
+
+        .alert-info {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid rgba(33, 150, 243, 0.5);
+            color: #64B5F6;
+        }
+
+        @media (max-width: 968px) {
+            .editor-main {
+                grid-template-columns: 1fr;
+            }
+
+            .editor-sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-container">
+        <!-- Header -->
+        <div class="editor-header">
+            <div>
+                <h1 class="editor-title">Quản Lý Bài Viết</h1>
+                <p style="color: var(--color-gray); margin-top: 0.5rem;">
+                    <i class="fas fa-check-circle"></i> Không cần Server - Lưu trên trình duyệt
+                </p>
+            </div>
+            <div class="editor-actions">
+                <a href="blog-offline.html" class="btn btn-secondary">
+                    <i class="fas fa-eye"></i>
+                    <span>Xem Blog</span>
+                </a>
+                <a href="index.html" class="btn btn-secondary">
+                    <i class="fas fa-home"></i>
+                    <span>Trang Chủ</span>
+                </a>
+                <a href="admin-instant.html" class="btn btn-primary">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Alert -->
+        <div id="alertBox" class="alert"></div>
+
+        <!-- Main Content -->
+        <div class="editor-main">
+            <!-- Editor Form -->
+            <div class="editor-form">
+                <form id="postForm">
+                    <input type="hidden" id="postId" value="">
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="postTitle">
+                            <i class="fas fa-heading"></i> Tiêu đề bài viết
+                        </label>
+                        <input 
+                            type="text" 
+                            id="postTitle" 
+                            class="form-input" 
+                            placeholder="Nhập tiêu đề bài viết..."
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="postSlug">
+                            <i class="fas fa-link"></i> Đường dẫn (URL)
+                        </label>
+                        <input 
+                            type="text" 
+                            id="postSlug" 
+                            class="form-input" 
+                            placeholder="duong-dan-bai-viet"
+                        >
+                        <small style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
+                            Để trống để tự động tạo từ tiêu đề
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="postExcerpt">
+                            <i class="fas fa-align-left"></i> Mô tả ngắn
+                        </label>
+                        <textarea 
+                            id="postExcerpt" 
+                            class="form-textarea" 
+                            placeholder="Nhập mô tả ngắn cho bài viết..."
+                            rows="3"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="postCategory">
+                            <i class="fas fa-folder"></i> Danh mục
+                        </label>
+                        <select id="postCategory" class="form-select">
+                            <option value="tin-tuc">Tin tức</option>
+                            <option value="huong-dan">Hướng dẫn</option>
+                            <option value="khuyen-mai">Khuyến mãi</option>
+                            <option value="kinh-nghiem">Kinh nghiệm</option>
+                            <option value="xe">Xe & Dịch vụ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="postImage">
+                            <i class="fas fa-image"></i> Ảnh đại diện
+                            <div style="float: right; display: flex; gap: 0.5rem;">
+                                <button type="button" id="toggleImageMode" class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem; background: var(--color-accent); border: 1px solid var(--color-border);">
+                                    <i class="fas fa-exchange-alt"></i> <span id="imageModeText">Upload File</span>
+                                </button>
+                            </div>
+                        </label>
+                        
+                        <!-- URL Input Mode -->
+                        <div id="imageUrlMode" style="display: block;">
+                            <input 
+                                type="text" 
+                                id="postImage" 
+                                class="form-input" 
+                                placeholder="https://example.com/image.jpg hoặc /sources/image.jpg"
+                            >
+                            <small style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
+                                Nhập URL ảnh từ internet hoặc đường dẫn local (VD: /sources/header.png)
+                            </small>
+                        </div>
+                        
+                        <!-- File Upload Mode -->
+                        <div id="imageUploadMode" style="display: none;">
+                            <div style="position: relative;">
+                                <input 
+                                    type="file" 
+                                    id="postImageFile" 
+                                    accept="image/*"
+                                    style="display: none;"
+                                >
+                                <button type="button" id="uploadImageBtn" class="btn" style="width: 100%; padding: 1rem; background: var(--color-accent); border: 2px dashed var(--color-border); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Click để chọn ảnh hoặc kéo thả vào đây</span>
+                                </button>
+                            </div>
+                            <small style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
+                                Ảnh sẽ được chuyển thành Base64 và lưu trực tiếp vào bài viết
+                            </small>
+                        </div>
+                        
+                        <img id="imagePreview" class="featured-image-preview" alt="Preview">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-edit"></i> Nội dung bài viết
+                            <button type="button" id="toggleHtmlMode" class="btn" style="float: right; padding: 0.5rem 1rem; font-size: 0.875rem; background: var(--color-accent); border: 1px solid var(--color-border);">
+                                <i class="fas fa-code"></i> <span id="htmlModeText">Chế độ HTML</span>
+                            </button>
+                        </label>
+                        <div style="background: var(--color-accent); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--color-border);">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <i class="fas fa-info-circle" style="color: var(--color-white);"></i>
+                                <strong style="color: var(--color-white);">Hướng dẫn sử dụng Editor</strong>
+                            </div>
+                            <ul style="margin: 0; padding-left: 1.5rem; color: var(--color-gray-light); font-size: 0.9rem; line-height: 1.6;">
+                                <li>Sử dụng thanh công cụ phía trên để format text (in đậm, nghiêng, gạch chân, v.v.)</li>
+                                <li>Chọn <strong>Header</strong> để tạo tiêu đề (H1 - H6)</li>
+                                <li>Thay đổi <strong>kích thước chữ</strong> và <strong>màu sắc</strong> theo ý muốn</li>
+                                <li>Chèn <strong>link, hình ảnh, video</strong> trực tiếp vào nội dung</li>
+                                <li>Click <strong>"Chế độ HTML"</strong> để paste/edit code HTML trực tiếp</li>
+                                <li>Editor tự động lưu nội dung dưới dạng <strong>HTML</strong></li>
+                            </ul>
+                        </div>
+                        <div class="editor-content" id="editorWrapper">
+                            <div id="editor"></div>
+                        </div>
+                        <textarea id="htmlEditor" style="display: none; width: 100%; min-height: 400px; padding: 1rem; background: var(--color-primary); color: var(--color-white); border: 2px solid var(--color-border); border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9rem; resize: vertical;"></textarea>
+                    </div>
+                </form>
+
+                <!-- Posts List -->
+                <div style="margin-top: 3rem;">
+                    <h2 style="color: var(--color-white); margin-bottom: 1.5rem;">
+                        <i class="fas fa-list"></i> Danh sách bài viết (<span id="postCount">0</span>)
+                    </h2>
+                    <div id="postsList" class="posts-list"></div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="editor-sidebar">
+                <!-- Publish Card -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Xuất bản</h3>
+                    <div class="publish-actions">
+                        <button type="button" class="btn-publish" id="publishBtn">
+                            <i class="fas fa-check"></i>
+                            <span>Xuất Bản</span>
+                        </button>
+                        <button type="button" class="btn-draft" id="saveDraftBtn">
+                            <i class="fas fa-save"></i>
+                            <span>Lưu Nháp</span>
+                        </button>
+                        <button type="button" class="btn-preview" id="previewBtn">
+                            <i class="fas fa-eye"></i>
+                            <span>Xem Trước</span>
+                        </button>
+                        <button type="button" class="btn-draft" id="newPostBtn">
+                            <i class="fas fa-plus"></i>
+                            <span>Bài Viết Mới</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Info Card -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Thông tin</h3>
+                    <div class="sidebar-info">
+                        <div class="info-item">
+                            <span class="info-label">Trạng thái:</span>
+                            <span class="info-value" id="postStatus">Chưa lưu</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Cập nhật:</span>
+                            <span class="info-value" id="lastUpdate">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tác giả:</span>
+                            <span class="info-value" id="authorName">Admin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storage Info -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Lưu trữ</h3>
+                    <div class="alert alert-info show">
+                        <i class="fas fa-database"></i> Bài viết lưu trên trình duyệt của bạn (LocalStorage). Không mất dữ liệu khi tắt máy.
+                    </div>
+                </div>
+
+                <!-- Help Card -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">Hướng dẫn</h3>
+                    <div style="color: var(--color-gray); font-size: 0.9rem; line-height: 1.6;">
+                        <p>✍️ Nhập tiêu đề và nội dung bài viết</p>
+                        <p>💾 Nhấn "Lưu Nháp" để lưu tạm</p>
+                        <p>✅ Nhấn "Xuất Bản" để đăng bài</p>
+                        <p>👁️ Nhấn "Xem Trước" để kiểm tra</p>
+                        <p>🗑️ Click "Xóa" để xóa bài viết</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Quill Editor JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <!-- Vercel Storage - Không cần GitHub -->
+    <script src="vercel-storage.js"></script>
+    <script>
+        // Initialize Vercel Storage
+        let storage;
+        const VERCEL_CONFIG = {
+            apiUrl: '/api/posts'  // API endpoint trên Vercel
+        };
+        
+        storage = new VercelStorage(VERCEL_CONFIG);
+        console.log('✅ Sử dụng Vercel Storage (Không cần token!)');
+    
+
+        // Initialize Quill editor
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Bắt đầu viết nội dung bài viết của bạn... (Hỗ trợ HTML: in đậm, in nghiêng, header, màu sắc, v.v.)',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'font': [] }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'direction': 'rtl' }],
+                    [{ 'align': [] }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Toggle HTML Mode
+        let isHtmlMode = false;
+        document.getElementById('toggleHtmlMode').addEventListener('click', () => {
+            const editorWrapper = document.getElementById('editorWrapper');
+            const htmlEditor = document.getElementById('htmlEditor');
+            const htmlModeText = document.getElementById('htmlModeText');
+            
+            isHtmlMode = !isHtmlMode;
+            
+            if (isHtmlMode) {
+                // Switch to HTML mode
+                htmlEditor.value = quill.root.innerHTML;
+                editorWrapper.style.display = 'none';
+                htmlEditor.style.display = 'block';
+                htmlModeText.textContent = 'Chế độ Visual';
+            } else {
+                // Switch back to visual mode
+                quill.root.innerHTML = htmlEditor.value;
+                htmlEditor.style.display = 'none';
+                editorWrapper.style.display = 'block';
+                htmlModeText.textContent = 'Chế độ HTML';
+            }
+        });
+
+        // Auto-generate slug from title
+        document.getElementById('postTitle').addEventListener('input', (e) => {
+            const slug = e.target.value
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+            
+            if (!document.getElementById('postSlug').value || document.getElementById('postSlug').dataset.auto === 'true') {
+                document.getElementById('postSlug').value = slug;
+                document.getElementById('postSlug').dataset.auto = 'true';
+            }
+        });
+
+        // Manual slug edit
+        document.getElementById('postSlug').addEventListener('input', () => {
+            document.getElementById('postSlug').dataset.auto = 'false';
+        });
+
+        // Toggle Image Mode (URL vs Upload)
+        let isImageUploadMode = false;
+        document.getElementById('toggleImageMode').addEventListener('click', () => {
+            const urlMode = document.getElementById('imageUrlMode');
+            const uploadMode = document.getElementById('imageUploadMode');
+            const modeText = document.getElementById('imageModeText');
+            
+            isImageUploadMode = !isImageUploadMode;
+            
+            if (isImageUploadMode) {
+                urlMode.style.display = 'none';
+                uploadMode.style.display = 'block';
+                modeText.textContent = 'Dùng URL';
+            } else {
+                uploadMode.style.display = 'none';
+                urlMode.style.display = 'block';
+                modeText.textContent = 'Upload File';
+            }
+        });
+
+        // Upload Image Button Click
+        document.getElementById('uploadImageBtn').addEventListener('click', () => {
+            document.getElementById('postImageFile').click();
+        });
+
+        // Handle File Upload
+        document.getElementById('postImageFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Vui lòng chọn file ảnh!');
+                    return;
+                }
+                
+                // Check file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 2MB.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const base64Image = event.target.result;
+                    document.getElementById('postImage').value = base64Image;
+                    
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = base64Image;
+                    preview.classList.add('show');
+                    
+                    document.getElementById('uploadImageBtn').innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <span>Đã tải lên: ${file.name}</span>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and Drop for Image Upload
+        const uploadBtn = document.getElementById('uploadImageBtn');
+        uploadBtn.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadBtn.style.borderColor = 'var(--color-gold)';
+            uploadBtn.style.background = 'var(--color-primary)';
+        });
+
+        uploadBtn.addEventListener('dragleave', () => {
+            uploadBtn.style.borderColor = 'var(--color-border)';
+            uploadBtn.style.background = 'var(--color-accent)';
+        });
+
+        uploadBtn.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadBtn.style.borderColor = 'var(--color-border)';
+            uploadBtn.style.background = 'var(--color-accent)';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                document.getElementById('postImageFile').files = e.dataTransfer.files;
+                document.getElementById('postImageFile').dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Image preview for URL mode
+        document.getElementById('postImage').addEventListener('input', (e) => {
+            if (!isImageUploadMode) {
+                const preview = document.getElementById('imagePreview');
+                if (e.target.value) {
+                    preview.src = e.target.value;
+                    preview.classList.add('show');
+                } else {
+                    preview.classList.remove('show');
+                }
+            }
+        });
+
+        // Publish post
+        document.getElementById('publishBtn').addEventListener('click', () => savePost('published'));
+
+        // Save draft
+        document.getElementById('saveDraftBtn').addEventListener('click', () => savePost('draft'));
+
+        // New post
+        document.getElementById('newPostBtn').addEventListener('click', () => {
+            if (confirm('Tạo bài viết mới? Nội dung đang soạn sẽ bị mất nếu chưa lưu.')) {
+                document.getElementById('postForm').reset();
+                document.getElementById('postId').value = '';
+                quill.setContents([]);
+                document.getElementById('imagePreview').classList.remove('show');
+                document.getElementById('postStatus').textContent = 'Chưa lưu';
+                document.getElementById('lastUpdate').textContent = '-';
+                document.getElementById('postSlug').dataset.auto = 'true';
+            }
+        });
+
+        // Preview post
+        document.getElementById('previewBtn').addEventListener('click', () => {
+            const title = document.getElementById('postTitle').value;
+            const content = quill.root.innerHTML;
+            const image = document.getElementById('postImage').value;
+            
+            if (!title) {
+                showAlert('Vui lòng nhập tiêu đề bài viết', 'error');
+                return;
+            }
+            
+            const previewWindow = window.open('', '_blank');
+            previewWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>${title}</title>
+                    <link rel="stylesheet" href="styles.css">
+                    <style>
+                        body { padding: 2rem; background: #1a1a1a; color: #fff; }
+                        .preview-container { max-width: 800px; margin: 0 auto; }
+                        h1 { color: #fff; margin-bottom: 2rem; }
+                        img { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
+                        .preview-content { line-height: 1.8; font-size: 1.1rem; }
+                    </style>
+                </head>
+                <body>
+                    <div class="preview-container">
+                        ${image ? `<img src="${image}" alt="${title}">` : ''}
+                        <h1>${title}</h1>
+                        <div class="preview-content">${content}</div>
+                    </div>
+                </body>
+                </html>
+            `);
+        });
+
+        // Save post function
+        async function savePost(status) {
+            // Get content from current mode
+            let content;
+            if (isHtmlMode) {
+                content = document.getElementById('htmlEditor').value;
+            } else {
+                content = quill.root.innerHTML;
+            }
+            
+            const postData = {
+                id: document.getElementById('postId').value || Date.now().toString(),
+                title: document.getElementById('postTitle').value,
+                slug: document.getElementById('postSlug').value,
+                excerpt: document.getElementById('postExcerpt').value,
+                category: document.getElementById('postCategory').value,
+                image: document.getElementById('postImage').value,
+                content: content,
+                status: status,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (!postData.title) {
+                showAlert('Vui lòng nhập tiêu đề bài viết', 'error');
+                return;
+            }
+
+            // Get existing posts từ LocalStorage (để sync UI)
+            // KHÔNG gọi storage.getPosts() vì sẽ load TẤT CẢ bài từ Redis
+            // và tạo duplicate khi lưu!
+            let posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+            
+            // Find if post exists
+            const existingIndex = posts.findIndex(p => p.id === postData.id);
+            
+            if (existingIndex >= 0) {
+                posts[existingIndex] = postData;
+            } else {
+                posts.unshift(postData);
+            }
+            
+            // Save to storage
+            if (storage) {
+                let success;
+                
+                // Nếu bài đã tồn tại (update), gọi updatePost
+                // Nếu bài mới (create), gọi createPost
+                if (existingIndex >= 0) {
+                    success = await storage.updatePost(postData.id, postData);
+                } else {
+                    success = await storage.createPost(postData);
+                }
+                
+                if (success) {
+                    // Backup vào LocalStorage
+                    localStorage.setItem('blogPosts', JSON.stringify(posts));
+                    showAlert(
+                        status === 'published' ? '✅ Đã xuất bản lên Vercel!' : '💾 Đã lưu nháp lên Vercel!',
+                        'success'
+                    );
+                } else {
+                    showAlert('⚠️ Lưu Vercel thất bại, đã lưu vào LocalStorage', 'info');
+                    // Vẫn lưu vào LocalStorage
+                    localStorage.setItem('blogPosts', JSON.stringify(posts));
+                }
+            } else {
+                localStorage.setItem('blogPosts', JSON.stringify(posts));
+                showAlert(
+                    status === 'published' ? '✅ Bài viết đã được xuất bản!' : '💾 Bài viết đã được lưu nháp!',
+                    'success'
+                );
+            }
+            
+            // Update UI
+            document.getElementById('postId').value = postData.id;
+            document.getElementById('postStatus').textContent = status === 'published' ? 'Đã xuất bản' : 'Bản nháp';
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleString('vi-VN');
+            
+            loadPosts();
+        }
+
+        // Load posts
+        async function loadPosts() {
+            let posts;
+            if (storage) {
+                posts = await storage.getPosts();
+            } else {
+                posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+            }
+            displayPosts(posts);
+            document.getElementById('postCount').textContent = posts.length;
+        }
+
+        // Display posts
+        function displayPosts(posts) {
+            const postsList = document.getElementById('postsList');
+            
+            if (posts.length === 0) {
+                postsList.innerHTML = '<p style="color: var(--color-gray); text-align: center; padding: 2rem;">Chưa có bài viết nào</p>';
+                return;
+            }
+
+            postsList.innerHTML = posts.map(post => `
+                <div class="post-item">
+                    <div class="post-item-title">${post.title}</div>
+                    <div class="post-item-meta">
+                        <span><i class="fas fa-folder"></i> ${getCategoryName(post.category)}</span>
+                        <span class="status-badge ${post.status === 'published' ? 'status-published' : 'status-draft'}">
+                            ${post.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
+                        </span>
+                        <span><i class="fas fa-clock"></i> ${new Date(post.updatedAt).toLocaleDateString('vi-VN')}</span>
+                    </div>
+                    <div class="post-item-actions">
+                        <button class="btn-edit" onclick="editPost('${post.id}')">
+                            <i class="fas fa-edit"></i> Sửa
+                        </button>
+                        <button class="btn-delete" onclick="deletePost('${post.id}')">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Edit post
+        async function editPost(postId) {
+            let posts;
+            if (storage) {
+                posts = await storage.getPosts();
+            } else {
+                posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+            }
+            const post = posts.find(p => p.id === postId);
+            
+            if (post) {
+                document.getElementById('postId').value = post.id;
+                document.getElementById('postTitle').value = post.title;
+                document.getElementById('postSlug').value = post.slug;
+                document.getElementById('postExcerpt').value = post.excerpt;
+                document.getElementById('postCategory').value = post.category;
+                document.getElementById('postImage').value = post.image;
+                quill.root.innerHTML = post.content;
+                
+                if (post.image) {
+                    document.getElementById('imagePreview').src = post.image;
+                    document.getElementById('imagePreview').classList.add('show');
+                }
+                
+                document.getElementById('postStatus').textContent = post.status === 'published' ? 'Đã xuất bản' : 'Bản nháp';
+                document.getElementById('lastUpdate').textContent = new Date(post.updatedAt).toLocaleString('vi-VN');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Delete post
+        async function deletePost(postId) {
+            if (!confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+                return;
+            }
+
+            if (storage) {
+                // Gọi API DELETE - CHỈ xóa 1 bài
+                const success = await storage.deletePost(postId);
+                if (success) {
+                    showAlert('🗑️ Đã xóa bài viết!', 'success');
+                    // Xóa khỏi LocalStorage backup
+                    const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                    const filtered = posts.filter(p => p.id !== postId);
+                    localStorage.setItem('blogPosts', JSON.stringify(filtered));
+                } else {
+                    showAlert('⚠️ Xóa thất bại!', 'error');
+                }
+            } else {
+                // Fallback: Xóa từ LocalStorage
+                const posts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+                const filtered = posts.filter(p => p.id !== postId);
+                localStorage.setItem('blogPosts', JSON.stringify(filtered));
+                showAlert('🗑️ Đã xóa bài viết!', 'success');
+            }
+            
+            loadPosts();
+        }
+
+        // Get category name
+        function getCategoryName(category) {
+            const names = {
+                'tin-tuc': 'Tin tức',
+                'huong-dan': 'Hướng dẫn',
+                'khuyen-mai': 'Khuyến mãi',
+                'kinh-nghiem': 'Kinh nghiệm',
+                'xe': 'Xe & Dịch vụ'
+            };
+            return names[category] || category;
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = `alert alert-${type === 'success' ? 'success' : 'info'} show`;
+            alertBox.textContent = message;
+            
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 3000);
+        }
+
+        // Load posts on page load
+        loadPosts();
+    </script>
+</body>
+</html>

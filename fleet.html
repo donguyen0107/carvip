@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dòng Xe Mercedes - Fleet Collection</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header class="header scrolled" id="header">
+        <nav class="nav container">
+            <div class="nav-logo">
+                <span>CARVIP VIET NAM CO.,LTD</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav.home">Trang Chủ</a></li>
+                    <li class="nav-item"><a href="fleet.html" class="nav-link active" data-i18n="nav.fleet">Dòng Xe</a></li>
+                    <li class="nav-item"><a href="index.html#services" class="nav-link" data-i18n="nav.services">Dịch Vụ</a></li>
+                    <li class="nav-item"><a href="index.html#pricing" class="nav-link" data-i18n="nav.pricing">Bảng Giá</a></li>
+                    <li class="nav-item"><a href="blog.html" class="nav-link" data-i18n="nav.blog">Blog</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link" data-i18n="nav.contact">Liên Hệ</a></li>
+                </ul>
+                <div class="nav-close" id="nav-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <a href="tel:+84903776578" class="nav-phone">
+                    <i class="fas fa-phone"></i>
+                    <span>0903776578</span>
+                </a>
+                <div class="language-switcher">
+                    <button class="lang-btn" data-lang="vi">VN</button>
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-nav" data-i18n="nav.booking">Đặt Xe Ngay</a>
+                <div class="nav-toggle" id="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Fleet Hero -->
+    <section class="fleet-hero">
+        <div class="container">
+            <h1 class="fleet-hero-title" data-i18n="fleet.page_title">Bộ Sưu Tập <span class="gradient-text">Mercedes</span></h1>
+            <p class="fleet-hero-description" data-i18n="fleet.page_description">Khám phá đội xe Mercedes cao cấp của chúng tôi</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="fleet-filter">
+        <div class="container">
+            <div class="filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" data-i18n-placeholder="fleet.search_placeholder" placeholder="Tìm kiếm xe...">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all" data-i18n="fleet.filter_all">Tất Cả</button>
+                    <button class="filter-btn" data-filter="sedan" data-i18n="fleet.filter_sedan">Sedan</button>
+                    <button class="filter-btn" data-filter="suv" data-i18n="fleet.filter_suv">SUV</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fleet Grid -->
+    <section class="fleet-section section">
+        <div class="container">
+            <div class="fleet-grid">
+                <!-- S-Class -->
+                <div class="car-card" data-category="sedan">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800" alt="Mercedes S-Class">
+                        <div class="car-badge">Premium</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name" data-i18n="car.s_class_title">Mercedes S-Class</h3>
+                            <div class="car-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="car-description" data-i18n="fleet.s_class_desc">Đỉnh cao của sự sang trọng và công nghệ. Lựa chọn hoàn hảo cho các sự kiện quan trọng và đối tác VIP.</p>
+                        <div class="car-features">
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>4 <span data-i18n="car.seats">chỗ</span></span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-cog"></i>
+                                <span data-i18n="car.transmission">Tự động</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-gas-pump"></i>
+                                <span data-i18n="car.fuel">Diesel</span>
+                            </div>
+                        </div>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Diesel 6 cylinders, 372 PS</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>Wifi</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-snowflake"></i>
+                                <span>Massage seats</span>
+                            </div>
+                        </div>
+                        <div class="car-footer">
+                            <a href="car-detail-s-class.html" class="btn btn-secondary" data-i18n="car.learn_more">
+                                <span>Tìm Hiểu Thêm</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="booking.html?car=s-class" class="btn btn-primary" data-i18n="car.book_now">
+                                <span>Đặt Xe</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E-Class -->
+                <div class="car-card" data-category="sedan">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=800" alt="Mercedes E-Class">
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name" data-i18n="car.e_class_title">Mercedes E-Class</h3>
+                            <div class="car-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <p class="car-description" data-i18n="fleet.e_class_desc">Cân bằng hoàn hảo giữa sang trọng và thể thao. Phù hợp cho các chuyến công tác và du lịch dài ngày.</p>
+                        <div class="car-features">
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>5 <span data-i18n="car.seats">chỗ</span></span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-cog"></i>
+                                <span data-i18n="car.transmission">Tự động</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-gas-pump"></i>
+                                <span data-i18n="car.fuel">Xăng</span>
+                            </div>
+                        </div>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>Mild-hybrid I4, 230 PS</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>Wifi</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-snowflake"></i>
+                                <span>Dual AC</span>
+                            </div>
+                        </div>
+                        <div class="car-footer">
+                            <a href="car-detail-e-class.html" class="btn btn-secondary" data-i18n="car.learn_more">
+                                <span>Tìm Hiểu Thêm</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="booking.html?car=e-class" class="btn btn-primary" data-i18n="car.book_now">
+                                <span>Đặt Xe</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C-Class -->
+                <div class="car-card" data-category="sedan">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800" alt="Mercedes C-Class">
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name" data-i18n="car.c_class_title">Mercedes C-Class</h3>
+                            <div class="car-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.7</span>
+                            </div>
+                        </div>
+                        <p class="car-description" data-i18n="fleet.c_class_desc">Sedan thể thao với thiết kế trẻ trung. Lựa chọn thông minh cho chuyến đi hàng ngày với phong cách.</p>
+                        <div class="car-features">
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>5 <span data-i18n="car.seats">chỗ</span></span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-cog"></i>
+                                <span data-i18n="car.transmission">Tự động</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-gas-pump"></i>
+                                <span data-i18n="car.fuel">Xăng</span>
+                            </div>
+                        </div>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>I4 1.5L Turbo</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>Bluetooth</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-snowflake"></i>
+                                <span>AC</span>
+                            </div>
+                        </div>
+                        <div class="car-footer">
+                            <a href="car-detail-c-class.html" class="btn btn-secondary" data-i18n="car.learn_more">
+                                <span>Tìm Hiểu Thêm</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="booking.html?car=c-class" class="btn btn-primary" data-i18n="car.book_now">
+                                <span>Đặt Xe</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GLS -->
+                <div class="car-card" data-category="suv">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800" alt="Mercedes GLS">
+                        <div class="car-badge">7 Chỗ</div>
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name" data-i18n="car.gls_title">Mercedes GLS</h3>
+                            <div class="car-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.9</span>
+                            </div>
+                        </div>
+                        <p class="car-description" data-i18n="fleet.gls_desc">SUV hạng sang 7 chỗ với không gian rộng rãi. Hoàn hảo cho gia đình hoặc nhóm khách VIP.</p>
+                        <div class="car-features">
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>7 <span data-i18n="car.seats">chỗ</span></span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-cog"></i>
+                                <span data-i18n="car.transmission">Tự động</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-gas-pump"></i>
+                                <span data-i18n="car.fuel">Xăng</span>
+                            </div>
+                        </div>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>V6 3.0L Turbo</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>Wifi</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-mountain"></i>
+                                <span>4MATIC AWD</span>
+                            </div>
+                        </div>
+                        <div class="car-footer">
+                            <a href="car-detail-gls.html" class="btn btn-secondary" data-i18n="car.learn_more">
+                                <span>Tìm Hiểu Thêm</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="booking.html?car=gls" class="btn btn-primary" data-i18n="car.book_now">
+                                <span>Đặt Xe</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GLE -->
+                <div class="car-card" data-category="suv">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=800" alt="Mercedes GLE">
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name" data-i18n="car.gle_title">Mercedes GLE</h3>
+                            <div class="car-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                        </div>
+                        <p class="car-description" data-i18n="fleet.gle_desc">SUV cao cấp 5 chỗ với hiệu suất vượt trội. Kết hợp hoàn hảo giữa sang trọng và khả năng vận hành.</p>
+                        <div class="car-features">
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>5 <span data-i18n="car.seats">chỗ</span></span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-cog"></i>
+                                <span data-i18n="car.transmission">Tự động</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-gas-pump"></i>
+                                <span data-i18n="car.fuel">Xăng</span>
+                            </div>
+                        </div>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>I4 2.0L Turbo</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>Wifi</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-mountain"></i>
+                                <span>4MATIC AWD</span>
+                            </div>
+                        </div>
+                        <div class="car-footer">
+                            <a href="car-detail-gle.html" class="btn btn-secondary" data-i18n="car.learn_more">
+                                <span>Tìm Hiểu Thêm</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="booking.html?car=gle" class="btn btn-primary" data-i18n="car.book_now">
+                                <span>Đặt Xe</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GLC -->
+                <div class="car-card" data-category="suv">
+                    <div class="car-image">
+                        <img src="https://images.unsplash.com/photo-1618843479619-f5d2d1c2c8bb?w=800" alt="Mercedes GLC">
+                    </div>
+                    <div class="car-content">
+                        <div class="car-header">
+                            <h3 class="car-name" data-i18n="car.glc_title">Mercedes GLC</h3>
+                            <div class="car-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.7</span>
+                            </div>
+                        </div>
+                        <p class="car-description" data-i18n="fleet.glc_desc">SUV compact linh hoạt với thiết kế thể thao. Lý tưởng cho di chuyển trong thành phố và ngoại ô.</p>
+                        <div class="car-features">
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>5 <span data-i18n="car.seats">chỗ</span></span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-cog"></i>
+                                <span data-i18n="car.transmission">Tự động</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-gas-pump"></i>
+                                <span data-i18n="car.fuel">Xăng</span>
+                            </div>
+                        </div>
+                        <div class="car-specs">
+                            <div class="spec-item">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>I4 2.0L Turbo</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>Bluetooth</span>
+                            </div>
+                            <div class="spec-item">
+                                <i class="fas fa-mountain"></i>
+                                <span>4MATIC AWD</span>
+                            </div>
+                        </div>
+                        <div class="car-footer">
+                            <a href="car-detail-glc.html" class="btn btn-secondary" data-i18n="car.learn_more">
+                                <span>Tìm Hiểu Thêm</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="booking.html?car=glc" class="btn btn-primary" data-i18n="car.book_now">
+                                <span>Đặt Xe</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title" data-i18n="cta.not_found">Không Tìm Thấy Xe Phù Hợp?</h2>
+                <p class="cta-description" data-i18n="cta.not_found_description">
+                    Liên hệ với chúng tôi để được tư vấn chi tiết về dòng xe phù hợp nhất
+                </p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary btn-large" data-i18n="cta.ask_advisor">
+                        <span>Liên Hệ Ngay</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="tel:+84903776578" class="btn btn-secondary btn-large">
+                        <i class="fas fa-phone"></i>
+                        <span>0903776578</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span>CARVIP VIET NAM CO.,LTD</span>
+                    </div>
+                    <p class="footer-description">
+                        Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Liên Hệ</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Melody Residences 869 Âu Cơ - TP.HCM.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>Zalo/Whatsapp: 0903776578</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>infobook@carvip.vn</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mercedes Luxury Rental. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script src="i18n.js"></script>
+    <script src="fleet-script.js"></script>
+</body>
+</html>

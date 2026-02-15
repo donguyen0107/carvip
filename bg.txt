@@ -1,0 +1,33 @@
+Theo giờ:
+E-class:
+Giá theo giờ: $30/giờ
+Giá 4 giờ (thời gian thuê tối thiểu): $120
+Giá theo ngày (8 giờ): $200
+S-class:
+Giá theo giờ: $50/giờ
+Giá 4 giờ (thời gian thuê tối thiểu): $200
+Giá theo ngày (8 giờ): $300
+V-class:
+Giá theo giờ: $60/giờ
+Giá 4 giờ (thời gian thuê tối thiểu): $210
+Giá theo ngày (8 giờ): $310
+
+Giá đưa đón sân bay:
+E-class:
+Sân bay Tân Sơn Nhất -> Khách sạn TPHCM: $65
+Sân bay Tân Sơn Nhất -> Biên Hòa: $150
+Sân bay Tân Sơn Nhất -> Bình Dương: $180
+Sân bay Tân Sơn Nhất -> Tây Ninh: $190
+Sân bay Tân Sơn Nhất -> Hồ Tràm, Vũng Tàu: $200
+S-class:
+Sân bay Tân Sơn Nhất -> Khách sạn TPHCM: $80
+Sân bay Tân Sơn Nhất -> Biên Hòa: $200
+Sân bay Tân Sơn Nhất -> Bình Dương: $280
+Sân bay Tân Sơn Nhất -> Tây Ninh: $290
+Sân bay Tân Sơn Nhất -> Hồ Tràm, Vũng Tàu: $300
+V-class:
+Sân bay Tân Sơn Nhất -> Khách sạn TPHCM: $90
+Sân bay Tân Sơn Nhất -> Biên Hòa: $210
+Sân bay Tân Sơn Nhất -> Bình Dương: $290
+Sân bay Tân Sơn Nhất -> Tây Ninh: $300
+Sân bay Tân Sơn Nhất -> Hồ Tràm, Vũng Tàu: $310

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Vercel API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 4px solid #fff;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: rgba(0, 0, 0, 0.3);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        .warning { color: #f59e0b; }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Test Vercel API</h1>
+        
+        <div class="section">
+            <h3>📋 URL Vercel của bạn</h3>
+            <input type="text" id="vercelUrl" placeholder="https://carvip-xxx.vercel.app" value="">
+            <button onclick="saveUrl()">Lưu URL</button>
+        </div>
+
+        <div class="section">
+            <h3>1️⃣ Test GET /api/posts (Lấy bài viết)</h3>
+            <button onclick="test1()">Chạy Test</button>
+            <div id="result1" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>2️⃣ Test POST /api/posts (Tạo bài mới)</h3>
+            <input type="text" id="testTitle" placeholder="Tiêu đề bài test" value="Test Post">
+            <textarea id="testContent" rows="3" placeholder="Nội dung">Đây là bài test</textarea>
+            <button onclick="test2()">Chạy Test</button>
+            <div id="result2" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>3️⃣ Kiểm tra Environment Variables</h3>
+            <button onclick="test3()">Chạy Test</button>
+            <div id="result3" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>4️⃣ Kiểm tra CORS</h3>
+            <button onclick="test4()">Chạy Test</button>
+            <div id="result4" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        let baseUrl = '';
+
+        // Load saved URL
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('vercel_url');
+            if (saved) {
+                baseUrl = saved;
+                document.getElementById('vercelUrl').value = saved;
+            }
+        });
+
+        function saveUrl() {
+            const input = document.getElementById('vercelUrl').value.trim();
+            if (!input) {
+                alert('Vui lòng nhập URL Vercel!');
+                return;
+            }
+            baseUrl = input.replace(/\/$/, ''); // Remove trailing slash
+            localStorage.setItem('vercel_url', baseUrl);
+            alert('✅ Đã lưu URL: ' + baseUrl);
+        }
+
+        async function test1() {
+            const result = document.getElementById('result1');
+            result.style.display = 'block';
+            result.innerHTML = '⏳ Đang test GET /api/posts...';
+
+            if (!baseUrl) {
+                result.innerHTML = '<span class="error">❌ Vui lòng nhập URL Vercel trước!</span>';
+                return;
+            }
+
+            try {
+                const url = `${baseUrl}/api/posts`;
+                result.innerHTML = `URL: ${url}\n\n⏳ Đang fetch...`;
+                
+                const response = await fetch(url);
+                
+                result.innerHTML = `URL: ${url}\nStatus: ${response.status}\n\n`;
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.innerHTML += `<span class="success">✅ API hoạt động!</span>\n\n`;
+                    result.innerHTML += `Số bài viết: ${data.length}\n\n`;
+                    result.innerHTML += 'Dữ liệu:\n';
+                    result.innerHTML += JSON.stringify(data, null, 2);
+                } else {
+                    const text = await response.text();
+                    result.innerHTML += `<span class="error">❌ Lỗi ${response.status}</span>\n\n`;
+                    result.innerHTML += `Response:\n${text}`;
+                }
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Lỗi:</span>\n${error.message}\n\n`;
+                result.innerHTML += `Stack:\n${error.stack}`;
+            }
+        }
+
+        async function test2() {
+            const result = document.getElementById('result2');
+            result.style.display = 'block';
+            result.innerHTML = '⏳ Đang test POST /api/posts...';
+
+            if (!baseUrl) {
+                result.innerHTML = '<span class="error">❌ Vui lòng nhập URL Vercel trước!</span>';
+                return;
+            }
+
+            const title = document.getElementById('testTitle').value;
+            const content = document.getElementById('testContent').value;
+
+            if (!title || !content) {
+                result.innerHTML = '<span class="error">❌ Vui lòng nhập tiêu đề và nội dung!</span>';
+                return;
+            }
+
+            try {
+                const url = `${baseUrl}/api/posts`;
+                const body = {
+                    title: title,
+                    content: content,
+                    category: 'tin-tuc',
+                    excerpt: 'Test excerpt',
+                    status: 'published'
+                };
+
+                result.innerHTML = `URL: ${url}\nMethod: POST\n\nBody:\n${JSON.stringify(body, null, 2)}\n\n⏳ Đang gửi...`;
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                result.innerHTML = `URL: ${url}\nStatus: ${response.status}\n\n`;
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    result.innerHTML += `<span class="success">✅ Tạo bài thành công!</span>\n\n`;
+                    result.innerHTML += 'Response:\n';
+                    result.innerHTML += JSON.stringify(data, null, 2);
+                } else {
+                    const text = await response.text();
+                    result.innerHTML += `<span class="error">❌ Lỗi ${response.status}</span>\n\n`;
+                    result.innerHTML += `Response:\n${text}`;
+                }
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Lỗi:</span>\n${error.message}\n\n`;
+                result.innerHTML += `Stack:\n${error.stack}`;
+            }
+        }
+
+        async function test3() {
+            const result = document.getElementById('result3');
+            result.style.display = 'block';
+            result.innerHTML = '⏳ Đang kiểm tra...';
+
+            result.innerHTML = `<span class="warning">⚠️ Không thể kiểm tra Environment Variables từ browser</span>\n\n`;
+            result.innerHTML += `Để kiểm tra:\n`;
+            result.innerHTML += `1. Vào: ${baseUrl ? baseUrl.replace('https://', 'https://vercel.com/') : 'Vercel Dashboard'}\n`;
+            result.innerHTML += `2. Settings → Environment Variables\n`;
+            result.innerHTML += `3. Kiểm tra có KV_REST_API_URL và KV_REST_API_TOKEN không\n\n`;
+            result.innerHTML += `Hoặc:\n`;
+            result.innerHTML += `1. Settings → Storage\n`;
+            result.innerHTML += `2. Xem có KV database 'blog-posts' connected không`;
+        }
+
+        async function test4() {
+            const result = document.getElementById('result4');
+            result.style.display = 'block';
+            result.innerHTML = '⏳ Đang test CORS...';
+
+            if (!baseUrl) {
+                result.innerHTML = '<span class="error">❌ Vui lòng nhập URL Vercel trước!</span>';
+                return;
+            }
+
+            try {
+                const url = `${baseUrl}/api/posts`;
+                
+                const response = await fetch(url, {
+                    method: 'OPTIONS'
+                });
+                
+                result.innerHTML = `URL: ${url}\nMethod: OPTIONS\nStatus: ${response.status}\n\n`;
+                
+                const headers = {};
+                response.headers.forEach((value, key) => {
+                    headers[key] = value;
+                });
+                
+                result.innerHTML += 'Headers:\n';
+                result.innerHTML += JSON.stringify(headers, null, 2);
+                
+                if (headers['access-control-allow-origin']) {
+                    result.innerHTML += `\n\n<span class="success">✅ CORS được cấu hình!</span>`;
+                } else {
+                    result.innerHTML += `\n\n<span class="warning">⚠️ CORS có thể chưa được cấu hình</span>`;
+                }
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Lỗi:</span>\n${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

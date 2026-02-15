@@ -1,0 +1,245 @@
+════════════════════════════════════════════════════════════════
+    HƯỚNG DẪN SETUP EMAILJS - NHẬN EMAIL KHI CÓ BOOKING
+════════════════════════════════════════════════════════════════
+
+📧 BẠN CẦN EMAIL CỦA MÌNH ĐỂ NHẬN THÔNG BÁO KHI CÓ NGƯỜI ĐẶT XE
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 BƯỚC 1: ĐĂNG KÝ EMAILJS (5 phút)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Truy cập: https://www.emailjs.com/
+2. Click nút "Sign Up" (góc trên bên phải)
+3. Điền thông tin:
+   - Email: [Email của bạn - VD: your-email@gmail.com]
+   - Password: [Mật khẩu tự chọn]
+4. Click "Sign Up"
+5. Vào email để xác nhận
+
+✅ MIỄN PHÍ: 200 emails/tháng (đủ dùng)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 BƯỚC 2: KẾT NỐI EMAIL (Gmail khuyến nghị - 3 phút)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Sau khi login EmailJS, vào: "Email Services"
+2. Click "Add New Service"
+3. Chọn "Gmail" (hoặc email bạn đang dùng)
+4. Click "Connect Account"
+5. Đăng nhập Gmail của bạn
+6. Cho phép EmailJS truy cập
+7. Copy "Service ID" (VD: service_abc123)
+
+   ┌──────────────────────────────────┐
+   │ Service ID: service_abc123       │ ← Copy cái này
+   └──────────────────────────────────┘
+
+8. Lưu lại Service ID này!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 BƯỚC 3: TẠO MẪU EMAIL (5 phút)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vào: "Email Templates"
+2. Click "Create New Template"
+3. Điền các thông tin:
+
+   ┌─────────────────────────────────────────────────────────────┐
+   │ From Name:    Mercedes Rental                              │
+   │ From Email:   noreply@yourwebsite.com                      │
+   │ To Email:     {{to_email}}                                 │
+   │ Subject:      [Booking Mới] {{car_type}} - {{from_name}}  │
+   └─────────────────────────────────────────────────────────────┘
+
+4. Nội dung email (paste vào phần Content):
+
+═══════════════════════════════════════════════════════════════════
+PASTE PHẦN NÀY VÀO EMAIL CONTENT:
+═══════════════════════════════════════════════════════════════════
+
+🚗 BOOKING MỚI TỪ MERCEDES RENTAL WEBSITE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 THÔNG TIN KHÁCH HÀNG:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Họ và tên:       {{from_name}}
+• Email:           {{from_email}}
+• Điện thoại:      {{phone}}
+• CMND/CCCD:       {{id_number}}
+
+🚗 THÔNG TIN ĐẶT XE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+• Dòng xe:         {{car_type}}
+• Loại thuê:       {{rental_type}}
+• Thời gian:       {{duration}}
+• Ngày nhận xe:    {{pickup_date}}
+• Ngày trả xe:     {{return_date}}
+• Địa điểm nhận:   {{pickup_location}}
+• Địa điểm trả:    {{return_location}}
+• Dịch vụ tài xế: {{driver}}
+
+💼 DỊCH VỤ BỔ SUNG:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{{services}}
+
+📝 YÊU CẦU ĐẶC BIỆT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{{special_requests}}
+
+⏰ Thời gian đặt:  {{booking_date}}
+🔖 Mã đơn hàng:    {{booking_id}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  VUI LÒNG LIÊN HỆ KHÁCH HÀNG TRONG VÒNG 30 PHÚT!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+═══════════════════════════════════════════════════════════════════
+
+5. Click "Save"
+6. Copy "Template ID" (VD: template_xyz789)
+
+   ┌──────────────────────────────────┐
+   │ Template ID: template_xyz789     │ ← Copy cái này
+   └──────────────────────────────────┘
+
+7. Lưu lại Template ID này!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 BƯỚC 4: LẤY PUBLIC KEY (1 phút)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Vào: "Account" (góc trên bên phải)
+2. Tìm phần "General"
+3. Tìm "Public Key"
+4. Copy Public Key (VD: AbCdEfGhIjKlMnOp)
+
+   ┌──────────────────────────────────┐
+   │ Public Key: AbCdEfGhIjKlMnOp     │ ← Copy cái này
+   └──────────────────────────────────┘
+
+5. Lưu lại Public Key này!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 BƯỚC 5: CẬP NHẬT FILE emailjs-config.js (2 phút)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Mở file: emailjs-config.js
+2. Tìm dòng này:
+
+   const EMAILJS_CONFIG = {
+       publicKey: 'YOUR_PUBLIC_KEY',      ← Thay đổi
+       serviceId: 'YOUR_SERVICE_ID',      ← Thay đổi
+       templateId: 'YOUR_TEMPLATE_ID',    ← Thay đổi
+       adminEmail: 'YOUR_ADMIN_EMAIL@example.com' ← Thay đổi
+   };
+
+3. Thay bằng thông tin của bạn:
+
+   const EMAILJS_CONFIG = {
+       publicKey: 'AbCdEfGhIjKlMnOp',    ← Public Key từ bước 4
+       serviceId: 'service_abc123',      ← Service ID từ bước 2
+       templateId: 'template_xyz789',    ← Template ID từ bước 3
+       adminEmail: 'your-email@gmail.com' ← Email của bạn
+   };
+
+4. Save file (Ctrl+S)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 BƯỚC 6: TEST (2 phút)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Mở website (index.html)
+2. Click "Đặt Xe Ngay"
+3. Điền form booking đầy đủ
+4. Submit form
+5. Kiểm tra email của bạn (trong vòng 1 phút)
+6. Nếu không thấy → Check SPAM folder
+
+✅ THÀNH CÔNG: Bạn sẽ nhận được email với thông tin booking!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 TÓM TẮT - ĐIỀN VÀO ĐÂY:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Email của bạn:     _________________________________
+
+Public Key:        _________________________________
+
+Service ID:        _________________________________
+
+Template ID:       _________________________________
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❓ CÂU HỎI THƯỜNG GẶP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Q: Có mất phí không?
+A: MIỄN PHÍ 200 emails/tháng (không cần thẻ tín dụng)
+
+Q: Không nhận được email?
+A: Check Spam folder hoặc re-check Service/Template ID
+
+Q: Email gửi bằng tiếng gì?
+A: Tiếng Việt (đã setup sẵn trong template)
+
+Q: Có cần backend/server không?
+A: KHÔNG! EmailJS hoạt động 100% trên frontend
+
+Q: An toàn không?
+A: CÓ! EmailJS được hàng ngàn website sử dụng
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 TIPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Dùng Gmail cho Service → Dễ setup nhất
+✓ Check email thường xuyên → Phản hồi khách nhanh
+✓ Setup auto-reply trong Gmail → Khách biết bạn đã nhận
+✓ Lưu lại tất cả Keys → Để sau này không phải tìm lại
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🆘 NẾU GẶP VẤN ĐỀ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Mở Console (F12 trên browser)
+2. Xem có lỗi màu đỏ không
+3. Common errors:
+   
+   ❌ "emailjs is not defined"
+   → Chưa load EmailJS SDK, check internet connection
+   
+   ❌ "Invalid publicKey"  
+   → Sai Public Key, re-check emailjs-config.js
+   
+   ❌ "Template not found"
+   → Sai Template ID, vào EmailJS Dashboard check lại
+   
+   ❌ "Service not found"
+   → Sai Service ID, vào EmailJS Dashboard check lại
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎉 HOÀN THÀNH!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Giờ bạn sẽ nhận email tự động mỗi khi có người đặt xe!
+
+Email sẽ chứa:
+✓ Thông tin khách hàng đầy đủ
+✓ Loại xe & thời gian thuê
+✓ Địa điểm nhận/trả
+✓ Yêu cầu đặc biệt
+
+→ Liên hệ khách trong vòng 30 phút để tăng tỷ lệ chốt đơn!
+
+════════════════════════════════════════════════════════════════

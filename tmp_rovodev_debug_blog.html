@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Blog - Kiểm tra dữ liệu</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 4px solid #fff;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: rgba(0, 0, 0, 0.3);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .success {
+            color: #22c55e;
+        }
+        .error {
+            color: #ef4444;
+        }
+        .warning {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Blog - Kiểm tra dữ liệu</h1>
+        
+        <div class="section">
+            <h3>1️⃣ Kiểm tra file posts.json trên GitHub</h3>
+            <button onclick="test1()">Chạy Test</button>
+            <div id="result1" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>2️⃣ Kiểm tra LocalStorage</h3>
+            <button onclick="test2()">Chạy Test</button>
+            <div id="result2" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>3️⃣ Kiểm tra GitHub Storage</h3>
+            <button onclick="test3()">Chạy Test</button>
+            <div id="result3" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>4️⃣ So sánh bài viết</h3>
+            <button onclick="test4()">Chạy Test</button>
+            <div id="result4" class="result" style="display:none;"></div>
+        </div>
+
+        <div class="section">
+            <h3>5️⃣ Xóa cache và reload</h3>
+            <button onclick="clearAll()">Xóa tất cả cache</button>
+            <button onclick="reloadBlog()">Mở blog.html</button>
+        </div>
+    </div>
+
+    <script src="github-config.js"></script>
+    <script src="github-storage.js"></script>
+    <script>
+        const storage = new GitHubStorage(window.GITHUB_CONFIG);
+
+        async function test1() {
+            const result = document.getElementById('result1');
+            result.style.display = 'block';
+            result.innerHTML = '⏳ Đang tải từ GitHub...';
+
+            try {
+                const url = `https://raw.githubusercontent.com/${window.GITHUB_CONFIG.owner}/${window.GITHUB_CONFIG.repo}/${window.GITHUB_CONFIG.branch}/posts.json`;
+                
+                result.innerHTML = `URL: ${url}\n\n⏳ Đang fetch...`;
+                
+                const response = await fetch(url);
+                
+                if (response.ok) {
+                    const posts = await response.json();
+                    result.innerHTML = `<span class="success">✅ Tải thành công!</span>\n\n`;
+                    result.innerHTML += `Số bài viết: ${posts.length}\n\n`;
+                    result.innerHTML += 'Danh sách bài viết:\n';
+                    result.innerHTML += JSON.stringify(posts, null, 2);
+                } else {
+                    result.innerHTML = `<span class="error">❌ Lỗi: ${response.status}</span>\n`;
+                    result.innerHTML += `File có thể chưa tồn tại trên GitHub`;
+                }
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Lỗi:</span>\n${error.message}`;
+            }
+        }
+
+        async function test2() {
+            const result = document.getElementById('result2');
+            result.style.display = 'block';
+
+            const blogPosts = localStorage.getItem('blogPosts');
+            
+            if (!blogPosts) {
+                result.innerHTML = '<span class="warning">⚠️ LocalStorage trống</span>\nChưa có dữ liệu trong LocalStorage';
+                return;
+            }
+
+            try {
+                const posts = JSON.parse(blogPosts);
+                result.innerHTML = `<span class="success">✅ LocalStorage có dữ liệu</span>\n\n`;
+                result.innerHTML += `Số bài viết: ${posts.length}\n\n`;
+                result.innerHTML += 'Danh sách bài viết:\n';
+                result.innerHTML += JSON.stringify(posts, null, 2);
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Lỗi parse JSON:</span>\n${error.message}`;
+            }
+        }
+
+        async function test3() {
+            const result = document.getElementById('result3');
+            result.style.display = 'block';
+            result.innerHTML = '⏳ Đang tải từ GitHub Storage...';
+
+            try {
+                const posts = await storage.getPosts();
+                result.innerHTML = `<span class="success">✅ Tải thành công!</span>\n\n`;
+                result.innerHTML += `Số bài viết: ${posts.length}\n\n`;
+                
+                const published = posts.filter(p => p.status === 'published');
+                result.innerHTML += `Bài published: ${published.length}\n\n`;
+                
+                result.innerHTML += 'Danh sách bài viết:\n';
+                result.innerHTML += JSON.stringify(posts, null, 2);
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Lỗi:</span>\n${error.message}`;
+            }
+        }
+
+        async function test4() {
+            const result = document.getElementById('result4');
+            result.style.display = 'block';
+            result.innerHTML = '⏳ Đang phân tích...';
+
+            try {
+                const posts = await storage.getPosts();
+                
+                result.innerHTML = `<span class="success">✅ Phân tích bài viết</span>\n\n`;
+                result.innerHTML += `Tổng số: ${posts.length}\n\n`;
+
+                posts.forEach((post, index) => {
+                    result.innerHTML += `\n━━━━━ Bài ${index + 1} ━━━━━\n`;
+                    result.innerHTML += `ID: ${post.id}\n`;
+                    result.innerHTML += `Title: ${post.title}\n`;
+                    result.innerHTML += `Status: ${post.status}\n`;
+                    result.innerHTML += `Category: ${post.category || '❌ THIẾU'}\n`;
+                    result.innerHTML += `Slug: ${post.slug || '❌ THIẾU'}\n`;
+                    result.innerHTML += `Excerpt: ${post.excerpt ? '✅ Có' : '❌ THIẾU'}\n`;
+                    result.innerHTML += `UpdatedAt: ${post.updatedAt || post.createdAt || '❌ THIẾU'}\n`;
+                    
+                    // Kiểm tra bài có đầy đủ không
+                    const missing = [];
+                    if (!post.category) missing.push('category');
+                    if (!post.slug) missing.push('slug');
+                    if (!post.excerpt) missing.push('excerpt');
+                    if (!post.updatedAt && !post.createdAt) missing.push('updatedAt/createdAt');
+                    
+                    if (missing.length > 0) {
+                        result.innerHTML += `\n<span class="warning">⚠️ Thiếu: ${missing.join(', ')}</span>\n`;
+                    } else {
+                        result.innerHTML += `\n<span class="success">✅ Đầy đủ thông tin</span>\n`;
+                    }
+                });
+
+                // Kiểm tra published
+                const published = posts.filter(p => p.status === 'published');
+                result.innerHTML += `\n\n━━━━━━━━━━━━━━━━━\n`;
+                result.innerHTML += `<span class="success">✅ Bài Published: ${published.length}</span>\n`;
+                
+                if (published.length !== posts.length) {
+                    result.innerHTML += `<span class="warning">⚠️ Có ${posts.length - published.length} bài không phải published</span>\n`;
+                }
+
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Lỗi:</span>\n${error.message}`;
+            }
+        }
+
+        function clearAll() {
+            localStorage.clear();
+            sessionStorage.clear();
+            alert('✅ Đã xóa tất cả cache!\n\nBây giờ hãy reload trang blog.');
+        }
+
+        function reloadBlog() {
+            window.open('blog.html', '_blank');
+        }
+    </script>
+</body>
+</html>

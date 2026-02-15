@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra Template Variables</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            background: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .variable-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .variable-item {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .instructions h3 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+            color: #555;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+        }
+
+        .warning {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            color: #e65100;
+        }
+
+        .warning strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+
+        .template-example {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #667eea;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Kiểm tra Template Variables</h1>
+        <p class="subtitle">Đảm bảo template EmailJS khớp với code</p>
+
+        <div class="section">
+            <h2>✅ Variables mà CODE ĐANG GỬI:</h2>
+            <div class="variable-list">
+                <div class="variable-item">{{to_email}}</div>
+                <div class="variable-item">{{from_name}}</div>
+                <div class="variable-item">{{from_email}}</div>
+                <div class="variable-item">{{phone}}</div>
+                <div class="variable-item">{{car_type}}</div>
+                <div class="variable-item">{{rental_type}}</div>
+                <div class="variable-item">{{duration}}</div>
+                <div class="variable-item">{{pickup_date}}</div>
+                <div class="variable-item">{{return_date}}</div>
+                <div class="variable-item">{{pickup_location}}</div>
+                <div class="variable-item">{{return_location}}</div>
+                <div class="variable-item">{{driver}}</div>
+                <div class="variable-item">{{services}}</div>
+                <div class="variable-item">{{special_requests}}</div>
+                <div class="variable-item">{{id_number}}</div>
+                <div class="variable-item">{{booking_date}}</div>
+                <div class="variable-item">{{booking_id}}</div>
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ QUAN TRỌNG:</strong>
+            Template EmailJS của bạn CHỈ ĐƯỢC sử dụng các variables ở trên.<br>
+            Nếu template có thêm bất kỳ variable nào khác → Lỗi 412!
+        </div>
+
+        <div class="instructions">
+            <h3>📝 Hướng dẫn kiểm tra:</h3>
+            <ol>
+                <li>Mở EmailJS Dashboard: <code>https://dashboard.emailjs.com/admin</code></li>
+                <li>Vào <strong>Email Templates</strong> → Click template của bạn</li>
+                <li>Kiểm tra TỪNG variable <code>{{...}}</code> trong template</li>
+                <li>Đảm bảo TẤT CẢ variables đều có trong danh sách trên</li>
+                <li>Nếu có variable KHÔNG có trong danh sách → XÓA hoặc SỬA</li>
+                <li>Click <strong>Save</strong></li>
+                <li>Test lại</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>📋 Template Đơn Giản (KHUYẾN NGHỊ):</h2>
+            <p style="margin-bottom: 15px;">Copy và paste vào EmailJS template:</p>
+            
+            <h3 style="color: #667eea; margin: 15px 0 10px 0;">Subject:</h3>
+            <div class="template-example">🚗 ĐƠN ĐẶT XE MỚI - {{car_type}} - {{from_name}}</div>
+
+            <h3 style="color: #667eea; margin: 15px 0 10px 0;">Content (Text mode):</h3>
+            <div class="template-example">═══════════════════════════════════════════════════════
+🚗 THÔNG BÁO ĐƠN ĐẶT XE MỚI
+═══════════════════════════════════════════════════════
+
+📋 THÔNG TIN KHÁCH HÀNG:
+• Họ tên: {{from_name}}
+• Email: {{from_email}}
+• Điện thoại: {{phone}}
+• CMND/CCCD: {{id_number}}
+
+🚗 THÔNG TIN ĐẶT XE:
+• Dòng xe: {{car_type}}
+• Loại thuê: {{rental_type}}
+• Thời gian thuê: {{duration}}
+• Ngày nhận xe: {{pickup_date}}
+• Ngày trả xe: {{return_date}}
+• Địa điểm nhận: {{pickup_location}}
+• Địa điểm trả: {{return_location}}
+• Tài xế: {{driver}}
+
+💼 DỊCH VỤ: {{services}}
+📝 YÊU CẦU: {{special_requests}}
+⏰ Thời gian đặt: {{booking_date}}
+🔖 Mã booking: {{booking_id}}</div>
+        </div>
+
+        <button onclick="window.open('https://dashboard.emailjs.com/admin', '_blank')">
+            🚀 Mở EmailJS Dashboard
+        </button>
+
+        <div class="instructions" style="background: #e8f5e9; border-color: #4caf50;">
+            <h3 style="color: #2e7d32;">💡 Mẹo debug nhanh:</h3>
+            <ol>
+                <li><strong>Xóa HẾT</strong> template cũ trong EmailJS</li>
+                <li><strong>Paste</strong> template đơn giản ở trên (copy từ box màu xám)</li>
+                <li>Chuyển sang <strong>Text mode</strong> (không dùng HTML)</li>
+                <li><strong>Save</strong> và test ngay</li>
+                <li>Nếu thành công → Từ từ thêm format đẹp sau</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

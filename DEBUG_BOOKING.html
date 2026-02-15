@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Booking System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .status.success { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+        .status.error { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+        .status.info { background: #d1ecf1; color: #0c5460; border-left: 4px solid #17a2b8; }
+        .status.warning { background: #fff3cd; color: #856404; border-left: 4px solid #ffc107; }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .log {
+            background: #2d2d2d;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .log-item {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .log-success { color: #4caf50; }
+        .log-error { color: #f44336; }
+        .log-warning { color: #ff9800; }
+        .log-info { color: #2196f3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Booking System</h1>
+        <p style="color: #666; margin-bottom: 30px;">Kiểm tra hệ thống email đặt xe</p>
+
+        <div id="checks"></div>
+
+        <div style="margin: 30px 0;">
+            <button onclick="runAllChecks()">🔄 Chạy lại kiểm tra</button>
+            <button onclick="testEmail()">📧 Test gửi email</button>
+            <button onclick="clearLogs()">🗑️ Xóa logs</button>
+        </div>
+
+        <h3 style="color: #667eea; margin-top: 30px;">📝 Console Logs:</h3>
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="emailjs-config.js"></script>
+
+    <script>
+        const logsDiv = document.getElementById('logs');
+        const checksDiv = document.getElementById('checks');
+
+        // Override console methods to display in page
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        function addLog(message, type = 'info') {
+            const logItem = document.createElement('div');
+            logItem.className = `log-item log-${type}`;
+            logItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logsDiv.appendChild(logItem);
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+        }
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog(args.join(' '), 'info');
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog(args.join(' '), 'error');
+        };
+
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addLog(args.join(' '), 'warning');
+        };
+
+        function clearLogs() {
+            logsDiv.innerHTML = '';
+        }
+
+        function addCheck(message, status) {
+            const div = document.createElement('div');
+            div.className = `status ${status}`;
+            div.innerHTML = message;
+            checksDiv.appendChild(div);
+        }
+
+        function runAllChecks() {
+            checksDiv.innerHTML = '';
+            addLog('=== BẮT ĐẦU KIỂM TRA ===', 'info');
+
+            // Check 1: script.js loaded
+            if (typeof window.carRental !== 'undefined') {
+                addCheck('✅ script.js đã load thành công', 'success');
+                console.log('✅ script.js OK');
+            } else {
+                addCheck('❌ script.js CHƯA LOAD', 'error');
+                console.error('❌ script.js missing');
+            }
+
+            // Check 2: emailjs-config.js loaded
+            if (typeof EMAILJS_CONFIG !== 'undefined') {
+                addCheck('✅ emailjs-config.js đã load thành công', 'success');
+                console.log('✅ emailjs-config.js OK');
+
+                // Check config values
+                const config = EMAILJS_CONFIG;
+                addCheck(`
+                    <strong>Cấu hình EmailJS:</strong><br>
+                    • Public Key: ${config.publicKey}<br>
+                    • Service ID: ${config.serviceId}<br>
+                    • Template ID: ${config.templateId}<br>
+                    • Admin Email: ${config.adminEmail}
+                `, 'info');
+            } else {
+                addCheck('❌ emailjs-config.js CHƯA LOAD', 'error');
+                console.error('❌ emailjs-config.js missing');
+            }
+
+            // Check 3: EmailJS SDK loaded
+            if (typeof emailjs !== 'undefined') {
+                addCheck('✅ EmailJS SDK đã load thành công', 'success');
+                console.log('✅ EmailJS SDK OK');
+            } else {
+                addCheck('❌ EmailJS SDK CHƯA LOAD (đợi vài giây)', 'warning');
+                console.warn('❌ EmailJS SDK not loaded yet');
+                
+                setTimeout(() => {
+                    if (typeof emailjs !== 'undefined') {
+                        addCheck('✅ EmailJS SDK đã load sau đó', 'success');
+                    } else {
+                        addCheck('❌ EmailJS SDK KHÔNG THỂ LOAD - Kiểm tra internet', 'error');
+                    }
+                }, 3000);
+            }
+
+            // Check 4: sendBookingEmail function
+            if (typeof sendBookingEmail === 'function') {
+                addCheck('✅ Function sendBookingEmail tồn tại', 'success');
+                console.log('✅ sendBookingEmail function OK');
+            } else {
+                addCheck('❌ Function sendBookingEmail KHÔNG TỒN TẠI', 'error');
+                console.error('❌ sendBookingEmail function missing');
+            }
+
+            // Check 5: HTTP vs File protocol
+            if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+                addCheck(`✅ Đang chạy qua HTTP server (${window.location.href})`, 'success');
+                console.log(`✅ Protocol: ${window.location.protocol}`);
+            } else {
+                addCheck(`❌ ĐANG MỞ FILE TRỰC TIẾP (${window.location.protocol}) - Cần chạy qua HTTP server!`, 'error');
+                console.error(`❌ Wrong protocol: ${window.location.protocol}`);
+            }
+
+            addLog('=== HOÀN THÀNH KIỂM TRA ===', 'success');
+        }
+
+        async function testEmail() {
+            addLog('=== BẮT ĐẦU TEST EMAIL ===', 'info');
+            
+            if (typeof sendBookingEmail !== 'function') {
+                addCheck('❌ Không thể test: sendBookingEmail function không tồn tại', 'error');
+                addLog('❌ Test failed: function missing', 'error');
+                return;
+            }
+
+            const testData = {
+                carType: 's-class',
+                rentalType: 'daily',
+                duration: '3',
+                pickupDate: new Date(Date.now() + 86400000).toISOString(),
+                returnDate: new Date(Date.now() + 259200000).toISOString(),
+                driver: 'with-driver',
+                fullName: 'Nguyễn Văn Test',
+                phone: '0901234567',
+                email: 'test@example.com',
+                idNumber: '079012345678',
+                pickupLocation: 'Sân bay Tân Sơn Nhất',
+                returnLocation: 'Sân bay Tân Sơn Nhất',
+                services: ['wifi', 'airport'],
+                specialRequests: 'Email test từ DEBUG_BOOKING.html',
+                promoCode: ''
+            };
+
+            addCheck('📧 Đang gửi email test...', 'info');
+            console.log('📧 Test data:', testData);
+
+            try {
+                const result = await sendBookingEmail(testData);
+                
+                if (result.success) {
+                    addCheck(`✅ GỬI EMAIL THÀNH CÔNG!<br><br>${result.message}`, 'success');
+                    console.log('✅ Email sent:', result);
+                    addLog('✅ Email gửi thành công!', 'success');
+                } else {
+                    addCheck(`⚠️ Gửi email thất bại<br><br>${result.message}`, 'warning');
+                    console.warn('⚠️ Email failed:', result);
+                    addLog('⚠️ Email gửi thất bại', 'warning');
+                }
+            } catch (error) {
+                addCheck(`❌ LỖI KHI GỬI EMAIL<br><br>${error.message}`, 'error');
+                console.error('❌ Error:', error);
+                addLog(`❌ Lỗi: ${error.message}`, 'error');
+            }
+
+            addLog('=== KẾT THÚC TEST EMAIL ===', 'info');
+        }
+
+        // Auto run checks on load
+        window.addEventListener('load', () => {
+            setTimeout(runAllChecks, 500);
+        });
+    </script>
+</body>
+</html>

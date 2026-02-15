@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercedes E-Class - Chi Tiết Dòng Xe | Mercedes Luxury Rental</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== CAR DETAIL PAGE STYLES ===== */
+        .detail-hero {
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            text-align: center;
+        }
+
+        .detail-hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 1rem;
+            color: var(--color-white);
+        }
+
+        .detail-hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-gray);
+            margin-bottom: 2rem;
+        }
+
+        .detail-hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Article Layout - Similar to thetimecapsule.io.vn */
+        .article-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+            margin-top: 3rem;
+            align-items: start;
+        }
+
+        .article-main {
+            background: var(--color-secondary);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .article-image {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .article-section {
+            margin-bottom: 3rem;
+        }
+
+        .article-section h2 {
+            font-size: 2rem;
+            color: var(--color-white);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .article-section h3 {
+            font-size: 1.5rem;
+            color: var(--color-white);
+            margin: 2rem 0 1rem;
+        }
+
+        .article-section p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--color-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .article-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .article-section ul li {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--color-accent);
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+        }
+
+        .article-section ul li i {
+            color: var(--color-white);
+            margin-top: 0.25rem;
+            font-size: 1.25rem;
+        }
+
+        .article-section ul li div {
+            flex: 1;
+        }
+
+        .article-section ul li strong {
+            color: var(--color-white);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Specs Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .spec-card {
+            background: var(--color-accent);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--color-border);
+            text-align: center;
+            transition: var(--transition-base);
+        }
+
+        .spec-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-white);
+        }
+
+        .spec-card i {
+            font-size: 2.5rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+
+        .spec-card h4 {
+            color: var(--color-white);
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-card p {
+            color: var(--color-gray);
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* Sidebar */
+        .article-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-card {
+            background: var(--color-secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-card h3 {
+            font-size: 1.25rem;
+            color: var(--color-white);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .sidebar-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .sidebar-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .sidebar-info-label {
+            color: var(--color-gray);
+            font-size: 0.95rem;
+        }
+
+        .sidebar-info-value {
+            color: var(--color-white);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .sidebar-price {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .sidebar-price-label {
+            color: var(--color-gray);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-price-amount {
+            font-size: 2rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-white);
+        }
+
+        .sidebar-price-period {
+            color: var(--color-gray);
+            font-size: 1rem;
+        }
+
+        .sidebar-cta {
+            margin-top: 1.5rem;
+        }
+
+        .sidebar-cta .btn {
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-contact {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--color-accent);
+            border-radius: 10px;
+            color: var(--color-gray);
+            text-decoration: none;
+            transition: var(--transition-base);
+        }
+
+        .sidebar-contact:hover {
+            background: var(--color-secondary);
+            color: var(--color-white);
+        }
+
+        /* Related Cars */
+        .related-cars {
+            margin-top: 1.5rem;
+        }
+
+        .related-car-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--color-accent);
+            border-radius: 10px;
+            border: 1px solid var(--color-border);
+            margin-bottom: 1rem;
+            text-decoration: none;
+            transition: var(--transition-base);
+        }
+
+        .related-car-item:hover {
+            border-color: var(--color-white);
+            transform: translateX(5px);
+        }
+
+        .related-car-img {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .related-car-info h4 {
+            color: var(--color-white);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .related-car-info p {
+            color: var(--color-gray);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: var(--transition-base);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .article-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .article-sidebar {
+                position: static;
+            }
+
+            .article-main {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header class="header scrolled" id="header">
+        <nav class="nav container">
+            <div class="nav-logo">
+                <span>CARVIP VIET NAM CO.,LTD</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Trang Chủ</a></li>
+                    <li class="nav-item"><a href="fleet.html" class="nav-link active">Dòng Xe</a></li>
+                    <li class="nav-item"><a href="index.html#services" class="nav-link">Dịch Vụ</a></li>
+                    <li class="nav-item"><a href="index.html#pricing" class="nav-link">Bảng Giá</a></li>
+                    <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Liên Hệ</a></li>
+                </ul>
+                <div class="nav-close" id="nav-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <a href="tel:+84903776578" class="nav-phone">
+                    <i class="fas fa-phone"></i>
+                    <span>0903776578</span>
+                </a>
+                <a href="booking.html" class="btn btn-primary btn-nav">Đặt Xe Ngay</a>
+                <div class="nav-toggle" id="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="detail-hero">
+        <div class="container">
+            <h1 class="detail-hero-title">Mercedes E-Class</h1>
+            <p class="detail-hero-subtitle">Cân Bằng Hoàn Hảo Giữa Sang Trọng & Thể Thao</p>
+            <div class="detail-hero-actions">
+                <a href="booking.html?car=e-class" class="btn btn-primary btn-large">
+                    <span>Đặt Xe Ngay</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#specifications" class="btn btn-secondary btn-large">
+                    <span>Xem Thông Số</span>
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="section">
+        <div class="container">
+            <div class="article-layout">
+                <!-- Main Article -->
+                <div class="article-main">
+                    <img src="sources/eclass.png" alt="Mercedes E-Class" class="article-image">
+
+                    <!-- Introduction -->
+                    <div class="article-section">
+                        <h2>Giới thiệu xe</h2>
+                        <p>
+                            Mercedes E-Class là dòng sedan cao cấp, mang phong cách sang trọng – tinh tế – vận hành êm ái, phù hợp cho doanh nhân, khách công tác và di chuyển hằng ngày tại TP.HCM. Không gian nội thất thoải mái, thiết kế hiện đại, đảm bảo trải nghiệm chuyên nghiệp và riêng tư.
+                        </p>
+                    </div>
+
+                    <!-- Driver Service -->
+                    <div class="article-section">
+                        <h2>Dịch vụ tài xế riêng</h2>
+                        <p>
+                            Dịch vụ xe Mercedes E-Class đi kèm tài xế riêng chuyên nghiệp, thông thạo đường phố, đúng giờ, lịch sự và kín đáo. Phù hợp cho đưa đón sân bay, gặp đối tác, công tác ngắn ngày hoặc di chuyển theo lịch trình linh hoạt.
+                        </p>
+                    </div>
+
+                    <!-- Gallery Section -->
+                    <div class="article-section">
+                        <h2>Hình ảnh xe & nội thất</h2>
+                        <p>
+                            Xem hình ảnh ngoại thất và nội thất Mercedes E-Class, phản ánh chân thực không gian xe và tiêu chuẩn dịch vụ Carvip.
+                        </p>
+                    </div>
+
+                    <!-- Key Features -->
+                    <div class="article-section">
+                        <h2>Điểm Nổi Bật</h2>
+                        <ul>
+                            <li>
+                                <i class="fas fa-gem"></i>
+                                <div>
+                                    <strong>Nội Thất Xa Hoa</strong>
+                                    <span>Ghế massage 4 chiều, da Nappa thật, hệ thống âm thanh Burmester 3D</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <strong>An Toàn Tối Đa</strong>
+                                    <span>Hệ thống an toàn chủ động PRE-SAFE®, 9 túi khí, camera 360°</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-rocket"></i>
+                                <div>
+                                    <strong>Động Cơ Mạnh Mẽ</strong>
+                                    <span>Mild-hybrid I4, 1.999cc, 230 PS, tăng tốc 0-62 mph trong 7.5 giây</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-laptop"></i>
+                                <div>
+                                    <strong>Công Nghệ Tiên Tiến</strong>
+                                    <span>MBUX với AI, màn hình OLED 12.8 inch, Head-up Display AR</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-spa"></i>
+                                <div>
+                                    <strong>Tiện Nghi Đỉnh Cao</strong>
+                                    <span>Khử mùi ion hóa, đèn viền nội thất 64 màu, cửa sổ trời panorama</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-robot"></i>
+                                <div>
+                                    <strong>Tự Lái Bán Tự Động</strong>
+                                    <span>DRIVE PILOT - lái tự động cấp độ 3, Cruise Control thích ứng</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Technical Specifications -->
+                    <div class="article-section" id="specifications">
+                        <h2>Thông Số Kỹ Thuật</h2>
+                        <div class="specs-grid">
+                            <div class="spec-card">
+                                <i class="fas fa-engine"></i>
+                                <h4>Động Cơ</h4>
+                                <p>Mild-hybrid I4<br>230 PS / 320 Nm</p>
+                            </div>
+                            <div class="spec-card">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <h4>Tăng Tốc</h4>
+                                <p>0-62 mph<br>7.5 giây</p>
+                            </div>
+                            <div class="spec-card">
+                                <i class="fas fa-gauge-high"></i>
+                                <h4>Tốc Độ Tối Đa</h4>
+                                <p>240 km/h<br>(giới hạn điện tử)</p>
+                            </div>
+                            <div class="spec-card">
+                                <i class="fas fa-gas-pump"></i>
+                                <h4>Tiêu Hao</h4>
+                                <p>6.41 l/100km<br>(WLTP)</p>
+                            </div>
+                            <div class="spec-card">
+                                <i class="fas fa-cog"></i>
+                                <h4>Hộp Số</h4>
+                                <p>9G-TRONIC<br>9 cấp tự động</p>
+                            </div>
+                            <div class="spec-card">
+                                <i class="fas fa-road"></i>
+                                <h4>Dẫn Động</h4>
+                                <p>4MATIC<br>Dẫn động 4 bánh</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Use Cases -->
+                    <div class="article-section">
+                        <h2>Phù Hợp Cho</h2>
+                        <p>Mercedes S-Class là lựa chọn hoàn hảo cho các dịp:</p>
+                        <ul>
+                            <li>
+                                <i class="fas fa-business-time"></i>
+                                <div>
+                                    <strong>Sự Kiện Doanh Nghiệp</strong>
+                                    <span>Đưa đón đối tác, khách hàng VIP, hội nghị quan trọng</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-ring"></i>
+                                <div>
+                                    <strong>Đám Cưới Sang Trọng</strong>
+                                    <span>Xe hoa đẳng cấp, tạo ấn tượng mạnh trong ngày trọng đại</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-plane-departure"></i>
+                                <div>
+                                    <strong>Đưa Đón Sân Bay</strong>
+                                    <span>Thoải mái, riêng tư, chuyên nghiệp cho chuyến bay</span>
+                                </div>
+                            </li>
+                            <li>
+                                <i class="fas fa-camera"></i>
+                                <div>
+                                    <strong>Chụp Ảnh & Quay Phim</strong>
+                                    <span>Background hoàn hảo cho các dự án thời trang, quảng cáo</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Pricing Table -->
+                    <div class="article-section">
+                        <h2>Bảng Giá Thuê Xe Mercedes E-Class</h2>
+                        <div class="pricing-table-wrapper">
+                            <table class="pricing-table">
+                                <thead>
+                                    <tr>
+                                        <th>Lộ trình</th>
+                                        <th>Thời gian</th>
+                                        <th>Km</th>
+                                        <th>Giá (USD)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Đón sân bay</td>
+                                        <td>2 giờ</td>
+                                        <td>20</td>
+                                        <td><strong>$65</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>City tour</td>
+                                        <td>4 giờ</td>
+                                        <td>50</td>
+                                        <td><strong>$120</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>City tour</td>
+                                        <td>8 giờ</td>
+                                        <td>80</td>
+                                        <td><strong>$160</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="pricing-extra">
+                                <h4>Phát sinh:</h4>
+                                <ul>
+                                    <li><i class="fas fa-clock"></i> <strong>1 giờ:</strong> $15</li>
+                                    <li><i class="fas fa-road"></i> <strong>1 km:</strong> $2</li>
+                                </ul>
+                            </div>
+
+                            <div class="pricing-included">
+                                <h4>Bao gồm:</h4>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Tài xế chuyên nghiệp (nói tiếng Anh)</li>
+                                    <li><i class="fas fa-check-circle"></i> Đón tiếp tại sảnh đến sân bay với bảng tên</li>
+                                    <li><i class="fas fa-check-circle"></i> Theo dõi chuyến bay và thời gian chờ</li>
+                                    <li><i class="fas fa-check-circle"></i> Chi phí nhiên liệu, phí cầu đường và phí đậu xe</li>
+                                    <li><i class="fas fa-check-circle"></i> Lộ trình khác liên hệ để có giá tốt nhất</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gallery -->
+                    <div class="article-section">
+                        <h2>Thư Viện Ảnh</h2>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <img src="sources/eclass/CARVIP.VN (1500 x 600 px) (680 x 500 px).png" alt="E-Class">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="sources/eclass/e2001.jpg" alt="E-Class">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="sources/eclass/Mercedes-E200-Exclusive-2022-mercedes-vietnam-24.jpg" alt="E-Class Interior">
+                            </div>
+                            <div class="gallery-item">
+                                <img src="sources/eclass/noi-that-mercedes-e-300-5.png" alt="E-Class Dashboard">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="article-sidebar">
+                    <!-- Quick Info -->
+                    <div class="sidebar-card">
+                        <h3>Thông Tin Nhanh</h3>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">Hãng xe</span>
+                            <span class="sidebar-info-value">Mercedes-Benz</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">Dòng xe</span>
+                            <span class="sidebar-info-value">E-Class</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">Loại xe</span>
+                            <span class="sidebar-info-value">Sedan</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">Số chỗ</span>
+                            <span class="sidebar-info-value">5 chỗ</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">Nhiên liệu</span>
+                            <span class="sidebar-info-value">Xăng</span>
+                        </div>
+                        <div class="sidebar-info-item">
+                            <span class="sidebar-info-label">Đánh giá</span>
+                            <span class="sidebar-info-value">⭐ 4.9/5</span>
+                        </div>
+
+                        <!-- Pricing -->
+                        <div class="sidebar-price">
+                            <div class="sidebar-price-label">Giá thuê từ</div>
+                            <div class="sidebar-price-amount">1.800.000đ</div>
+                            <div class="sidebar-price-period">/ngày</div>
+                        </div>
+
+                        <!-- CTA -->
+                        <div class="sidebar-cta">
+                            <a href="booking.html?car=e-class" class="btn btn-primary">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Đặt Xe Ngay</span>
+                            </a>
+                            <a href="tel:+84903776578" class="sidebar-contact">
+                                <i class="fas fa-phone"></i>
+                                <span>0903776578</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Related Cars -->
+                    <div class="sidebar-card">
+                        <h3>Dòng Xe Tương Tự</h3>
+                        <div class="related-cars">
+                            <a href="car-detail-s-class.html" class="related-car-item">
+                                <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=200" alt="S-Class" class="related-car-img">
+                                <div class="related-car-info">
+                                    <h4>Mercedes S-Class</h4>
+                                    <p>2.500.000đ/ngày</p>
+                                </div>
+                            </a>
+                            <a href="car-detail-c-class.html" class="related-car-item">
+                                <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=200" alt="C-Class" class="related-car-img">
+                                <div class="related-car-info">
+                                    <h4>Mercedes C-Class</h4>
+                                    <p>1.500.000đ/ngày</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Sẵn Sàng Trải Nghiệm E-Class?</h2>
+                <p class="cta-description">
+                    Đặt xe ngay hôm nay để nhận ưu đãi đặc biệt
+                </p>
+                <div class="cta-buttons">
+                    <a href="booking.html?car=e-class" class="btn btn-primary btn-large">
+                        <span>Đặt Xe Ngay</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="fleet.html" class="btn btn-secondary btn-large">
+                        <span>Xem Dòng Xe Khác</span>
+                        <i class="fas fa-cars"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span>CARVIP VIET NAM CO.,LTD</span>
+                    </div>
+                    <p class="footer-description">
+                        Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Liên Hệ</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Melody Residences 869 Âu Cơ - TP.HCM.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>Zalo/Whatsapp: 0903776578</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>infobook@carvip.vn</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mercedes Luxury Rental. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

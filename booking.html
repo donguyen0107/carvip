@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Xe Mercedes - Booking Online</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="booking-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header class="header scrolled" id="header">
+        <nav class="nav container">
+            <div class="nav-logo">
+                <span>CARVIP VIET NAM CO.,LTD</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav.home">Trang Chủ</a></li>
+                    <li class="nav-item"><a href="fleet.html" class="nav-link" data-i18n="nav.fleet">Dòng Xe</a></li>
+                    <li class="nav-item"><a href="index.html#services" class="nav-link" data-i18n="nav.services">Dịch Vụ</a></li>
+                    <li class="nav-item"><a href="index.html#pricing" class="nav-link" data-i18n="nav.pricing">Bảng Giá</a></li>
+                    <li class="nav-item"><a href="blog.html" class="nav-link" data-i18n="nav.blog">Blog</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link" data-i18n="nav.contact">Liên Hệ</a></li>
+                </ul>
+                <div class="nav-close" id="nav-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <a href="tel:+84903776578" class="nav-phone">
+                    <i class="fas fa-phone"></i>
+                    <span>0903776578</span>
+                </a>
+                <div class="language-switcher">
+                    <button class="lang-btn" data-lang="vi">VN</button>
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                </div>
+                <div class="nav-toggle" id="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Booking Hero -->
+    <section class="booking-hero">
+        <div class="container">
+            <h1 class="booking-hero-title" data-i18n="booking.hero_title">Đặt Xe <span class="gradient-text">Mercedes</span></h1>
+            <p class="booking-hero-description" data-i18n="booking.hero_description">Điền thông tin để đặt xe. Chúng tôi sẽ liên hệ xác nhận trong vòng 30 phút.</p>
+        </div>
+    </section>
+
+    <!-- Booking Form Section -->
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-container">
+                <!-- Booking Form -->
+                <div class="booking-form-wrapper">
+                    <form class="booking-form" id="booking-form">
+                        <!-- Step 1: Car Selection -->
+                        <div class="form-step active" data-step="1">
+                            <h2 class="form-step-title">
+                                <span class="step-number">1</span>
+                                <span data-i18n="booking.step_car_selection">Chọn Xe</span>
+                            </h2>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="car-type" data-i18n="booking.car_type">
+                                    <i class="fas fa-car"></i>
+                                    Dòng Xe
+                                </label>
+                                <select class="form-control" id="car-type" required>
+                                    <option value="" data-i18n="booking.select_car">-- Chọn dòng xe --</option>
+                                    <option value="s-class" data-i18n="booking.s_class">Mercedes S-Class (Sedan cao cấp)</option>
+                                    <option value="e-class" data-i18n="booking.e_class">Mercedes E-Class (Sedan hạng sang)</option>
+                                    <option value="c-class" data-i18n="booking.c_class">Mercedes C-Class (Sedan thể thao)</option>
+                                    <option value="gls" data-i18n="booking.gls">Mercedes GLS (SUV 7 chỗ)</option>
+                                    <option value="gle" data-i18n="booking.gle">Mercedes GLE (SUV 5 chỗ)</option>
+                                    <option value="glc" data-i18n="booking.glc">Mercedes GLC (SUV compact)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="rental-type" data-i18n="booking.step_rental_info">
+                                        <i class="fas fa-clock"></i>
+                                        Loại Thuê
+                                    </label>
+                                    <select class="form-control" id="rental-type" required>
+                                        <option value="" data-i18n="booking.select_rental">-- Chọn loại thuê --</option>
+                                        <option value="hourly" data-i18n="pricing.hourly">Theo Giờ (tối thiểu 4h)</option>
+                                        <option value="daily" data-i18n="pricing.daily">Theo Ngày (8h/ngày)</option>
+                                        <option value="monthly" data-i18n="pricing.monthly">Theo Tháng</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="duration" data-i18n="booking.duration_label">
+                                        <i class="fas fa-calendar"></i>
+                                        Thời Gian
+                                    </label>
+                                    <input type="number" class="form-control" id="duration" min="1" data-i18n-placeholder="booking.duration_placeholder" placeholder="Nhập số lượng" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="pickup-date" data-i18n="booking.pickup_date">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        Ngày Nhận Xe
+                                    </label>
+                                    <input type="datetime-local" class="form-control" id="pickup-date" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="return-date" data-i18n="booking.return_date">
+                                        <i class="fas fa-calendar-check"></i>
+                                        Ngày Trả Xe
+                                    </label>
+                                    <input type="datetime-local" class="form-control" id="return-date" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="booking.driver_service">
+                                    <i class="fas fa-user-tie"></i>
+                                    Dịch Vụ Tài Xế
+                                </label>
+                                <div class="radio-group">
+                                    <label class="radio-label">
+                                        <input type="radio" name="driver" value="with-driver" checked>
+                                        <span data-i18n="booking.with_driver">Có tài xế</span>
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="driver" value="self-drive">
+                                        <span data-i18n="booking.self_drive">Tự lái</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary btn-block btn-next" onclick="nextStep(2)" data-i18n="booking.next">
+                                <span>Tiếp Theo</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Step 2: Personal Information -->
+                        <div class="form-step" data-step="2">
+                            <h2 class="form-step-title">
+                                <span class="step-number">2</span>
+                                <span data-i18n="booking.step_driver_info">Thông Tin Cá Nhân</span>
+                            </h2>
+
+                            <div class="form-group">
+                                <label class="form-label" for="full-name" data-i18n="booking.driver_name">
+                                    <i class="fas fa-user"></i>
+                                    Họ và Tên
+                                </label>
+                                <input type="text" class="form-control" id="full-name" data-i18n-placeholder="booking.driver_name" placeholder="Nguyễn Văn A" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="phone" data-i18n="booking.phone">
+                                        <i class="fas fa-phone"></i>
+                                        Số Điện Thoại
+                                    </label>
+                                    <input type="tel" class="form-control" id="phone" data-i18n-placeholder="booking.phone" placeholder="0903776578" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="email" data-i18n="booking.email">
+                                        <i class="fas fa-envelope"></i>
+                                        Email
+                                    </label>
+                                    <input type="email" class="form-control" id="email" data-i18n-placeholder="booking.email" placeholder="email@example.com" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="id-number" data-i18n="booking.id_number">
+                                    <i class="fas fa-id-card"></i>
+                                    CMND/CCCD
+                                </label>
+                                <input type="text" class="form-control" id="id-number" data-i18n-placeholder="booking.id_placeholder" placeholder="001234567890" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="pickup-location" data-i18n="booking.location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Địa Điểm Nhận Xe
+                                </label>
+                                <input type="text" class="form-control" id="pickup-location" data-i18n-placeholder="booking.location" placeholder="Melody Residences 869 Âu Cơ, TP.HCM" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="return-location" data-i18n="booking.location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Địa Điểm Trả Xe
+                                </label>
+                                <input type="text" class="form-control" id="return-location" data-i18n-placeholder="booking.location" placeholder="Cùng địa điểm nhận xe">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="prevStep(1)" data-i18n="booking.previous">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span>Quay Lại</span>
+                                </button>
+                                <button type="button" class="btn btn-primary btn-next" onclick="nextStep(3)" data-i18n="booking.next">
+                                    <span>Tiếp Theo</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Additional Services -->
+                        <div class="form-step" data-step="3">
+                            <h2 class="form-step-title" data-i18n="booking.step_payment">
+                                <span class="step-number">3</span>
+                                Dịch Vụ Bổ Sung
+                            </h2>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span data-i18n="booking.additional_services">Chọn Dịch Vụ Thêm</span>
+                                </label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="baby-seat">
+                                        <span data-i18n="booking.baby_seat">Ghế em bé (+200.000đ/ngày)</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="wifi">
+                                        <span data-i18n="booking.wifi_service">Wifi 4G trên xe (+100.000đ/ngày)</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="airport">
+                                        <span data-i18n="booking.airport_transfer">Đón/tiễn sân bay (+500.000đ)</span>
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" name="services" value="decoration">
+                                        <span data-i18n="booking.wedding_decoration">Trang trí xe cưới (+2.000.000đ)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="special-requests" data-i18n="booking.special_requests">
+                                    <i class="fas fa-comment"></i>
+                                    Yêu Cầu Đặc Biệt
+                                </label>
+                                <textarea class="form-control" id="special-requests" rows="4" data-i18n-placeholder="booking.special_requests" placeholder="Nhập các yêu cầu đặc biệt của bạn..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="promo-code" data-i18n="booking.promo_code">
+                                    <i class="fas fa-tag"></i>
+                                    Mã Khuyến Mãi
+                                </label>
+                                <div class="promo-input">
+                                    <input type="text" class="form-control" id="promo-code" data-i18n-placeholder="booking.promo_placeholder" placeholder="Nhập mã khuyến mãi">
+                                    <button type="button" class="btn btn-secondary" onclick="applyPromoCode()" data-i18n="booking.apply_promo">Áp Dụng</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="checkbox-label terms">
+                                    <input type="checkbox" id="terms" required>
+                                    <span data-i18n="booking.terms">Tôi đồng ý với <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a></span>
+                                </label>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" onclick="prevStep(2)" data-i18n="booking.previous">
+                                    <i class="fas fa-arrow-left"></i>
+                                    <span>Quay Lại</span>
+                                </button>
+                                <button type="submit" class="btn btn-primary btn-submit">
+                                    <i class="fas fa-check"></i>
+                                    <span data-i18n="booking.confirm_booking">Xác Nhận Đặt Xe</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Booking Summary -->
+                <div class="booking-summary">
+                    <h3 class="summary-title" data-i18n="booking.order_details">Chi Tiết Đơn Hàng</h3>
+                    
+                    <div class="summary-section" id="car-summary">
+                        <div class="summary-item">
+                            <span class="summary-label" data-i18n="booking.car_type_label">Dòng xe:</span>
+                            <span class="summary-value" id="summary-car" data-i18n="booking.not_selected">Chưa chọn</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label" data-i18n="booking.rental_type">Loại thuê:</span>
+                            <span class="summary-value" id="summary-rental" data-i18n="booking.not_selected">Chưa chọn</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label" data-i18n="booking.duration_time">Thời gian:</span>
+                            <span class="summary-value" id="summary-duration">0</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-section" id="date-summary">
+                        <div class="summary-item">
+                            <span class="summary-label" data-i18n="booking.pickup">Nhận xe:</span>
+                            <span class="summary-value" id="summary-pickup">--/--/----</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label" data-i18n="booking.return">Trả xe:</span>
+                            <span class="summary-value" id="summary-return">--/--/----</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-section" id="services-summary" style="display: none;">
+                        <h4 class="summary-subtitle" data-i18n="booking.additional_services">Dịch vụ bổ sung:</h4>
+                        <div id="summary-services-list"></div>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <div class="summary-pricing">
+                        <div class="summary-item">
+                            <span class="summary-label" data-i18n="booking.base_price">Giá cơ bản:</span>
+                            <span class="summary-value" id="summary-base-price">0đ</span>
+                        </div>
+                        <div class="summary-item" id="discount-row" style="display: none;">
+                            <span class="summary-label" data-i18n="booking.discount">Giảm giá:</span>
+                            <span class="summary-value discount" id="summary-discount">0đ</span>
+                        </div>
+                        <div class="summary-item" id="services-price-row" style="display: none;">
+                            <span class="summary-label" data-i18n="booking.services_price">Dịch vụ thêm:</span>
+                            <span class="summary-value" id="summary-services-price">0đ</span>
+                        </div>
+                        <div class="summary-total">
+                            <span class="summary-label" data-i18n="booking.total">Tổng cộng:</span>
+                            <span class="summary-value" id="summary-total">0đ</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-note">
+                        <i class="fas fa-info-circle"></i>
+                        <p data-i18n="booking.price_includes_vat">Giá đã bao gồm VAT. Chưa bao gồm phí vượt quá km quy định và các phí phát sinh khác.</p>
+                    </div>
+
+                    <div class="summary-contact">
+                        <h4 class="summary-subtitle" data-i18n="booking.need_support">Cần Hỗ Trợ?</h4>
+                        <a href="tel:+84903776578" class="contact-btn">
+                            <i class="fas fa-phone"></i>
+                            <span>0903776578</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span>CARVIP VIET NAM CO.,LTD</span>
+                    </div>
+                    <p class="footer-description">
+                        Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Liên Hệ</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Melody Residences 869 Âu Cơ - TP.HCM.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>Zalo/Whatsapp: 0903776578</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>infobook@carvip.vn</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mercedes Luxury Rental. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <div class="modal-icon success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="modal-title" data-i18n="booking.success_title">Đặt Xe Thành Công!</h2>
+            <p class="modal-text" data-i18n="booking.success_message">
+                Cảm ơn bạn đã đặt xe. Chúng tôi sẽ liên hệ với bạn trong vòng 30 phút để xác nhận đơn hàng.
+            </p>
+            <div class="modal-actions">
+                <a href="index.html" class="btn btn-primary" data-i18n="booking.back_home">Về Trang Chủ</a>
+                <button class="btn btn-secondary" onclick="closeModal()" data-i18n="booking.close">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+    <script src="emailjs-config.js"></script>
+    <script src="booking-script.js"></script>
+</body>
+</html>
