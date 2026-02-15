@@ -1,4 +1,6 @@
-// Debug API endpoint to check what's wrong
+// Debug API endpoint to check Redis connection
+const { getRedisClient } = require('../../lib/redis');
+
 export default async function handler(req, res) {
     try {
         // Set CORS headers
@@ -13,34 +15,37 @@ export default async function handler(req, res) {
 
         // Check environment variables
         const envCheck = {
-            hasKV_URL: !!process.env.KV_URL,
-            hasKV_REST_API_URL: !!process.env.KV_REST_API_URL,
-            hasKV_REST_API_TOKEN: !!process.env.KV_REST_API_TOKEN,
-            hasKV_REST_API_READ_ONLY_TOKEN: !!process.env.KV_REST_API_READ_ONLY_TOKEN,
+            hasREDIS_URL: !!process.env.REDIS_URL,
+            redisUrlFormat: process.env.REDIS_URL ? 'configured' : 'missing',
             nodeVersion: process.version,
             method: req.method
         };
 
-        // Try to import @vercel/kv
-        let kvStatus = 'not installed';
+        // Try to connect to Redis
+        let redisStatus = 'not tested';
         try {
-            const { kv } = await import('@vercel/kv');
-            kvStatus = 'installed';
+            const redis = getRedisClient();
+            redisStatus = 'client created';
             
-            // Try to connect
+            // Try to connect and ping
             try {
-                const testData = await kv.get('blog-posts');
-                envCheck.kvConnection = 'success';
-                envCheck.currentData = testData ? `${testData.length} posts` : 'empty';
-            } catch (kvError) {
-                envCheck.kvConnection = 'failed';
-                envCheck.kvError = kvError.message;
+                await redis.connect().catch(() => {}); // Connect if not connected
+                const pingResult = await redis.ping();
+                envCheck.redisConnection = 'success';
+                envCheck.pingResult = pingResult;
+                
+                // Try to get data
+                const testData = await redis.get('blog-posts');
+                envCheck.currentData = testData ? `${JSON.parse(testData).length} posts` : 'empty';
+            } catch (redisError) {
+                envCheck.redisConnection = 'failed';
+                envCheck.redisError = redisError.message;
             }
         } catch (importError) {
             envCheck.importError = importError.message;
         }
 
-        envCheck.kvPackage = kvStatus;
+        envCheck.redisPackage = redisStatus;
 
         return res.status(200).json({
             status: 'debug',
