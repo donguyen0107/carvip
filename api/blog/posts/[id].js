@@ -2,7 +2,7 @@
 // Path: /api/blog/posts/[id]
 // Methods: GET (single post), PUT (update), DELETE (delete)
 
-import { kv } from '@vercel/kv';
+const { getRedisClient } = require('../../../lib/redis');
 
 export default async function handler(req, res) {
     // Set CORS headers
@@ -26,9 +26,12 @@ export default async function handler(req, res) {
     }
 
     try {
+        const redis = getRedisClient();
+        await redis.connect().catch(() => {}); // Connect if not connected
+
         // Lấy tất cả posts
-        const postsData = await kv.get('blog-posts');
-        const posts = postsData || [];
+        const postsData = await redis.get('blog-posts');
+        const posts = postsData ? JSON.parse(postsData) : [];
 
         // GET - Lấy 1 post theo ID
         if (req.method === 'GET') {
@@ -72,8 +75,8 @@ export default async function handler(req, res) {
                 updatedAt: new Date().toISOString()
             };
 
-            // Cập nhật trong KV
-            await kv.set('blog-posts', posts);
+            // Cập nhật trong Redis
+            await redis.set('blog-posts', JSON.stringify(posts));
 
             return res.status(200).json({
                 success: true,
@@ -97,7 +100,7 @@ export default async function handler(req, res) {
             const filteredPosts = posts.filter(p => p.id !== id);
 
             // Lưu lại
-            await kv.set('blog-posts', filteredPosts);
+            await redis.set('blog-posts', JSON.stringify(filteredPosts));
 
             return res.status(200).json({
                 success: true,

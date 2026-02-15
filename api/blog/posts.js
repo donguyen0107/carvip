@@ -2,7 +2,7 @@
 // Path: /api/blog/posts
 // Methods: GET (all posts), POST (create new post)
 
-import { kv } from '@vercel/kv';
+const { getRedisClient } = require('../../lib/redis');
 
 export default async function handler(req, res) {
     // Set CORS headers
@@ -17,10 +17,13 @@ export default async function handler(req, res) {
     }
 
     try {
+        const redis = getRedisClient();
+        await redis.connect().catch(() => {}); // Connect if not connected
+
         // GET - Lấy tất cả posts
         if (req.method === 'GET') {
-            const postsData = await kv.get('blog-posts');
-            const posts = postsData || [];
+            const postsData = await redis.get('blog-posts');
+            const posts = postsData ? JSON.parse(postsData) : [];
             
             return res.status(200).json({
                 success: true,
@@ -41,8 +44,8 @@ export default async function handler(req, res) {
             }
 
             // Lấy danh sách hiện tại
-            const postsData = await kv.get('blog-posts');
-            const posts = postsData || [];
+            const postsData = await redis.get('blog-posts');
+            const posts = postsData ? JSON.parse(postsData) : [];
 
             // Tạo post mới
             const post = {
@@ -60,8 +63,8 @@ export default async function handler(req, res) {
             // Thêm vào đầu danh sách
             posts.unshift(post);
 
-            // Lưu vào KV
-            await kv.set('blog-posts', posts);
+            // Lưu vào Redis
+            await redis.set('blog-posts', JSON.stringify(posts));
 
             return res.status(201).json({
                 success: true,

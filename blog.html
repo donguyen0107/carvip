@@ -503,10 +503,11 @@
             try {
                 console.log('📥 Đang tải bài viết từ Vercel KV...');
                 
-                const response = await fetch('/api/posts');
+                const response = await fetch('/api/blog/posts');
                 
                 if (response.ok) {
-                    const posts = await response.json();
+                    const data = await response.json();
+                    const posts = data.posts || [];
                     const publishedPosts = posts.filter(post => post.status === 'published');
                     
                     console.log('✅ Đã tải', publishedPosts.length, 'bài viết từ Vercel KV');
