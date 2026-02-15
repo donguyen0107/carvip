@@ -10,6 +10,14 @@
       "destination": "/api/admin/login"
     },
     {
+      "source": "/api/blog/posts/:id",
+      "destination": "/api/blog/posts/[id]"
+    },
+    {
+      "source": "/api/blog/posts",
+      "destination": "/api/blog/posts"
+    },
+    {
       "source": "/api/:path*",
       "destination": "/api/:path*"
     },
