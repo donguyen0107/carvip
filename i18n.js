@@ -203,6 +203,8 @@ const translations = {
         'booking.rental_type_label': 'Loại Thuê',
         'booking.duration_label': 'Thời Gian',
         'booking.duration_placeholder': 'Nhập số lượng',
+        'booking.additional_services': 'Chọn Dịch Vụ Thêm',
+        'booking.confirm_booking': 'Xác Nhận Đặt Xe',
         'booking.driver_service': 'Dịch Vụ Tài Xế',
         'booking.with_driver': 'Có tài xế',
         'booking.self_drive': 'Tự lái',
@@ -287,6 +289,42 @@ const translations = {
         'admin.customers': 'Khách Hàng',
         'admin.fleet': 'Xe',
         'admin.users': 'Người Dùng',
+
+        // Blog Section
+        'blog.subtitle': 'Tin Tức & Sự Kiện',
+        'blog.title': 'Khám Phá Câu Chuyện Của Chúng Tôi',
+        'blog.description': 'Những trải nghiệm và dịch vụ đẳng cấp từ BOOKCARVIP',
+        'blog.card1_title': 'Trải Nghiệm Dịch Vụ VIP',
+        'blog.card1_excerpt': 'Khám phá dịch vụ cho thuê xe Mercedes cao cấp với đội ngũ tài xế chuyên nghiệp',
+        'blog.card2_title': 'Mercedes S-Class Đẳng Cấp',
+        'blog.card2_excerpt': 'Nội thất sang trọng, công nghệ hiện đại, mang đến trải nghiệm tuyệt vời',
+        'blog.card3_title': 'Đưa Đón Sân Bay Chuyên Nghiệp',
+        'blog.card3_excerpt': 'Dịch vụ đưa đón sân bay với Mercedes V-Class rộng rãi, đúng giờ và an toàn',
+
+        // Price Table Headers
+        'price.time': 'Thời Gian',
+        'price.rental': 'Giá Thuê',
+        'price.route': 'Tuyến Đường',
+        'price.price': 'Giá',
+        'price.hourly': 'Theo giờ',
+        'price.min_4h': '4 giờ (tối thiểu)',
+        'price.daily_8h': 'Theo ngày (8 giờ)',
+        'price.per_hour': '/giờ',
+
+        // Price Switch Buttons
+        'price.switch_hourly': 'Thuê Theo Giờ',
+        'price.switch_airport': 'Đưa Đón Sân Bay',
+
+        // Footer
+        'footer.description': 'Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh',
+        'footer.services_title': 'Dịch Vụ',
+        'footer.company_title': 'Công Ty',
+        'footer.contact_title': 'Liên Hệ',
+        'footer.about': 'Về Chúng Tôi',
+        'footer.careers': 'Tuyển Dụng',
+        'footer.terms': 'Điều Khoản',
+        'footer.policy': 'Chính Sách',
+        'footer.privacy': 'Bảo Mật',
     },
     en: {
         // Navigation
@@ -477,6 +515,8 @@ const translations = {
         'booking.rental_type_label': 'Rental Type',
         'booking.duration_label': 'Duration',
         'booking.duration_placeholder': 'Enter quantity',
+        'booking.additional_services': 'Select Additional Services',
+        'booking.confirm_booking': 'Confirm Booking',
         'booking.driver_service': 'Driver Service',
         'booking.with_driver': 'With Driver',
         'booking.self_drive': 'Self Drive',
@@ -561,11 +601,47 @@ const translations = {
         'admin.customers': 'Customers',
         'admin.fleet': 'Fleet',
         'admin.users': 'Users',
+
+        // Blog Section
+        'blog.subtitle': 'News & Events',
+        'blog.title': 'Discover Our Stories',
+        'blog.description': 'Premium experiences and services from BOOKCARVIP',
+        'blog.card1_title': 'VIP Service Experience',
+        'blog.card1_excerpt': 'Discover premium Mercedes rental service with professional drivers',
+        'blog.card2_title': 'Mercedes S-Class Elegance',
+        'blog.card2_excerpt': 'Luxurious interior, modern technology, delivering exceptional experience',
+        'blog.card3_title': 'Professional Airport Transfer',
+        'blog.card3_excerpt': 'Airport transfer service with spacious Mercedes V-Class, punctual and safe',
+
+        // Price Table Headers
+        'price.time': 'Duration',
+        'price.rental': 'Rental Price',
+        'price.route': 'Route',
+        'price.price': 'Price',
+        'price.hourly': 'Hourly',
+        'price.min_4h': '4 hours (minimum)',
+        'price.daily_8h': 'Daily (8 hours)',
+        'price.per_hour': '/hour',
+
+        // Price Switch Buttons
+        'price.switch_hourly': 'Hourly Rental',
+        'price.switch_airport': 'Airport Transfer',
+
+        // Footer
+        'footer.description': 'Leading premium Mercedes rental service in Ho Chi Minh City',
+        'footer.services_title': 'Services',
+        'footer.company_title': 'Company',
+        'footer.contact_title': 'Contact',
+        'footer.about': 'About Us',
+        'footer.careers': 'Careers',
+        'footer.terms': 'Terms',
+        'footer.policy': 'Policy',
+        'footer.privacy': 'Privacy',
     }
 };
 
-// Current language (default: Vietnamese)
-let currentLanguage = localStorage.getItem('language') || 'vi';
+// Current language (default: English)
+let currentLanguage = localStorage.getItem('language') || 'en';
 
 /**
  * Get translation for a key

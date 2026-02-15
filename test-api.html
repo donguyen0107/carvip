@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin API</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .test-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .test-box h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 2px solid #bee5eb;
+            color: #0c5460;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .url-info {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Admin Login API</h1>
+        
+        <div class="url-info">
+            <strong>📍 Current URL:</strong><br>
+            <span id="currentUrl"></span><br><br>
+            <strong>🔗 API Endpoint:</strong><br>
+            <span id="apiEndpoint"></span>
+        </div>
+
+        <div class="test-box">
+            <h3>✅ Test 1: Simple Login Test</h3>
+            <input type="text" id="username" value="admin" placeholder="Username">
+            <input type="password" id="password" value="admin123" placeholder="Password">
+            <button onclick="testLogin()">🚀 Test Login</button>
+            <div id="result1"></div>
+        </div>
+
+        <div class="test-box">
+            <h3>❌ Test 2: Wrong Credentials</h3>
+            <button onclick="testWrongLogin()">Test Wrong Login</button>
+            <div id="result2"></div>
+        </div>
+
+        <div class="test-box">
+            <h3>🔍 Test 3: Check API Exists</h3>
+            <button onclick="checkAPI()">Check API Endpoint</button>
+            <div id="result3"></div>
+        </div>
+    </div>
+
+    <script>
+        // Display URL info
+        const currentUrl = window.location.href;
+        const apiUrl = window.location.origin + '/api/admin/login';
+        document.getElementById('currentUrl').textContent = currentUrl;
+        document.getElementById('apiEndpoint').textContent = apiUrl;
+
+        async function testLogin() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Testing...';
+            btn.disabled = true;
+
+            const resultDiv = document.getElementById('result1');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                console.log('Testing login with:', { username, password: '***' });
+                
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password, remember: false })
+                });
+                
+                console.log('Response status:', response.status);
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            ✅ SUCCESS!
+                            
+Status: ${response.status}
+Message: ${data.message}
+Token: ${data.token ? data.token.substring(0, 30) + '...' : 'N/A'}
+
+Full Response:
+${JSON.stringify(data, null, 2)}
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            ❌ FAILED
+                            
+Status: ${response.status}
+Message: ${data.message}
+
+Full Response:
+${JSON.stringify(data, null, 2)}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        ❌ CONNECTION ERROR
+                        
+Error: ${error.message}
+Type: ${error.name}
+
+This usually means:
+1. API endpoint doesn't exist
+2. Network error
+3. CORS issue
+
+Check browser Console (F12) for details.
+                    </div>
+                `;
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function testWrongLogin() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Testing...';
+            btn.disabled = true;
+
+            const resultDiv = document.getElementById('result2');
+            
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        username: 'wronguser', 
+                        password: 'wrongpass', 
+                        remember: false 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <div class="result ${response.ok ? 'error' : 'success'}">
+                        ${response.ok ? '❌ BUG: Should fail!' : '✅ CORRECT: Failed as expected'}
+                        
+Status: ${response.status}
+Message: ${data.message}
+
+Full Response:
+${JSON.stringify(data, null, 2)}
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        ❌ ERROR: ${error.message}
+                    </div>
+                `;
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function checkAPI() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Checking...';
+            btn.disabled = true;
+
+            const resultDiv = document.getElementById('result3');
+            
+            try {
+                // Try GET request (should return 405 Method Not Allowed)
+                const response = await fetch('/api/admin/login', {
+                    method: 'GET'
+                });
+                
+                const data = await response.json();
+                
+                if (response.status === 405) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            ✅ API EXISTS!
+                            
+Status: ${response.status}
+Message: ${data.message || 'Method not allowed (this is correct!)'}
+
+The API endpoint exists and is responding.
+GET requests are blocked (correct behavior).
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result info">
+                            📌 API Responding
+                            
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        ❌ API NOT FOUND or ERROR
+                        
+Error: ${error.message}
+
+The API endpoint might not be deployed.
+Check Vercel Dashboard → Functions
+                    </div>
+                `;
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

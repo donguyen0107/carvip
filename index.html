@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
     <header class="header" id="header">
         <nav class="nav container">
             <div class="nav-logo">
-                <span>BOOKCARVIP</span>
+                <span>CARVIP VIET NAM CO.,LTD</span>
             </div>
             <div class="nav-menu" id="nav-menu">
                 <ul class="nav-list">
@@ -31,13 +31,13 @@
                 </div>
             </div>
             <div class="nav-actions">
-                <a href="tel:+84901234567" class="nav-phone">
+                <a href="tel:+84903776578" class="nav-phone">
                     <i class="fas fa-phone"></i>
-                    <span>090 123 4567</span>
+                    <span>0903776578</span>
                 </a>
                 <div class="language-switcher">
-                    <button class="lang-btn active" data-lang="vi">VN</button>
-                    <button class="lang-btn" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="vi">VN</button>
+                    <button class="lang-btn active" data-lang="en">EN</button>
                 </div>
                 <a href="booking.html" class="btn btn-primary btn-nav" data-i18n="nav.booking">Đặt Xe Ngay</a>
                 <div class="nav-toggle" id="nav-toggle">
@@ -84,9 +84,9 @@
     <section class="blog-carousel-section section">
         <div class="container">
             <div class="section-header">
-                <span class="section-subtitle">Tin Tức & Sự Kiện</span>
-                <h2 class="section-title">Khám Phá <span class="gradient-text">Câu Chuyện</span> Của Chúng Tôi</h2>
-                <p class="section-description">
+                <span class="section-subtitle" data-i18n="blog.subtitle">Tin Tức & Sự Kiện</span>
+                <h2 class="section-title" data-i18n="blog.title">Khám Phá <span class="gradient-text">Câu Chuyện</span> Của Chúng Tôi</h2>
+                <p class="section-description" data-i18n="blog.description">
                     Những trải nghiệm và dịch vụ đẳng cấp từ BOOKCARVIP
                 </p>
             </div>
@@ -100,8 +100,8 @@
                             <div class="blog-card-image">
                                 <img src="sources/carousel/MQF02855.jpg" alt="Mercedes Luxury Service">
                                 <div class="blog-card-overlay">
-                                    <h3 class="blog-card-title">Trải Nghiệm Dịch Vụ VIP</h3>
-                                    <p class="blog-card-excerpt">
+                                    <h3 class="blog-card-title" data-i18n="blog.card1_title">Trải Nghiệm Dịch Vụ VIP</h3>
+                                    <p class="blog-card-excerpt" data-i18n="blog.card1_excerpt">
                                         Khám phá dịch vụ cho thuê xe Mercedes cao cấp với đội ngũ tài xế chuyên nghiệp
                                     </p>
                                 </div>
@@ -115,8 +115,8 @@
                             <div class="blog-card-image">
                                 <img src="sources/carousel/MQF02912.jpg" alt="Mercedes S-Class Interior">
                                 <div class="blog-card-overlay">
-                                    <h3 class="blog-card-title">Mercedes S-Class Đẳng Cấp</h3>
-                                    <p class="blog-card-excerpt">
+                                    <h3 class="blog-card-title" data-i18n="blog.card2_title">Mercedes S-Class Đẳng Cấp</h3>
+                                    <p class="blog-card-excerpt" data-i18n="blog.card2_excerpt">
                                         Nội thất sang trọng, công nghệ hiện đại, mang đến trải nghiệm tuyệt vời
                                     </p>
                                 </div>
@@ -228,6 +228,19 @@
                     Lựa chọn từ bộ sưu tập xe Mercedes mới nhất, được bảo dưỡng hoàn hảo
                 </p>
             </div>
+            
+            <!-- Price Type Switcher -->
+            <div class="price-switcher">
+                <button class="price-switch-btn active" data-price-type="hourly">
+                    <i class="fas fa-clock"></i>
+                    <span data-i18n="price.switch_hourly">Thuê Theo Giờ</span>
+                </button>
+                <button class="price-switch-btn" data-price-type="airport">
+                    <i class="fas fa-plane"></i>
+                    <span data-i18n="price.switch_airport">Đưa Đón Sân Bay</span>
+                </button>
+            </div>
+
             <div class="fleet-grid">
                 <!-- Car Card 1 -->
                 <div class="car-card">
@@ -243,7 +256,67 @@
                                 <span>4.9</span>
                             </div>
                         </div>
-                        <p class="car-description" data-i18n="car.s_class_desc">Sang trọng, đẳng cấp cho các sự kiện quan trọng</p>
+                        
+                        <!-- Price Table - Hourly -->
+                        <div class="price-table hourly-price active">
+                            <table class="car-price-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="price.time">Thời Gian</th>
+                                        <th data-i18n="price.rental">Giá Thuê</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-clock"></i> <span data-i18n="price.hourly">Theo giờ</span></td>
+                                        <td class="price-cell">$50<span data-i18n="price.per_hour">/giờ</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-clock"></i> <span data-i18n="price.min_4h">4 giờ (tối thiểu)</span></td>
+                                        <td class="price-cell">$200</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-calendar-day"></i> <span data-i18n="price.daily_8h">Theo ngày (8 giờ)</span></td>
+                                        <td class="price-cell">$300</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Price Table - Airport -->
+                        <div class="price-table airport-price">
+                            <table class="car-price-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="price.route">Tuyến Đường</th>
+                                        <th data-i18n="price.price">Giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Khách sạn TPHCM</td>
+                                        <td class="price-cell">$80</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Biên Hòa</td>
+                                        <td class="price-cell">$200</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Bình Dương</td>
+                                        <td class="price-cell">$280</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Tây Ninh</td>
+                                        <td class="price-cell">$290</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Hồ Tràm, Vũng Tàu</td>
+                                        <td class="price-cell">$300</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class="car-features">
                             <div class="feature">
                                 <i class="fas fa-users"></i>
@@ -258,6 +331,7 @@
                                 <span data-i18n="car.fuel">Diesel</span>
                             </div>
                         </div>
+                        
                         <div class="car-footer">
                             <a href="car-detail-s-class.html" class="btn btn-secondary">
                                 <span data-i18n="car.learn_more">Tìm Hiểu Thêm</span>
@@ -284,7 +358,67 @@
                                 <span>4.8</span>
                             </div>
                         </div>
-                        <p class="car-description" data-i18n="car.e_class_desc">Cân bằng hoàn hảo giữa sang trọng và thể thao</p>
+                        
+                        <!-- Price Table - Hourly -->
+                        <div class="price-table hourly-price active">
+                            <table class="car-price-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="price.time">Thời Gian</th>
+                                        <th data-i18n="price.rental">Giá Thuê</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-clock"></i> <span data-i18n="price.hourly">Theo giờ</span></td>
+                                        <td class="price-cell">$30<span data-i18n="price.per_hour">/giờ</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-clock"></i> <span data-i18n="price.min_4h">4 giờ (tối thiểu)</span></td>
+                                        <td class="price-cell">$120</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-calendar-day"></i> <span data-i18n="price.daily_8h">Theo ngày (8 giờ)</span></td>
+                                        <td class="price-cell">$200</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Price Table - Airport -->
+                        <div class="price-table airport-price">
+                            <table class="car-price-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="price.route">Tuyến Đường</th>
+                                        <th data-i18n="price.price">Giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Khách sạn TPHCM</td>
+                                        <td class="price-cell">$65</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Biên Hòa</td>
+                                        <td class="price-cell">$150</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Bình Dương</td>
+                                        <td class="price-cell">$180</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Tây Ninh</td>
+                                        <td class="price-cell">$190</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Hồ Tràm, Vũng Tàu</td>
+                                        <td class="price-cell">$200</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class="car-features">
                             <div class="feature">
                                 <i class="fas fa-users"></i>
@@ -299,6 +433,7 @@
                                 <span data-i18n="car.fuel">Xăng</span>
                             </div>
                         </div>
+                        
                         <div class="car-footer">
                             <a href="car-detail-e-class.html" class="btn btn-secondary">
                                 <span data-i18n="car.learn_more">Tìm Hiểu Thêm</span>
@@ -325,7 +460,67 @@
                                 <span>4.8</span>
                             </div>
                         </div>
-                        <p class="car-description" data-i18n="car.v_class_desc">Xe gia đình sang trọng cho nhóm lớn</p>
+                        
+                        <!-- Price Table - Hourly -->
+                        <div class="price-table hourly-price active">
+                            <table class="car-price-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="price.time">Thời Gian</th>
+                                        <th data-i18n="price.rental">Giá Thuê</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-clock"></i> <span data-i18n="price.hourly">Theo giờ</span></td>
+                                        <td class="price-cell">$60<span data-i18n="price.per_hour">/giờ</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-clock"></i> <span data-i18n="price.min_4h">4 giờ (tối thiểu)</span></td>
+                                        <td class="price-cell">$210</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-calendar-day"></i> <span data-i18n="price.daily_8h">Theo ngày (8 giờ)</span></td>
+                                        <td class="price-cell">$310</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Price Table - Airport -->
+                        <div class="price-table airport-price">
+                            <table class="car-price-table">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="price.route">Tuyến Đường</th>
+                                        <th data-i18n="price.price">Giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Khách sạn TPHCM</td>
+                                        <td class="price-cell">$90</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Biên Hòa</td>
+                                        <td class="price-cell">$210</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Bình Dương</td>
+                                        <td class="price-cell">$290</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Tây Ninh</td>
+                                        <td class="price-cell">$300</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-map-marker-alt"></i> TSN → Hồ Tràm, Vũng Tàu</td>
+                                        <td class="price-cell">$310</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class="car-features">
                             <div class="feature">
                                 <i class="fas fa-users"></i>
@@ -340,6 +535,7 @@
                                 <span data-i18n="car.fuel">Diesel</span>
                             </div>
                         </div>
+                        
                         <div class="car-footer">
                             <a href="car-detail-v-class.html" class="btn btn-secondary">
                                 <span data-i18n="car.learn_more">Tìm Hiểu Thêm</span>
@@ -575,9 +771,9 @@
                         <span>Đặt Xe Ngay</span>
                         <i class="fas fa-arrow-right"></i>
                     </a>
-                    <a href="tel:+84901234567" class="btn btn-secondary btn-large">
+                    <a href="tel:+84903776578" class="btn btn-secondary btn-large">
                         <i class="fas fa-phone"></i>
-                        <span>090 123 4567</span>
+                        <span>0903776578</span>
                     </a>
                 </div>
             </div>
@@ -590,9 +786,9 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <span>BOOKCARVIP</span>
+                        <span>CARVIP VIET NAM CO.,LTD</span>
                     </div>
-                    <p class="footer-description">
+                    <p class="footer-description" data-i18n="footer.description">
                         Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
                     </p>
                     <div class="footer-social">
@@ -603,37 +799,37 @@
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h3 class="footer-title">Dịch Vụ</h3>
+                    <h3 class="footer-title" data-i18n="footer.services_title">Dịch Vụ</h3>
                     <ul class="footer-links">
-                        <li><a href="fleet.html">Dòng Xe</a></li>
-                        <li><a href="booking.html">Đặt Xe</a></li>
-                        <li><a href="#trusted-clients">Khách Hàng Thân Thiết</a></li>
-                        <li><a href="#">Hợp Đồng Dài Hạn</a></li>
+                        <li><a href="fleet.html" data-i18n="nav.fleet">Dòng Xe</a></li>
+                        <li><a href="booking.html" data-i18n="nav.booking">Đặt Xe</a></li>
+                        <li><a href="#trusted-clients" data-i18n="nav.trusted_clients">Khách Hàng Thân Thiết</a></li>
+                        <li><a href="#" data-i18n="nav.services">Dịch Vụ</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3 class="footer-title">Công Ty</h3>
+                    <h3 class="footer-title" data-i18n="footer.company_title">Công Ty</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Về Chúng Tôi</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Tuyển Dụng</a></li>
-                        <li><a href="contact.html">Liên Hệ</a></li>
+                        <li><a href="#" data-i18n="footer.about">Về Chúng Tôi</a></li>
+                        <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+                        <li><a href="#" data-i18n="footer.careers">Tuyển Dụng</a></li>
+                        <li><a href="contact.html" data-i18n="nav.contact">Liên Hệ</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3 class="footer-title">Liên Hệ</h3>
+                    <h3 class="footer-title" data-i18n="footer.contact_title">Liên Hệ</h3>
                     <ul class="footer-contact">
                         <li>
                             <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Nguyễn Huệ, Q1, TP.HCM</span>
+                            <span>Melody Residences 869 Âu Cơ - TP.HCM.</span>
                         </li>
                         <li>
                             <i class="fas fa-phone"></i>
-                            <span>090 123 4567</span>
+                            <span>Zalo/Whatsapp: 0903776578</span>
                         </li>
                         <li>
                             <i class="fas fa-envelope"></i>
-                            <span>info@mercedesrental.vn</span>
+                            <span>infobook@carvip.vn</span>
                         </li>
                     </ul>
                 </div>
@@ -641,9 +837,9 @@
             <div class="footer-bottom">
                 <p data-i18n="footer.copyright">&copy; 2024 Mercedes Luxury Rental. All rights reserved.</p>
                 <div class="footer-bottom-links">
-                    <a href="#">Điều Khoản</a>
-                    <a href="#">Chính Sách</a>
-                    <a href="#">Bảo Mật</a>
+                    <a href="#" data-i18n="footer.terms">Điều Khoản</a>
+                    <a href="#" data-i18n="footer.policy">Chính Sách</a>
+                    <a href="#" data-i18n="footer.privacy">Bảo Mật</a>
                 </div>
             </div>
         </div>
