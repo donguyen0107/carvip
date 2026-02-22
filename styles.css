@@ -1,4 +1,4 @@
-/* ===== ROOT VARIABLES ===== */
+﻿/* ===== ROOT VARIABLES ===== */
 :root {
     /* Colors - Dark Mode Theme (Black Background) */
     --color-primary: #000000;
@@ -239,6 +239,26 @@ button {
     text-transform: uppercase;
 }
 
+.nav-logo a {
+    font-size: 1.5rem;
+    font-weight: 900;
+    background: var(--gradient-chrome);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: shimmer 4s ease-in-out infinite;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: var(--transition-base);
+    cursor: pointer;
+}
+
+.nav-logo a:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
 .nav-logo i {
     font-size: 1.75rem;
     color: var(--color-white);
@@ -253,6 +273,7 @@ button {
     display: flex;
     gap: var(--spacing-md);
     align-items: center;
+    justify-content: center;
 }
 
 .nav-link {
@@ -683,6 +704,129 @@ button {
     min-height: 90px;
     display: flex;
     align-items: center;
+}
+
+/* ===== PRICE SWITCHER ===== */
+.price-switcher {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.price-switch-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background-color: var(--color-secondary);
+    color: var(--color-gray);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.price-switch-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.price-switch-btn.active {
+    background: var(--gradient-primary);
+    color: var(--color-white);
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+}
+
+.price-switch-btn i {
+    font-size: 1.2rem;
+}
+
+/* ===== PRICE TABLE ===== */
+.price-table {
+    display: none;
+    margin-bottom: var(--spacing-sm);
+}
+
+.price-table.active {
+    display: block;
+}
+
+.car-price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.car-price-table thead {
+    background: var(--gradient-primary);
+}
+
+.car-price-table thead th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.car-price-table tbody tr {
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color var(--transition-base);
+}
+
+.car-price-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.car-price-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.car-price-table td {
+    padding: 0.75rem;
+    color: var(--color-gray);
+    font-size: 0.9rem;
+}
+
+.car-price-table td i {
+    color: var(--color-accent);
+    margin-right: 0.25rem;
+}
+
+.car-price-table .price-cell {
+    text-align: right;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    font-size: 1rem;
+}
+
+.price-note {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: rgba(255, 215, 0, 0.1);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--color-gray);
+    margin-bottom: var(--spacing-sm);
+}
+
+.price-note i {
+    color: var(--color-accent);
 }
 
 .car-features {
@@ -1865,5 +2009,218 @@ select.form-control {
 
     .pricing-table tbody td strong {
         font-size: 15px;
+    }
+}
+
+/* ===== CONTACT PAGE - SINGLE BOX DESIGN ===== */
+.contact-hero {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    padding: 8rem 0 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%);
+}
+
+.contact-hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-hero-description {
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.contact-section {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+}
+
+/* Single Contact Box */
+.contact-box {
+    max-width: 800px;
+    margin: 3rem auto;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5),
+                0 0 40px rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ffffff 0%, #e8e8e8 50%, #ffffff 100%);
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+}
+
+.contact-box:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,255,255,0.25);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6),
+                0 0 60px rgba(255,255,255,0.1);
+}
+
+/* Contact Info Item */
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.contact-info-item:first-child {
+    padding-top: 0;
+}
+
+.contact-info-item:last-child {
+    padding-bottom: 0;
+}
+
+/* Contact Icon */
+.contact-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #ffffff 0%, #e8e8e8 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #000000;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+
+.contact-box:hover .contact-icon {
+    transform: scale(1.05) rotate(-5deg);
+    box-shadow: 0 12px 30px rgba(255,255,255,0.3);
+}
+
+/* Contact Details */
+.contact-details {
+    flex: 1;
+}
+
+.contact-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0 0 0.75rem 0;
+}
+
+.contact-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    line-height: 1.6;
+}
+
+.contact-value:hover {
+    color: #ffffff;
+    transform: translateX(5px);
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+
+a.contact-value {
+    background: linear-gradient(90deg, #ffffff 0%, #e8e8e8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: shimmer 4s ease-in-out infinite;
+}
+
+a.contact-value:hover {
+    -webkit-text-fill-color: #ffffff;
+    background: none;
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+}
+
+/* Contact Divider */
+.contact-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-hero {
+        padding: 6rem 0 3rem;
+    }
+
+    .contact-hero-title {
+        font-size: 2.5rem;
+    }
+
+    .contact-box {
+        padding: 2rem;
+        margin: 2rem 1rem;
+    }
+
+    .contact-info-item {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem 0;
+    }
+
+    .contact-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.75rem;
+    }
+
+    .contact-value {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-box {
+        padding: 1.5rem;
+    }
+
+    .contact-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .contact-value {
+        font-size: 1.1rem;
     }
 }

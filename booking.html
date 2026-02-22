@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,14 +13,15 @@
     <header class="header scrolled" id="header">
         <nav class="nav container">
             <div class="nav-logo">
-                <span>CARVIP VIET NAM CO.,LTD</span>
+                <a href="index.html">BOOKCARVIP</a>
             </div>
             <div class="nav-menu" id="nav-menu">
-                <ul class="nav-list">
+                                <ul class="nav-list">
                     <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav.home">Trang Chủ</a></li>
                     <li class="nav-item"><a href="fleet.html" class="nav-link" data-i18n="nav.fleet">Dòng Xe</a></li>
                     <li class="nav-item"><a href="index.html#services" class="nav-link" data-i18n="nav.services">Dịch Vụ</a></li>
-                    <li class="nav-item"><a href="index.html#pricing" class="nav-link" data-i18n="nav.pricing">Bảng Giá</a></li>
+                    <li class="nav-item"><a href="index.html#trusted-clients" class="nav-link" data-i18n="nav.trusted_clients">Khách Hàng Thân Thiết</a></li>
+                    <li class="nav-item"><a href="index.html#reviews" class="nav-link" data-i18n="nav.reviews">Đánh Giá</a></li>
                     <li class="nav-item"><a href="blog.html" class="nav-link" data-i18n="nav.blog">Blog</a></li>
                     <li class="nav-item"><a href="contact.html" class="nav-link" data-i18n="nav.contact">Liên Hệ</a></li>
                 </ul>
@@ -123,22 +124,8 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label" data-i18n="booking.driver_service">
-                                    <i class="fas fa-user-tie"></i>
-                                    Dịch Vụ Tài Xế
-                                </label>
-                                <div class="radio-group">
-                                    <label class="radio-label">
-                                        <input type="radio" name="driver" value="with-driver" checked>
-                                        <span data-i18n="booking.with_driver">Có tài xế</span>
-                                    </label>
-                                    <label class="radio-label">
-                                        <input type="radio" name="driver" value="self-drive">
-                                        <span data-i18n="booking.self_drive">Tự lái</span>
-                                    </label>
-                                </div>
-                            </div>
+                            <!-- Dịch vụ chỉ có tài xế (không hiển thị option) -->
+                            <input type="hidden" name="driver" value="with-driver">
 
                             <button type="button" class="btn btn-primary btn-block btn-next" onclick="nextStep(2)" data-i18n="booking.next">
                                 <span>Tiếp Theo</span>
@@ -179,13 +166,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label" for="id-number" data-i18n="booking.id_number">
-                                    <i class="fas fa-id-card"></i>
-                                    CMND/CCCD
-                                </label>
-                                <input type="text" class="form-control" id="id-number" data-i18n-placeholder="booking.id_placeholder" placeholder="001234567890" required>
-                            </div>
+                            <!-- Đã xóa field CMND/CCCD -->
 
                             <div class="form-group">
                                 <label class="form-label" for="pickup-location" data-i18n="booking.location">

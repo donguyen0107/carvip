@@ -406,6 +406,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// ===== PRICE TABLE SWITCHER =====
+document.addEventListener('DOMContentLoaded', function() {
+    const priceSwitchBtns = document.querySelectorAll('.price-switch-btn');
+    
+    priceSwitchBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const priceType = this.getAttribute('data-price-type');
+            
+            // Update active button
+            priceSwitchBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Update all price tables
+            const hourlyTables = document.querySelectorAll('.hourly-price');
+            const airportTables = document.querySelectorAll('.airport-price');
+            
+            if (priceType === 'hourly') {
+                hourlyTables.forEach(table => table.classList.add('active'));
+                airportTables.forEach(table => table.classList.remove('active'));
+            } else if (priceType === 'airport') {
+                hourlyTables.forEach(table => table.classList.remove('active'));
+                airportTables.forEach(table => table.classList.add('active'));
+            }
+        });
+    });
+});
+
 // ===== CONSOLE LOG (Remove in production) =====
 console.log('%c🚗 Mercedes Luxury Rental Website Loaded Successfully!', 
     'color: #1a1a1a; font-size: 16px; font-weight: bold; background: #f5f5f5; padding: 10px;');

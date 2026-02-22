@@ -398,11 +398,11 @@ form.addEventListener('submit', async (e) => {
         duration: durationInput.value,
         pickupDate: pickupDateInput.value,
         returnDate: returnDateInput.value,
-        driver: document.querySelector('input[name="driver"]:checked').value,
+        driver: document.querySelector('input[name="driver"]').value, // Always "with-driver"
         fullName: document.getElementById('full-name').value,
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
-        idNumber: document.getElementById('id-number').value,
+        // idNumber removed - không yêu cầu CMND/CCCD
         pickupLocation: document.getElementById('pickup-location').value,
         returnLocation: document.getElementById('return-location').value,
         services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value),

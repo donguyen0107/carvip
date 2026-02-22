@@ -67,10 +67,10 @@ async function sendBookingEmail(bookingData) {
             return_date: formatDateTime(bookingData.returnDate),
             pickup_location: bookingData.pickupLocation,
             return_location: bookingData.returnLocation || bookingData.pickupLocation,
-            driver: bookingData.driver === 'with-driver' ? 'Có tài xế' : 'Tự lái',
+            driver: 'Có tài xế', // Chỉ có dịch vụ có tài xế
             services: bookingData.services.length > 0 ? bookingData.services.join(', ') : 'Không có',
             special_requests: bookingData.specialRequests || 'Không có',
-            id_number: bookingData.idNumber,
+            // id_number đã bỏ - không yêu cầu CMND/CCCD
             booking_date: new Date().toLocaleString('vi-VN'),
             booking_id: `MB${Date.now()}`
         };
@@ -168,7 +168,6 @@ Có booking mới từ website!
 - Họ tên: {{from_name}}
 - Email: {{from_email}}
 - Điện thoại: {{phone}}
-- CMND/CCCD: {{id_number}}
 
 🚗 THÔNG TIN ĐẶT XE:
 - Dòng xe: {{car_type}}

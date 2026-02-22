@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -339,16 +339,17 @@
     <header class="header scrolled" id="header">
         <nav class="nav container">
             <div class="nav-logo">
-                <span>CARVIP VIET NAM CO.,LTD</span>
+                <a href="index.html">BOOKCARVIP</a>
             </div>
             <div class="nav-menu" id="nav-menu">
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="index.html" class="nav-link">Trang Chủ</a></li>
-                    <li class="nav-item"><a href="fleet.html" class="nav-link active">Dòng Xe</a></li>
-                    <li class="nav-item"><a href="index.html#services" class="nav-link">Dịch Vụ</a></li>
-                    <li class="nav-item"><a href="index.html#pricing" class="nav-link">Bảng Giá</a></li>
-                    <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-                    <li class="nav-item"><a href="contact.html" class="nav-link">Liên Hệ</a></li>
+                                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav.home">Trang Chủ</a></li>
+                    <li class="nav-item"><a href="fleet.html" class="nav-link" data-i18n="nav.fleet">Dòng Xe</a></li>
+                    <li class="nav-item"><a href="index.html#services" class="nav-link" data-i18n="nav.services">Dịch Vụ</a></li>
+                    <li class="nav-item"><a href="index.html#trusted-clients" class="nav-link" data-i18n="nav.trusted_clients">Khách Hàng Thân Thiết</a></li>
+                    <li class="nav-item"><a href="index.html#reviews" class="nav-link" data-i18n="nav.reviews">Đánh Giá</a></li>
+                    <li class="nav-item"><a href="blog.html" class="nav-link" data-i18n="nav.blog">Blog</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link" data-i18n="nav.contact">Liên Hệ</a></li>
                 </ul>
                 <div class="nav-close" id="nav-close">
                     <i class="fas fa-times"></i>
@@ -359,6 +360,10 @@
                     <i class="fas fa-phone"></i>
                     <span>0903776578</span>
                 </a>
+                <div class="language-switcher">
+                    <button class="lang-btn" data-lang="vi">VN</button>
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                </div>
                 <a href="booking.html" class="btn btn-primary btn-nav">Đặt Xe Ngay</a>
                 <div class="nav-toggle" id="nav-toggle">
                     <i class="fas fa-bars"></i>
@@ -687,6 +692,6 @@
         <i class="fas fa-chevron-up"></i>
     </button>
 
-    <script src="script.js"></script>
+        <script src="i18n.js"></script>`n<script src="script.js"></script>
 </body>
 </html>
