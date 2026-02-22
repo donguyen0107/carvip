@@ -297,9 +297,9 @@
 
     <script src="script.js"></script>
     <script>
-        // Get id or slug from URL
+        // Get slug or id from URL (prioritize slug)
         const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get('id') || urlParams.get('slug');
+        const postId = urlParams.get('slug') || urlParams.get('id');
 
         if (!postId) {
             window.location.href = 'blog.html';

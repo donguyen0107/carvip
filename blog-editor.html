@@ -620,20 +620,28 @@
         });
 
         // Auto-generate slug from title
+        let manualSlugEdit = false;
+        
         document.getElementById('postTitle').addEventListener('input', (e) => {
-            const slug = e.target.value
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .replace(/đ/g, 'd')
-                .replace(/[^a-z0-9\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim();
-            
-            if (!document.getElementById('postSlug').value) {
+            // Only auto-generate if user hasn't manually edited slug
+            if (!manualSlugEdit) {
+                const slug = e.target.value
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/đ/g, 'd')
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .trim();
+                
                 document.getElementById('postSlug').value = slug;
             }
+        });
+        
+        // Track manual slug edits
+        document.getElementById('postSlug').addEventListener('input', () => {
+            manualSlugEdit = true;
         });
 
         // Toggle Image Mode (URL vs Upload)
@@ -746,6 +754,7 @@
             document.getElementById('imagePreview').classList.remove('show');
             document.getElementById('postStatus').textContent = 'Chưa lưu';
             document.getElementById('lastUpdate').textContent = '-';
+            manualSlugEdit = false; // Reset slug auto-generate flag
         });
 
         // Preview post

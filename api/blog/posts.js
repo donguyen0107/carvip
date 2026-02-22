@@ -29,9 +29,9 @@ export default async function handler(req, res) {
             return res.status(200).json(posts);
         }
 
-        // POST - Tạo post mới
+        // POST - Tạo post mới hoặc cập nhật
         if (req.method === 'POST') {
-            const { title, content, excerpt, coverImage, status, author } = req.body;
+            const { id, title, slug, content, excerpt, category, image, status, author } = req.body;
 
             // Validation
             if (!title || !content) {
@@ -45,29 +45,72 @@ export default async function handler(req, res) {
             const postsData = await redis.get('blog-posts');
             const posts = postsData ? JSON.parse(postsData) : [];
 
-            // Tạo post mới
-            const post = {
-                id: Date.now().toString(),
-                title,
-                content,
-                excerpt: excerpt || content.substring(0, 150) + '...',
-                coverImage: coverImage || '',
-                status: status || 'draft',
-                author: author || 'Admin',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            };
+            // Generate slug if not provided
+            let finalSlug = slug;
+            if (!finalSlug) {
+                finalSlug = title
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .replace(/đ/g, 'd')
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-')
+                    .trim();
+            }
 
-            // Thêm vào đầu danh sách
-            posts.unshift(post);
+            // Ensure unique slug
+            let uniqueSlug = finalSlug;
+            let counter = 1;
+            while (posts.some(p => p.slug === uniqueSlug && p.id !== id)) {
+                uniqueSlug = `${finalSlug}-${counter}`;
+                counter++;
+            }
+
+            // Check if updating existing post
+            const existingIndex = posts.findIndex(p => p.id === id);
+            
+            if (existingIndex !== -1) {
+                // Update existing post
+                posts[existingIndex] = {
+                    ...posts[existingIndex],
+                    title,
+                    slug: uniqueSlug,
+                    content,
+                    excerpt: excerpt || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+                    category: category || 'tin-tuc',
+                    image: image || '',
+                    status: status || 'draft',
+                    author: author || 'Admin',
+                    updatedAt: new Date().toISOString()
+                };
+            } else {
+                // Create new post
+                const post = {
+                    id: id || Date.now().toString(),
+                    title,
+                    slug: uniqueSlug,
+                    content,
+                    excerpt: excerpt || content.replace(/<[^>]*>/g, '').substring(0, 150) + '...',
+                    category: category || 'tin-tuc',
+                    image: image || '',
+                    status: status || 'draft',
+                    author: author || 'Admin',
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                // Thêm vào đầu danh sách
+                posts.unshift(post);
+            }
 
             // Lưu vào Redis
             await redis.set('blog-posts', JSON.stringify(posts));
 
             return res.status(201).json({
                 success: true,
-                message: 'Post created successfully',
-                post: post
+                message: existingIndex !== -1 ? 'Post updated successfully' : 'Post created successfully',
+                post: posts[existingIndex !== -1 ? existingIndex : 0]
             });
         }
 
