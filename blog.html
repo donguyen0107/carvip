@@ -346,7 +346,7 @@
                     <button class="lang-btn" data-lang="vi">VN</button>
                     <button class="lang-btn active" data-lang="en">EN</button>
                 </div>
-                <a href="booking.html" class="btn btn-primary btn-nav">Đặt Xe Ngay</a>
+                <a href="booking.html" class="btn btn-primary btn-nav" data-i18n="nav.booking">Đặt Xe Ngay</a>
                 <div class="nav-toggle" id="nav-toggle">
                     <i class="fas fa-bars"></i>
                 </div>
@@ -357,8 +357,8 @@
     <!-- Hero Section -->
     <section class="blog-hero">
         <div class="container">
-            <h1 class="blog-hero-title">Blog & Tin Tức</h1>
-            <p class="blog-hero-subtitle">
+            <h1 class="blog-hero-title" data-i18n="blog.hero_title">Blog & Tin Tức</h1>
+            <p class="blog-hero-subtitle" data-i18n="blog.hero_subtitle">
                 Khám phá những bài viết hữu ích về dịch vụ thuê xe, hướng dẫn và tin tức mới nhất
             </p>
         </div>
@@ -372,12 +372,12 @@
                 <div class="blog-main">
                     <!-- Filters -->
                     <div class="blog-filters">
-                        <button class="filter-btn active" data-category="all">Tất cả</button>
-                        <button class="filter-btn" data-category="tin-tuc">Tin tức</button>
-                        <button class="filter-btn" data-category="huong-dan">Hướng dẫn</button>
-                        <button class="filter-btn" data-category="khuyen-mai">Khuyến mãi</button>
-                        <button class="filter-btn" data-category="kinh-nghiem">Kinh nghiệm</button>
-                        <button class="filter-btn" data-category="xe">Xe & Dịch vụ</button>
+                        <button class="filter-btn active" data-category="all" data-i18n="blog.filter_all">Tất cả</button>
+                        <button class="filter-btn" data-category="tin-tuc" data-i18n="blog.filter_news">Tin tức</button>
+                        <button class="filter-btn" data-category="huong-dan" data-i18n="blog.filter_guide">Hướng dẫn</button>
+                        <button class="filter-btn" data-category="khuyen-mai" data-i18n="blog.filter_promotion">Khuyến mãi</button>
+                        <button class="filter-btn" data-category="kinh-nghiem" data-i18n="blog.filter_experience">Kinh nghiệm</button>
+                        <button class="filter-btn" data-category="xe" data-i18n="blog.filter_cars">Xe & Dịch vụ</button>
                     </div>
 
                     <!-- Blog Grid -->
@@ -388,13 +388,14 @@
                 <aside class="blog-sidebar">
                     <!-- Search -->
                     <div class="sidebar-card">
-                        <h3 class="sidebar-title">Tìm kiếm</h3>
+                        <h3 class="sidebar-title" data-i18n="blog.search_title">Tìm kiếm</h3>
                         <div class="search-box">
                             <input 
                                 type="text" 
                                 id="searchInput" 
                                 class="search-input" 
                                 placeholder="Tìm kiếm bài viết..."
+                                data-i18n-placeholder="blog.search_placeholder"
                             >
                             <button class="search-btn" id="searchBtn">
                                 <i class="fas fa-search"></i>
