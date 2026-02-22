@@ -12,11 +12,16 @@
     <!-- Header & Navigation -->
     <header class="header scrolled" id="header">
         <nav class="nav container">
-            <div class="nav-logo">
-                <a href="index.html">BOOKCARVIP</a>
+            <div class="nav-left">
+                <div class="nav-toggle" id="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="nav-logo">
+                    <a href="index.html">BOOKCARVIP</a>
+                </div>
             </div>
             <div class="nav-menu" id="nav-menu">
-                                <ul class="nav-list">
+                <ul class="nav-list">
                     <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav.home">Trang Chủ</a></li>
                     <li class="nav-item"><a href="fleet.html" class="nav-link" data-i18n="nav.fleet">Dòng Xe</a></li>
                     <li class="nav-item"><a href="index.html#services" class="nav-link" data-i18n="nav.services">Dịch Vụ</a></li>
@@ -38,9 +43,7 @@
                     <button class="lang-btn" data-lang="vi">VN</button>
                     <button class="lang-btn active" data-lang="en">EN</button>
                 </div>
-                <div class="nav-toggle" id="nav-toggle">
-                    <i class="fas fa-bars"></i>
-                </div>
+                <a href="booking.html" class="btn btn-primary btn-nav" data-i18n="nav.booking">Đặt Xe Ngay</a>
             </div>
         </nav>
     </header>
@@ -73,13 +76,10 @@
                                     Dòng Xe
                                 </label>
                                 <select class="form-control" id="car-type" required>
-                                    <option value="" data-i18n="booking.select_car">-- Chọn dòng xe --</option>
-                                    <option value="s-class" data-i18n="booking.s_class">Mercedes S-Class (Sedan cao cấp)</option>
-                                    <option value="e-class" data-i18n="booking.e_class">Mercedes E-Class (Sedan hạng sang)</option>
-                                    <option value="c-class" data-i18n="booking.c_class">Mercedes C-Class (Sedan thể thao)</option>
-                                    <option value="gls" data-i18n="booking.gls">Mercedes GLS (SUV 7 chỗ)</option>
-                                    <option value="gle" data-i18n="booking.gle">Mercedes GLE (SUV 5 chỗ)</option>
-                                    <option value="glc" data-i18n="booking.glc">Mercedes GLC (SUV compact)</option>
+                                    <option value="">-- Select Car Type --</option>
+                                    <option value="e-class">Mercedes E-Class</option>
+                                    <option value="v-class">Mercedes V-Class</option>
+                                    <option value="s-class">Mercedes S-Class</option>
                                 </select>
                             </div>
 
@@ -90,19 +90,33 @@
                                         Loại Thuê
                                     </label>
                                     <select class="form-control" id="rental-type" required>
-                                        <option value="" data-i18n="booking.select_rental">-- Chọn loại thuê --</option>
-                                        <option value="hourly" data-i18n="pricing.hourly">Theo Giờ (tối thiểu 4h)</option>
-                                        <option value="daily" data-i18n="pricing.daily">Theo Ngày (8h/ngày)</option>
-                                        <option value="monthly" data-i18n="pricing.monthly">Theo Tháng</option>
+                                        <option value="">-- Select Rental Type --</option>
+                                        <option value="hourly">Hourly Rental</option>
+                                        <option value="airport">Airport Transfer</option>
                                     </select>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="duration-group">
                                     <label class="form-label" for="duration" data-i18n="booking.duration_label">
                                         <i class="fas fa-calendar"></i>
                                         Thời Gian
                                     </label>
                                     <input type="number" class="form-control" id="duration" min="1" data-i18n-placeholder="booking.duration_placeholder" placeholder="Nhập số lượng" required>
+                                </div>
+                                
+                                <div class="form-group" id="destination-group" style="display: none;">
+                                    <label class="form-label" for="destination">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        Destination
+                                    </label>
+                                    <select class="form-control" id="destination">
+                                        <option value="">-- Select Destination --</option>
+                                        <option value="hotel-tphcm">TSN Airport → Hotel HCMC</option>
+                                        <option value="bien-hoa">TSN Airport → Bien Hoa</option>
+                                        <option value="binh-duong">TSN Airport → Binh Duong</option>
+                                        <option value="tay-ninh">TSN Airport → Tay Ninh</option>
+                                        <option value="vung-tau">TSN Airport → Ho Tram, Vung Tau</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -110,15 +124,15 @@
                                 <div class="form-group">
                                     <label class="form-label" for="pickup-date" data-i18n="booking.pickup_date">
                                         <i class="fas fa-calendar-alt"></i>
-                                        Ngày Nhận Xe
+                                        Pickup Date
                                     </label>
                                     <input type="datetime-local" class="form-control" id="pickup-date" required>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="return-date-group">
                                     <label class="form-label" for="return-date" data-i18n="booking.return_date">
                                         <i class="fas fa-calendar-check"></i>
-                                        Ngày Trả Xe
+                                        Return Date
                                     </label>
                                     <input type="datetime-local" class="form-control" id="return-date" required>
                                 </div>
@@ -196,45 +210,21 @@
                             </div>
                         </div>
 
-                        <!-- Step 3: Additional Services -->
+                        <!-- Step 3: Special Requests -->
                         <div class="form-step" data-step="3">
-                            <h2 class="form-step-title" data-i18n="booking.step_payment">
+                            <h2 class="form-step-title">
                                 <span class="step-number">3</span>
-                                Dịch Vụ Bổ Sung
+                                Special Requests
                             </h2>
 
                             <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <span data-i18n="booking.additional_services">Chọn Dịch Vụ Thêm</span>
+                                <label class="form-label" for="special-requests">
+                                    <i class="fas fa-comment"></i>
+                                    Customer Requirements
                                 </label>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="services" value="baby-seat">
-                                        <span data-i18n="booking.baby_seat">Ghế em bé (+200.000đ/ngày)</span>
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="services" value="wifi">
-                                        <span data-i18n="booking.wifi_service">Wifi 4G trên xe (+100.000đ/ngày)</span>
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="services" value="airport">
-                                        <span data-i18n="booking.airport_transfer">Đón/tiễn sân bay (+500.000đ)</span>
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="services" value="decoration">
-                                        <span data-i18n="booking.wedding_decoration">Trang trí xe cưới (+2.000.000đ)</span>
-                                    </label>
-                                </div>
+                                <textarea class="form-control" id="special-requests" rows="6" placeholder="Please enter any special requirements or requests here..."></textarea>
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label" for="special-requests" data-i18n="booking.special_requests">
-                                    <i class="fas fa-comment"></i>
-                                    Yêu Cầu Đặc Biệt
-                                </label>
-                                <textarea class="form-control" id="special-requests" rows="4" data-i18n-placeholder="booking.special_requests" placeholder="Nhập các yêu cầu đặc biệt của bạn..."></textarea>
-                            </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="promo-code" data-i18n="booking.promo_code">
@@ -298,29 +288,16 @@
                         </div>
                     </div>
 
-                    <div class="summary-section" id="services-summary" style="display: none;">
-                        <h4 class="summary-subtitle" data-i18n="booking.additional_services">Dịch vụ bổ sung:</h4>
-                        <div id="summary-services-list"></div>
-                    </div>
-
                     <div class="summary-divider"></div>
 
                     <div class="summary-pricing">
                         <div class="summary-item">
-                            <span class="summary-label" data-i18n="booking.base_price">Giá cơ bản:</span>
-                            <span class="summary-value" id="summary-base-price">0đ</span>
-                        </div>
-                        <div class="summary-item" id="discount-row" style="display: none;">
-                            <span class="summary-label" data-i18n="booking.discount">Giảm giá:</span>
-                            <span class="summary-value discount" id="summary-discount">0đ</span>
-                        </div>
-                        <div class="summary-item" id="services-price-row" style="display: none;">
-                            <span class="summary-label" data-i18n="booking.services_price">Dịch vụ thêm:</span>
-                            <span class="summary-value" id="summary-services-price">0đ</span>
+                            <span class="summary-label">Base Price:</span>
+                            <span class="summary-value" id="summary-base-price">$0</span>
                         </div>
                         <div class="summary-total">
-                            <span class="summary-label" data-i18n="booking.total">Tổng cộng:</span>
-                            <span class="summary-value" id="summary-total">0đ</span>
+                            <span class="summary-label">Total:</span>
+                            <span class="summary-value" id="summary-total">$0</span>
                         </div>
                     </div>
 

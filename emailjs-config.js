@@ -6,16 +6,15 @@
 // 4. Lấy các keys và điền vào đây
 
 const EMAILJS_CONFIG = {
-    // Thay YOUR_PUBLIC_KEY bằng Public Key từ EmailJS Dashboard
+    // Public Key từ EmailJS Dashboard
     publicKey: 'Gfej9tcaaQEDJ0ASz',
     
-    // Thay YOUR_SERVICE_ID bằng Service ID từ EmailJS Dashboard  
+    // Service ID - Đã cấu hình
     serviceId: 'service_c1fcyxa',
     
-    // Thay YOUR_TEMPLATE_ID bằng Template ID từ EmailJS Dashboard
-    // ⚠️ LƯU Ý: Template ID phải tồn tại trong EmailJS Dashboard
-    // Vào https://dashboard.emailjs.com/admin/templates để kiểm tra
-    templateId: 'template_p1atqb7',  // ← THAY ĐỔI Template ID MỚI TẠI ĐÂY
+    // Template ID - Đã cấu hình
+    // ✅ Template này phải có các variables: {{from_name}}, {{from_email}}, {{phone}}, {{car_type}}, {{rental_type}}, {{duration}}, {{destination}}, {{pickup_date}}, {{return_date}}, {{pickup_location}}, {{return_location}}, {{special_requests}}, {{promo_code}}, {{total_price}}, {{booking_date}}, {{booking_id}}
+    templateId: 'template_p1atqb7',
     
     // Email admin nhận thông báo
     adminEmail: 'donguyen072010@gmail.com'
@@ -54,25 +53,24 @@ async function sendBookingEmail(bookingData) {
             };
         }
 
-        // Prepare email template parameters
+        // Prepare email template parameters - ALL fields must have valid values
         const templateParams = {
-            to_email: EMAILJS_CONFIG.adminEmail,
-            from_name: bookingData.fullName,
-            from_email: bookingData.email,
-            phone: bookingData.phone,
-            car_type: getCarName(bookingData.carType),
-            rental_type: getRentalTypeName(bookingData.rentalType),
-            duration: bookingData.duration,
-            pickup_date: formatDateTime(bookingData.pickupDate),
-            return_date: formatDateTime(bookingData.returnDate),
-            pickup_location: bookingData.pickupLocation,
-            return_location: bookingData.returnLocation || bookingData.pickupLocation,
-            driver: 'Có tài xế', // Chỉ có dịch vụ có tài xế
-            services: bookingData.services.length > 0 ? bookingData.services.join(', ') : 'Không có',
-            special_requests: bookingData.specialRequests || 'Không có',
-            // id_number đã bỏ - không yêu cầu CMND/CCCD
-            booking_date: new Date().toLocaleString('vi-VN'),
-            booking_id: `MB${Date.now()}`
+            from_name: String(bookingData.fullName || 'N/A'),
+            from_email: String(bookingData.email || 'N/A'),
+            phone: String(bookingData.phone || 'N/A'),
+            car_type: String(getCarName(bookingData.carType)),
+            rental_type: String(getRentalTypeName(bookingData.rentalType)),
+            duration: String(bookingData.duration || 'N/A'),
+            destination: String(bookingData.destination || 'N/A'),
+            pickup_date: String(formatDateTime(bookingData.pickupDate)),
+            return_date: String(bookingData.returnDate ? formatDateTime(bookingData.returnDate) : 'N/A'),
+            pickup_location: String(bookingData.pickupLocation || 'N/A'),
+            return_location: String(bookingData.returnLocation || bookingData.pickupLocation || 'N/A'),
+            special_requests: String(bookingData.specialRequests || 'None'),
+            promo_code: String(bookingData.promoCode || 'None'),
+            total_price: String(bookingData.totalPrice || '0'),
+            booking_date: String(new Date().toLocaleString('en-US')),
+            booking_id: String('BK' + Date.now())
         };
         
         console.log('📧 Sending email with params:', templateParams);
@@ -109,33 +107,31 @@ async function sendBookingEmail(bookingData) {
 // Helper functions
 function getCarName(carType) {
     const carNames = {
-        's-class': 'Mercedes S-Class',
         'e-class': 'Mercedes E-Class',
-        'c-class': 'Mercedes C-Class',
-        'gls': 'Mercedes GLS',
-        'gle': 'Mercedes GLE',
-        'glc': 'Mercedes GLC'
+        'v-class': 'Mercedes V-Class',
+        's-class': 'Mercedes S-Class'
     };
     return carNames[carType] || carType;
 }
 
 function getRentalTypeName(rentalType) {
     const types = {
-        'hourly': 'Theo giờ',
-        'daily': 'Theo ngày',
-        'monthly': 'Theo tháng'
+        'hourly': 'Hourly Rental',
+        'airport': 'Airport Transfer'
     };
     return types[rentalType] || rentalType;
 }
 
 function formatDateTime(dateString) {
+    if (!dateString) return 'N/A';
     const date = new Date(dateString);
-    return date.toLocaleString('vi-VN', {
+    return date.toLocaleString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
+        hour12: true
     });
 }
 

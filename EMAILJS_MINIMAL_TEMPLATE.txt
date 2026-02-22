@@ -1,0 +1,80 @@
+========================================
+EMAILJS MINIMAL TEMPLATE (GUARANTEED TO WORK)
+========================================
+
+INSTRUCTIONS:
+1. Go to https://dashboard.emailjs.com/admin/templates/template_p1atqb7
+2. Click "Edit" on your template
+3. DELETE EVERYTHING in the content area
+4. Copy ONLY the content between the === lines below
+5. Paste into EmailJS template editor
+6. Click "Save"
+7. Test from booking form
+
+========================================
+COPY THIS EXACT TEMPLATE:
+========================================
+
+Subject: New Booking - {{booking_id}}
+
+Hello Admin,
+
+You have received a new booking request:
+
+CUSTOMER:
+Name: {{from_name}}
+Email: {{from_email}}
+Phone: {{phone}}
+
+BOOKING:
+Car: {{car_type}}
+Type: {{rental_type}}
+Duration: {{duration}}
+Destination: {{destination}}
+
+SCHEDULE:
+Pickup Date: {{pickup_date}}
+Return Date: {{return_date}}
+Pickup Location: {{pickup_location}}
+Return Location: {{return_location}}
+
+ADDITIONAL:
+Special Requests: {{special_requests}}
+Promo Code: {{promo_code}}
+
+TOTAL PRICE: {{total_price}}
+
+Booking ID: {{booking_id}}
+Booked on: {{booking_date}}
+
+---
+BookCarVIP - Luxury Car Rental Service
+
+========================================
+END OF TEMPLATE
+========================================
+
+VARIABLES USED (16 total):
+✅ {{from_name}}
+✅ {{from_email}}
+✅ {{phone}}
+✅ {{car_type}}
+✅ {{rental_type}}
+✅ {{duration}}
+✅ {{destination}}
+✅ {{pickup_date}}
+✅ {{return_date}}
+✅ {{pickup_location}}
+✅ {{return_location}}
+✅ {{special_requests}}
+✅ {{promo_code}}
+✅ {{total_price}}
+✅ {{booking_date}}
+✅ {{booking_id}}
+
+IMPORTANT NOTES:
+- This is plain text (no HTML)
+- All variables use simple {{variable}} syntax
+- No conditionals, no loops, no special formatting
+- If it still fails, the issue is in EmailJS template editor itself
+- Make sure there are NO extra spaces in variable names: {{from_name}} not {{ from_name }}

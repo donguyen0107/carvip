@@ -23,13 +23,94 @@ const summaryDiscount = document.getElementById('summary-discount');
 const summaryServicesPrice = document.getElementById('summary-services-price');
 const summaryTotal = document.getElementById('summary-total');
 
-// Service prices
-const servicePrices = {
-    'baby-seat': 200000,
-    'wifi': 100000,
-    'airport': 500000,
-    'decoration': 2000000
+
+// Pricing according to bg.txt (in USD)
+const hourlyPrices = {
+    'e-class': {
+        hourly: 30,
+        minimum: 120, // 4 hours minimum
+        daily: 200    // 8 hours
+    },
+    's-class': {
+        hourly: 50,
+        minimum: 200, // 4 hours minimum
+        daily: 300    // 8 hours
+    },
+    'v-class': {
+        hourly: 60,
+        minimum: 210, // 4 hours minimum
+        daily: 310    // 8 hours
+    }
 };
+
+const airportPrices = {
+    'e-class': {
+        'hotel-tphcm': 65,
+        'bien-hoa': 150,
+        'binh-duong': 180,
+        'tay-ninh': 190,
+        'vung-tau': 200
+    },
+    's-class': {
+        'hotel-tphcm': 80,
+        'bien-hoa': 200,
+        'binh-duong': 280,
+        'tay-ninh': 290,
+        'vung-tau': 300
+    },
+    'v-class': {
+        'hotel-tphcm': 90,
+        'bien-hoa': 210,
+        'binh-duong': 290,
+        'tay-ninh': 300,
+        'vung-tau': 310
+    }
+};
+
+// Toggle destination/duration fields based on rental type
+if (rentalTypeSelect) {
+    rentalTypeSelect.addEventListener('change', function() {
+        const durationGroup = document.getElementById('duration-group');
+        const destinationGroup = document.getElementById('destination-group');
+        const returnDateGroup = document.getElementById('return-date-group');
+        const destinationSelect = document.getElementById('destination');
+        const durationInput = document.getElementById('duration');
+        const returnDateInput = document.getElementById('return-date');
+        
+        if (this.value === 'airport') {
+            // Show destination, hide duration and return date
+            durationGroup.style.display = 'none';
+            destinationGroup.style.display = 'block';
+            returnDateGroup.style.display = 'none';
+            durationInput.removeAttribute('required');
+            returnDateInput.removeAttribute('required');
+            destinationSelect.setAttribute('required', 'required');
+        } else {
+            // Show duration and return date, hide destination
+            durationGroup.style.display = 'block';
+            destinationGroup.style.display = 'none';
+            returnDateGroup.style.display = 'block';
+            durationInput.setAttribute('required', 'required');
+            returnDateInput.setAttribute('required', 'required');
+            destinationSelect.removeAttribute('required');
+        }
+        
+        updateSummary();
+    });
+}
+
+// Update summary when destination changes
+const destinationSelect = document.getElementById('destination');
+if (destinationSelect) {
+    destinationSelect.addEventListener('change', updateSummary);
+}
+
+// Update summary on input changes
+if (carTypeSelect) carTypeSelect.addEventListener('change', updateSummary);
+if (durationInput) durationInput.addEventListener('input', updateSummary);
+if (pickupDateInput) pickupDateInput.addEventListener('change', updateSummary);
+if (returnDateInput) returnDateInput.addEventListener('change', updateSummary);
+
 
 // ===== STEP NAVIGATION =====
 function nextStep(step) {
@@ -146,43 +227,31 @@ function updateSummary() {
     const carType = carTypeSelect.value;
     const rentalType = rentalTypeSelect.value;
     const duration = parseInt(durationInput.value) || 0;
+    const destination = document.getElementById('destination') ? document.getElementById('destination').value : '';
     
     if (carType) {
         let carText = carTypeSelect.options[carTypeSelect.selectedIndex].text;
-        // Try to use i18n for car type display
-        if (typeof t === 'function') {
-            if (carType === 's-class') carText = t('booking.s_class');
-            else if (carType === 'e-class') carText = t('booking.e_class');
-            else if (carType === 'c-class') carText = t('booking.c_class');
-            else if (carType === 'gls') carText = t('booking.gls');
-            else if (carType === 'gle') carText = t('booking.gle');
-            else if (carType === 'glc') carText = t('booking.glc');
-        }
         summaryCar.textContent = carText;
     }
     
     if (rentalType) {
         let rentalText = rentalTypeSelect.options[rentalTypeSelect.selectedIndex].text;
-        // Try to use i18n for rental type display
-        if (typeof t === 'function') {
-            if (rentalType === 'hourly') rentalText = t('booking.rental_hourly');
-            else if (rentalType === 'daily') rentalText = t('booking.rental_daily');
-            else if (rentalType === 'monthly') rentalText = t('booking.rental_monthly');
-        }
         summaryRental.textContent = rentalText;
         
-        let durationText = duration;
-        if (typeof t === 'function') {
-            if (rentalType === 'hourly') durationText += ' ' + t('booking.hourly_unit');
-            else if (rentalType === 'daily') durationText += ' ' + t('booking.daily_unit');
-            else if (rentalType === 'monthly') durationText += ' ' + t('booking.monthly_unit');
+        // Update duration/destination display
+        if (rentalType === 'airport' && destination) {
+            const destSelect = document.getElementById('destination');
+            const destText = destSelect.options[destSelect.selectedIndex].text;
+            summaryDuration.textContent = destText;
+        } else if (rentalType === 'hourly') {
+            let durationText = duration + ' hours';
+            if (duration >= 8) {
+                durationText = Math.floor(duration / 8) + ' day(s)';
+            }
+            summaryDuration.textContent = durationText;
         } else {
-            if (rentalType === 'hourly') durationText += ' giờ';
-            else if (rentalType === 'daily') durationText += ' ngày';
-            else if (rentalType === 'monthly') durationText += ' tháng';
+            summaryDuration.textContent = duration;
         }
-        
-        summaryDuration.textContent = durationText;
     }
     
     // Dates
@@ -205,76 +274,43 @@ function calculateTotalPrice() {
     const carType = carTypeSelect.value;
     const rentalType = rentalTypeSelect.value;
     const duration = parseInt(durationInput.value) || 0;
+    const destination = document.getElementById('destination') ? document.getElementById('destination').value : '';
     
-    if (!carType || !rentalType || !duration) {
+    let basePrice = 0;
+    
+    if (rentalType === 'hourly') {
+        if (!carType || !duration) return;
+        
+        const pricing = hourlyPrices[carType];
+        if (!pricing) return;
+        
+        if (duration >= 8) {
+            // Use daily rate for 8+ hours
+            const days = Math.floor(duration / 8);
+            basePrice = pricing.daily * days;
+        } else if (duration >= 4) {
+            // Use hourly rate for 4-7 hours
+            basePrice = pricing.hourly * duration;
+        } else {
+            // Minimum 4 hours
+            basePrice = pricing.minimum;
+        }
+    } else if (rentalType === 'airport') {
+        if (!carType || !destination) return;
+        
+        const pricing = airportPrices[carType];
+        if (!pricing || !pricing[destination]) return;
+        
+        basePrice = pricing[destination];
+    } else {
         return;
     }
     
-    // Get base price
-    const priceResult = window.carRental.calculatePrice(carType, duration, rentalType);
-    
-    // Calculate additional services
-    let servicesTotal = 0;
-    const selectedServices = document.querySelectorAll('input[name="services"]:checked');
-    
-    selectedServices.forEach(service => {
-        const serviceValue = service.value;
-        let servicePrice = servicePrices[serviceValue] || 0;
-        
-        // Multiply by duration for daily services
-        if (rentalType === 'daily' && (serviceValue === 'baby-seat' || serviceValue === 'wifi')) {
-            servicePrice *= duration;
-        }
-        
-        servicesTotal += servicePrice;
-    });
-    
-    // Update summary
-    summaryBasePrice.textContent = window.carRental.formatCurrency(priceResult.basePrice);
-    
-    if (priceResult.discount > 0) {
-        document.getElementById('discount-row').style.display = 'flex';
-        summaryDiscount.textContent = `-${window.carRental.formatCurrency(priceResult.discountAmount)}`;
-    } else {
-        document.getElementById('discount-row').style.display = 'none';
-    }
-    
-    if (servicesTotal > 0) {
-        document.getElementById('services-price-row').style.display = 'flex';
-        summaryServicesPrice.textContent = window.carRental.formatCurrency(servicesTotal);
-    } else {
-        document.getElementById('services-price-row').style.display = 'none';
-    }
-    
-    const finalTotal = priceResult.finalPrice + servicesTotal;
-    summaryTotal.textContent = window.carRental.formatCurrency(finalTotal);
-    
-    // Update services list
-    updateServicesList(selectedServices);
+    // Update summary - use USD format
+    summaryBasePrice.textContent = '$' + basePrice.toFixed(0);
+    summaryTotal.textContent = '$' + basePrice.toFixed(0);
 }
 
-// ===== UPDATE SERVICES LIST =====
-function updateServicesList(selectedServices) {
-    const servicesList = document.getElementById('summary-services-list');
-    const servicesSection = document.getElementById('services-summary');
-    
-    if (selectedServices.length > 0) {
-        servicesSection.style.display = 'block';
-        servicesList.innerHTML = '';
-        
-        selectedServices.forEach(service => {
-            const serviceLabel = service.parentElement.querySelector('span').textContent;
-            const div = document.createElement('div');
-            div.className = 'summary-item';
-            div.innerHTML = `
-                <span class="summary-label">• ${serviceLabel.split('(')[0]}</span>
-            `;
-            servicesList.appendChild(div);
-        });
-    } else {
-        servicesSection.style.display = 'none';
-    }
-}
 
 // ===== FORMAT DATE =====
 function formatDate(date) {
@@ -392,22 +428,27 @@ form.addEventListener('submit', async (e) => {
     console.log('✅ All validations passed!');
     
     // Get form data
+    const rentalType = rentalTypeSelect.value;
+    const destination = document.getElementById('destination') ? document.getElementById('destination').value : '';
+    
     const formData = {
         carType: carTypeSelect.value,
-        rentalType: rentalTypeSelect.value,
-        duration: durationInput.value,
+        carTypeName: carTypeSelect.options[carTypeSelect.selectedIndex].text,
+        rentalType: rentalType,
+        rentalTypeName: rentalTypeSelect.options[rentalTypeSelect.selectedIndex].text,
+        duration: rentalType === 'hourly' ? durationInput.value : '',
+        destination: rentalType === 'airport' ? destination : '',
+        destinationName: rentalType === 'airport' && destination ? document.getElementById('destination').options[document.getElementById('destination').selectedIndex].text : '',
         pickupDate: pickupDateInput.value,
-        returnDate: returnDateInput.value,
-        driver: document.querySelector('input[name="driver"]').value, // Always "with-driver"
+        returnDate: rentalType === 'hourly' ? returnDateInput.value : '',
         fullName: document.getElementById('full-name').value,
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
-        // idNumber removed - không yêu cầu CMND/CCCD
         pickupLocation: document.getElementById('pickup-location').value,
         returnLocation: document.getElementById('return-location').value,
-        services: Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value),
         specialRequests: document.getElementById('special-requests').value,
-        promoCode: document.getElementById('promo-code').value
+        promoCode: document.getElementById('promo-code').value,
+        totalPrice: summaryTotal.textContent
     };
     
     // Show loading state

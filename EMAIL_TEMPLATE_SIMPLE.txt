@@ -1,0 +1,60 @@
+================================================================
+🎉 NEW BOOKING RECEIVED - BOOKCARVIP
+================================================================
+
+📋 BOOKING ID: {{booking_id}}
+📅 Received: {{booking_date}}
+
+----------------------------------------------------------------
+👤 CUSTOMER INFORMATION
+----------------------------------------------------------------
+Name:     {{from_name}}
+Email:    {{from_email}}
+Phone:    {{phone}}
+
+----------------------------------------------------------------
+🚗 BOOKING DETAILS
+----------------------------------------------------------------
+Car Type:      {{car_type}}
+Rental Type:   {{rental_type}}
+{{#if_not_na duration}}Duration:      {{duration}} hours{{/if_not_na}}
+{{#if_not_na destination}}Destination:   {{destination}}{{/if_not_na}}
+Pickup Date:   {{pickup_date}}
+{{#if_not_na return_date}}Return Date:   {{return_date}}{{/if_not_na}}
+
+----------------------------------------------------------------
+📍 LOCATION DETAILS
+----------------------------------------------------------------
+Pickup:   {{pickup_location}}
+Return:   {{return_location}}
+
+{{#if_not_none special_requests}}----------------------------------------------------------------
+💬 SPECIAL REQUESTS
+----------------------------------------------------------------
+{{special_requests}}
+{{/if_not_none}}
+
+{{#if_not_none promo_code}}----------------------------------------------------------------
+🎫 PROMO CODE
+----------------------------------------------------------------
+{{promo_code}}
+{{/if_not_none}}
+
+----------------------------------------------------------------
+💰 TOTAL PRICE
+----------------------------------------------------------------
+{{total_price}}
+
+================================================================
+⚠️ ACTION REQUIRED
+================================================================
+Please contact customer within 30 minutes to confirm booking.
+
+📞 Call:  {{phone}}
+✉️ Email: {{from_email}}
+
+================================================================
+BOOKCARVIP - LUXURY CAR RENTAL SERVICE
+Melody Residences, 869 Âu Cơ, TP.HCM
+📞 0903 776 578 | ✉️ infobook@carvip.vn
+================================================================

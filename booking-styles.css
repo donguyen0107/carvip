@@ -504,38 +504,211 @@ textarea.form-control {
 @media (max-width: 968px) {
     .booking-container {
         grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+        padding: 0;
     }
     
     .booking-summary {
         position: relative;
         top: 0;
         order: -1;
+        margin-bottom: var(--spacing-md);
     }
     
     .form-row {
         grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .booking-form {
+        padding: var(--spacing-md);
+    }
+    
+    /* Form inputs - Better touch targets */
+    .form-control,
+    select.form-control,
+    textarea.form-control {
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+        min-height: 48px;
+        border-radius: 10px;
+    }
+    
+    textarea.form-control {
+        min-height: 120px;
+    }
+    
+    /* Labels - Better visibility */
+    .form-label {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Buttons - Full width */
+    .btn-block {
+        padding: 1.125rem;
+        font-size: 1.05rem;
+        min-height: 52px;
+    }
+    
+    /* Summary items */
+    .summary-item {
+        padding: 0.875rem 0;
+    }
+    
+    .summary-label {
+        font-size: 0.95rem;
+    }
+    
+    .summary-value {
+        font-size: 1rem;
+    }
+    
+    .summary-total .summary-value {
+        font-size: 1.5rem;
     }
 }
 
 @media (max-width: 640px) {
     .booking-hero {
-        padding: 6rem 0 2rem;
+        padding: 5rem 0 2rem;
+    }
+    
+    .booking-hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .booking-hero-description {
+        font-size: 1rem;
     }
     
     .booking-form-wrapper {
-        padding: var(--spacing-md);
+        padding: 1rem;
+    }
+    
+    .booking-form {
+        padding: 1.5rem 1rem;
+    }
+    
+    .booking-summary {
+        padding: 1.5rem 1rem;
     }
     
     .form-step-title {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-step-description {
+        font-size: 0.9rem;
+    }
+    
+    /* Form controls - Extra padding for phone */
+    .form-control,
+    select.form-control,
+    textarea.form-control {
+        padding: 1rem;
+        font-size: 1rem;
+        min-height: 50px;
+    }
+    
+    select.form-control {
+        background-size: 16px;
+        background-position: right 0.75rem center;
+        padding-right: 2.5rem;
+    }
+    
+    textarea.form-control {
+        min-height: 140px;
+    }
+    
+    /* Form group spacing */
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Buttons - Touch friendly */
+    .btn {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        min-height: 50px;
+    }
+    
+    .btn-block {
+        padding: 1.25rem;
+        font-size: 1.1rem;
+        min-height: 54px;
     }
     
     .form-actions {
         flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
     }
     
     .promo-input {
         flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .promo-input input {
+        width: 100%;
+    }
+    
+    .promo-input .btn {
+        width: 100%;
+    }
+    
+    /* Summary */
+    .summary-header h3 {
+        font-size: 1.25rem;
+    }
+    
+    .summary-item {
+        padding: 0.75rem 0;
+    }
+    
+    .summary-label {
+        font-size: 0.9rem;
+    }
+    
+    .summary-value {
+        font-size: 0.95rem;
+    }
+    
+    .summary-total {
+        padding: 1rem 0 0.5rem;
+    }
+    
+    .summary-total .summary-label {
+        font-size: 1.1rem;
+    }
+    
+    .summary-total .summary-value {
+        font-size: 1.75rem;
+    }
+    
+    /* Step indicator - Compact */
+    .step-indicator {
+        margin-bottom: 1.5rem;
+    }
+    
+    .step {
+        font-size: 0.75rem;
+    }
+    
+    .step-number {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
     }
 }
 
