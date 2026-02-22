@@ -25,10 +25,8 @@ export default async function handler(req, res) {
             const postsData = await redis.get('blog-posts');
             const posts = postsData ? JSON.parse(postsData) : [];
             
-            return res.status(200).json({
-                success: true,
-                posts: posts
-            });
+            // Return array directly (not wrapped in object)
+            return res.status(200).json(posts);
         }
 
         // POST - Tạo post mới

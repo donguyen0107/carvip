@@ -845,7 +845,8 @@
                 });
 
                 if (response.ok) {
-                    const posts = await response.json();
+                    const data = await response.json();
+                    const posts = Array.isArray(data) ? data : (data.posts || []);
                     displayPosts(posts);
                 }
             } catch (error) {
@@ -893,7 +894,8 @@
                 });
 
                 if (response.ok) {
-                    const post = await response.json();
+                    const data = await response.json();
+                    const post = data.post || data;
                     document.getElementById('postId').value = post.id;
                     document.getElementById('postTitle').value = post.title;
                     document.getElementById('postSlug').value = post.slug;

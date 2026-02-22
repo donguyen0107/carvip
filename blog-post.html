@@ -310,7 +310,7 @@
             try {
                 console.log('📥 Đang tải bài viết từ Vercel KV...');
                 
-                const response = await fetch('/api/posts');
+                const response = await fetch('/api/blog/posts');
                 
                 if (response.ok) {
                     const posts = await response.json();

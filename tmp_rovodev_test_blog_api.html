@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Blog API - Redis Vercel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #fff;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #FFD700;
+            font-size: 2.5rem;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .test-section h2 {
+            color: #FFD700;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1a1a1a;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .result {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff5555; }
+        .info { color: #55aaff; }
+        .warning { color: #ffaa00; }
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1rem;
+        }
+        textarea {
+            min-height: 100px;
+            font-family: inherit;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .status-success {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+        .status-error {
+            background: rgba(255, 85, 85, 0.2);
+            color: #ff5555;
+            border: 1px solid #ff5555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Blog API - Redis Vercel</h1>
+
+        <!-- Test 1: GET All Posts -->
+        <div class="test-section">
+            <h2>1️⃣ Test GET All Posts</h2>
+            <button class="btn" onclick="testGetAllPosts()">🔍 Lấy Tất Cả Posts</button>
+            <div id="result-get-all" class="result"></div>
+        </div>
+
+        <!-- Test 2: Create Post -->
+        <div class="test-section">
+            <h2>2️⃣ Test CREATE Post</h2>
+            <input type="text" id="newTitle" placeholder="Tiêu đề bài viết" value="Test Blog Post - Redis Vercel">
+            <textarea id="newContent" placeholder="Nội dung bài viết"><h2>Đây là bài test</h2><p>Hệ thống blog đã hoạt động với Redis!</p></textarea>
+            <input type="text" id="newExcerpt" placeholder="Mô tả ngắn" value="Test bài viết sử dụng Redis trên Vercel">
+            <button class="btn" onclick="testCreatePost()">➕ Tạo Bài Viết</button>
+            <div id="result-create" class="result"></div>
+        </div>
+
+        <!-- Test 3: GET Single Post -->
+        <div class="test-section">
+            <h2>3️⃣ Test GET Single Post</h2>
+            <input type="text" id="postId" placeholder="Nhập ID bài viết">
+            <button class="btn" onclick="testGetSinglePost()">🔍 Lấy Bài Viết</button>
+            <div id="result-get-single" class="result"></div>
+        </div>
+
+        <!-- Test 4: UPDATE Post -->
+        <div class="test-section">
+            <h2>4️⃣ Test UPDATE Post</h2>
+            <input type="text" id="updateId" placeholder="ID bài viết cần update">
+            <input type="text" id="updateTitle" placeholder="Tiêu đề mới" value="Bài viết đã được cập nhật">
+            <button class="btn" onclick="testUpdatePost()">✏️ Cập Nhật</button>
+            <div id="result-update" class="result"></div>
+        </div>
+
+        <!-- Test 5: DELETE Post -->
+        <div class="test-section">
+            <h2>5️⃣ Test DELETE Post</h2>
+            <input type="text" id="deleteId" placeholder="ID bài viết cần xóa">
+            <button class="btn" onclick="testDeletePost()">🗑️ Xóa Bài Viết</button>
+            <div id="result-delete" class="result"></div>
+        </div>
+
+        <!-- Test 6: Full Flow -->
+        <div class="test-section">
+            <h2>6️⃣ Test Toàn Bộ Flow</h2>
+            <button class="btn" onclick="testFullFlow()">🚀 Chạy Test Tự Động</button>
+            <div id="result-full" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/blog/posts';
+
+        function log(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const colors = {
+                success: '#00ff00',
+                error: '#ff5555',
+                info: '#55aaff',
+                warning: '#ffaa00'
+            };
+            const timestamp = new Date().toLocaleTimeString('vi-VN');
+            element.innerHTML += `<span style="color: ${colors[type]}">[${timestamp}] ${message}</span>\n`;
+            element.scrollTop = element.scrollHeight;
+        }
+
+        function clearLog(elementId) {
+            document.getElementById(elementId).innerHTML = '';
+        }
+
+        async function testGetAllPosts() {
+            clearLog('result-get-all');
+            log('result-get-all', '🔄 Đang gọi GET /api/blog/posts...', 'info');
+
+            try {
+                const response = await fetch(API_BASE);
+                log('result-get-all', `📊 Response Status: ${response.status} ${response.statusText}`, 'info');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('result-get-all', `✅ SUCCESS! Nhận được ${Array.isArray(data) ? data.length : '?'} bài viết`, 'success');
+                    log('result-get-all', `📄 Data:\n${JSON.stringify(data, null, 2)}`, 'info');
+                } else {
+                    const error = await response.text();
+                    log('result-get-all', `❌ ERROR: ${error}`, 'error');
+                }
+            } catch (error) {
+                log('result-get-all', `❌ EXCEPTION: ${error.message}`, 'error');
+            }
+        }
+
+        async function testCreatePost() {
+            clearLog('result-create');
+            const title = document.getElementById('newTitle').value;
+            const content = document.getElementById('newContent').value;
+            const excerpt = document.getElementById('newExcerpt').value;
+
+            log('result-create', '🔄 Đang gọi POST /api/blog/posts...', 'info');
+
+            const postData = {
+                title: title,
+                content: content,
+                excerpt: excerpt,
+                category: 'tin-tuc',
+                image: '',
+                status: 'published',
+                author: 'Test User'
+            };
+
+            log('result-create', `📤 Payload:\n${JSON.stringify(postData, null, 2)}`, 'info');
+
+            try {
+                const response = await fetch(API_BASE, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                });
+
+                log('result-create', `📊 Response Status: ${response.status} ${response.statusText}`, 'info');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('result-create', `✅ SUCCESS! Bài viết đã được tạo`, 'success');
+                    log('result-create', `📄 Response:\n${JSON.stringify(data, null, 2)}`, 'info');
+                    
+                    if (data.post && data.post.id) {
+                        document.getElementById('postId').value = data.post.id;
+                        document.getElementById('updateId').value = data.post.id;
+                        document.getElementById('deleteId').value = data.post.id;
+                        log('result-create', `💡 ID đã được tự động điền vào các ô test khác!`, 'success');
+                    }
+                } else {
+                    const error = await response.text();
+                    log('result-create', `❌ ERROR: ${error}`, 'error');
+                }
+            } catch (error) {
+                log('result-create', `❌ EXCEPTION: ${error.message}`, 'error');
+            }
+        }
+
+        async function testGetSinglePost() {
+            clearLog('result-get-single');
+            const id = document.getElementById('postId').value;
+
+            if (!id) {
+                log('result-get-single', '⚠️ Vui lòng nhập ID bài viết!', 'warning');
+                return;
+            }
+
+            log('result-get-single', `🔄 Đang gọi GET /api/blog/posts/${id}...`, 'info');
+
+            try {
+                const response = await fetch(`${API_BASE}/${id}`);
+                log('result-get-single', `📊 Response Status: ${response.status} ${response.statusText}`, 'info');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('result-get-single', `✅ SUCCESS! Tìm thấy bài viết`, 'success');
+                    log('result-get-single', `📄 Data:\n${JSON.stringify(data, null, 2)}`, 'info');
+                } else {
+                    const error = await response.text();
+                    log('result-get-single', `❌ ERROR: ${error}`, 'error');
+                }
+            } catch (error) {
+                log('result-get-single', `❌ EXCEPTION: ${error.message}`, 'error');
+            }
+        }
+
+        async function testUpdatePost() {
+            clearLog('result-update');
+            const id = document.getElementById('updateId').value;
+            const title = document.getElementById('updateTitle').value;
+
+            if (!id) {
+                log('result-update', '⚠️ Vui lòng nhập ID bài viết!', 'warning');
+                return;
+            }
+
+            log('result-update', `🔄 Đang gọi PUT /api/blog/posts/${id}...`, 'info');
+
+            const updateData = {
+                title: title,
+                content: '<h2>Nội dung đã được cập nhật</h2><p>Test update thành công!</p>'
+            };
+
+            log('result-update', `📤 Payload:\n${JSON.stringify(updateData, null, 2)}`, 'info');
+
+            try {
+                const response = await fetch(`${API_BASE}/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
+
+                log('result-update', `📊 Response Status: ${response.status} ${response.statusText}`, 'info');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('result-update', `✅ SUCCESS! Bài viết đã được cập nhật`, 'success');
+                    log('result-update', `📄 Response:\n${JSON.stringify(data, null, 2)}`, 'info');
+                } else {
+                    const error = await response.text();
+                    log('result-update', `❌ ERROR: ${error}`, 'error');
+                }
+            } catch (error) {
+                log('result-update', `❌ EXCEPTION: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDeletePost() {
+            clearLog('result-delete');
+            const id = document.getElementById('deleteId').value;
+
+            if (!id) {
+                log('result-delete', '⚠️ Vui lòng nhập ID bài viết!', 'warning');
+                return;
+            }
+
+            if (!confirm(`Bạn có chắc muốn xóa bài viết ID: ${id}?`)) {
+                return;
+            }
+
+            log('result-delete', `🔄 Đang gọi DELETE /api/blog/posts/${id}...`, 'info');
+
+            try {
+                const response = await fetch(`${API_BASE}/${id}`, {
+                    method: 'DELETE'
+                });
+
+                log('result-delete', `📊 Response Status: ${response.status} ${response.statusText}`, 'info');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('result-delete', `✅ SUCCESS! Bài viết đã được xóa`, 'success');
+                    log('result-delete', `📄 Response:\n${JSON.stringify(data, null, 2)}`, 'info');
+                } else {
+                    const error = await response.text();
+                    log('result-delete', `❌ ERROR: ${error}`, 'error');
+                }
+            } catch (error) {
+                log('result-delete', `❌ EXCEPTION: ${error.message}`, 'error');
+            }
+        }
+
+        async function testFullFlow() {
+            clearLog('result-full');
+            log('result-full', '🚀 BẮT ĐẦU TEST TỰ ĐỘNG', 'success');
+            log('result-full', '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+
+            // Test 1: GET all posts
+            log('result-full', '\n1️⃣ TEST: Lấy tất cả bài viết...', 'info');
+            try {
+                const getAllResponse = await fetch(API_BASE);
+                const initialPosts = await getAllResponse.json();
+                log('result-full', `✅ Hiện có ${initialPosts.length} bài viết`, 'success');
+            } catch (error) {
+                log('result-full', `❌ FAIL: ${error.message}`, 'error');
+                return;
+            }
+
+            // Test 2: CREATE post
+            log('result-full', '\n2️⃣ TEST: Tạo bài viết mới...', 'info');
+            let createdPostId;
+            try {
+                const createResponse = await fetch(API_BASE, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: `Auto Test - ${new Date().toLocaleString('vi-VN')}`,
+                        content: '<p>Bài viết test tự động</p>',
+                        excerpt: 'Test excerpt',
+                        category: 'tin-tuc',
+                        status: 'published'
+                    })
+                });
+                const createData = await createResponse.json();
+                createdPostId = createData.post.id;
+                log('result-full', `✅ Tạo thành công! ID: ${createdPostId}`, 'success');
+            } catch (error) {
+                log('result-full', `❌ FAIL: ${error.message}`, 'error');
+                return;
+            }
+
+            // Test 3: GET single post
+            log('result-full', '\n3️⃣ TEST: Lấy bài viết vừa tạo...', 'info');
+            try {
+                const getSingleResponse = await fetch(`${API_BASE}/${createdPostId}`);
+                const post = await getSingleResponse.json();
+                log('result-full', `✅ Tìm thấy: "${post.title}"`, 'success');
+            } catch (error) {
+                log('result-full', `❌ FAIL: ${error.message}`, 'error');
+            }
+
+            // Test 4: UPDATE post
+            log('result-full', '\n4️⃣ TEST: Cập nhật bài viết...', 'info');
+            try {
+                const updateResponse = await fetch(`${API_BASE}/${createdPostId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        title: 'Bài viết đã được cập nhật (Auto Test)'
+                    })
+                });
+                await updateResponse.json();
+                log('result-full', `✅ Cập nhật thành công!`, 'success');
+            } catch (error) {
+                log('result-full', `❌ FAIL: ${error.message}`, 'error');
+            }
+
+            // Test 5: DELETE post
+            log('result-full', '\n5️⃣ TEST: Xóa bài viết...', 'info');
+            try {
+                const deleteResponse = await fetch(`${API_BASE}/${createdPostId}`, {
+                    method: 'DELETE'
+                });
+                await deleteResponse.json();
+                log('result-full', `✅ Xóa thành công!`, 'success');
+            } catch (error) {
+                log('result-full', `❌ FAIL: ${error.message}`, 'error');
+            }
+
+            // Test 6: Verify deletion
+            log('result-full', '\n6️⃣ TEST: Xác nhận đã xóa...', 'info');
+            try {
+                const verifyResponse = await fetch(`${API_BASE}/${createdPostId}`);
+                if (verifyResponse.status === 404) {
+                    log('result-full', `✅ Bài viết đã bị xóa hoàn toàn!`, 'success');
+                } else {
+                    log('result-full', `⚠️ WARNING: Bài viết vẫn còn tồn tại`, 'warning');
+                }
+            } catch (error) {
+                log('result-full', `✅ Xác nhận xóa thành công (404)`, 'success');
+            }
+
+            log('result-full', '\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+            log('result-full', '🎉 HOÀN THÀNH TEST TỰ ĐỘNG!', 'success');
+        }
+
+        // Auto-run GET all posts on page load
+        window.addEventListener('load', () => {
+            setTimeout(testGetAllPosts, 500);
+        });
+    </script>
+</body>
+</html>

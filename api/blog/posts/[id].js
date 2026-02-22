@@ -44,10 +44,8 @@ export default async function handler(req, res) {
                 });
             }
 
-            return res.status(200).json({
-                success: true,
-                post: post
-            });
+            // Return post directly
+            return res.status(200).json(post);
         }
 
         // PUT - Cập nhật post
