@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -251,47 +251,6 @@
             color: var(--color-white);
         }
 
-        /* Related Cars */
-        .related-cars {
-            margin-top: 1.5rem;
-        }
-
-        .related-car-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--color-accent);
-            border-radius: 10px;
-            border: 1px solid var(--color-border);
-            margin-bottom: 1rem;
-            text-decoration: none;
-            transition: var(--transition-base);
-        }
-
-        .related-car-item:hover {
-            border-color: var(--color-white);
-            transform: translateX(5px);
-        }
-
-        .related-car-img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .related-car-info h4 {
-            color: var(--color-white);
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .related-car-info p {
-            color: var(--color-gray);
-            font-size: 0.875rem;
-            margin: 0;
-        }
-
         /* Gallery */
         .gallery-grid {
             display: grid;
@@ -376,14 +335,14 @@
     <section class="detail-hero">
         <div class="container">
             <h1 class="detail-hero-title">Mercedes V-Class</h1>
-            <p class="detail-hero-subtitle">Xe Gia Đình Sang Trọng Cho Nhóm Lớn</p>
+            <p class="detail-hero-subtitle" data-i18n="vclass.subtitle">Xe Gia Đình Sang Trọng Cho Nhóm Lớn</p>
             <div class="detail-hero-actions">
                 <a href="booking.html?car=v-class" class="btn btn-primary btn-large">
-                    <span>Đặt Xe Ngay</span>
+                    <span data-i18n="detail.book_now">Đặt Xe Ngay</span>
                     <i class="fas fa-arrow-right"></i>
                 </a>
                 <a href="#specifications" class="btn btn-secondary btn-large">
-                    <span>Xem Thông Số</span>
+                    <span data-i18n="detail.view_specs">Xem Thông Số</span>
                     <i class="fas fa-chevron-down"></i>
                 </a>
             </div>
@@ -400,72 +359,66 @@
 
                     <!-- Introduction -->
                     <div class="article-section">
-                        <h2>Giới thiệu xe</h2>
-                        <p>
-                            Mercedes V-Class là dòng xe cao cấp dành cho gia đình, nhóm khách hoặc doanh nghiệp, với không gian rộng rãi, chỗ ngồi thoải mái và khoang hành lý lớn. Lý tưởng cho đưa đón sân bay, du lịch và di chuyển đường dài.
-                        </p>
+                        <h2 data-i18n="detail.introduction">Giới thiệu xe</h2>
+                        <p><span data-i18n="vclass.intro">Mercedes V-Class là dòng xe MPV cao cấp, phù hợp cho gia đình, nhóm bạn hoặc đoàn công tác từ 4-7 người.</span></p>
                     </div>
 
                     <!-- Driver Service -->
                     <div class="article-section">
-                        <h2>Dịch vụ tài xế riêng</h2>
-                        <p>
-                            Dịch vụ Mercedes V-Class có tài xế riêng phù hợp cho nhóm từ 4–6 khách, đảm bảo an toàn, đúng giờ và tiện nghi. Tài xế giàu kinh nghiệm, hỗ trợ hành lý và lịch trình linh hoạt theo nhu cầu khách hàng.
-                        </p>
+                        <h2 data-i18n="detail.driver_service">Dịch vụ tài xế riêng</h2>
+                        <p><span data-i18n="vclass.driver_service_desc">Dịch vụ tài xế riêng Mercedes V-Class đáp ứng tiêu chuẩn phục vụ cao cấp.</span></p>
                     </div>
 
                     <!-- Gallery Section -->
                     <div class="article-section">
-                        <h2>Hình ảnh xe & nội thất</h2>
-                        <p>
-                            Xem hình ảnh ngoại thất và nội thất Mercedes V-Class, thể hiện rõ không gian rộng rãi và tiện nghi cho nhóm khách.
-                        </p>
+                        <h2 data-i18n="detail.gallery">Hình ảnh xe & nội thất</h2>
+                        <p><span data-i18n="vclass.gallery_desc">Khám phá hình ảnh ngoại thất sang trọng và nội thất rộng rãi của Mercedes V-Class.</span></p>
                     </div>
 
                     <!-- Key Features -->
                     <div class="article-section">
-                        <h2>Điểm Nổi Bật</h2>
+                        <h2 data-i18n="detail.key_features">Điểm Nổi Bật</h2>
                         <ul>
                             <li>
                                 <i class="fas fa-chairs"></i>
                                 <div>
-                                    <strong>Không Gian Rộng Rãi</strong>
-                                    <span>7 chỗ ngồi, khoang hành lý lớn, ghế ngồi có thể điều chỉnh</span>
+                                    <strong data-i18n="vclass.spacious_space">Không Gian Rộng Rãi</strong>
+                                    <span data-i18n="vclass.spacious_space_desc">7 chỗ ngồi, khoang hành lý lớn, ghế ngồi có thể điều chỉnh</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-shield-alt"></i>
                                 <div>
-                                    <strong>An Toàn Tối Đa</strong>
-                                    <span>Hệ thống an toàn chủ động PRE-SAFE®, 8 túi khí, camera 360°</span>
+                                    <strong data-i18n="feature.maximum_safety">An Toàn Tối Đa</strong>
+                                    <span data-i18n="vclass.safety_desc">Hệ thống an toàn chủ động PRE-SAFE®, 8 túi khí, camera 360°</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-rocket"></i>
                                 <div>
-                                    <strong>Động Cơ Mạnh Mẽ</strong>
-                                    <span>Diesel 4 cylinders, 1.950cc, 163 PS, tăng tốc 0-100km/h trong 10.7 giây</span>
+                                    <strong data-i18n="feature.powerful_engine">Động Cơ Mạnh Mẽ</strong>
+                                    <span data-i18n="vclass.engine_desc">Diesel 4 cylinders, 1.950cc, 163 PS, tăng tốc 0-100km/h trong 10.7 giây</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-laptop"></i>
                                 <div>
-                                    <strong>Công Nghệ Hiện Đại</strong>
-                                    <span>MBUX với AI, màn hình cảm ứng 10.25 inch, Head-up Display</span>
+                                    <strong data-i18n="vclass.modern_tech">Công Nghệ Hiện Đại</strong>
+                                    <span data-i18n="vclass.modern_tech_desc">MBUX với AI, màn hình cảm ứng 10.25 inch, Head-up Display</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-spa"></i>
                                 <div>
-                                    <strong>Tiện Nghi Đỉnh Cao</strong>
-                                    <span>Khử mùi ion hóa, hệ thống âm thanh cao cấp, cửa sổ trời panorama</span>
+                                    <strong data-i18n="feature.premium_comfort">Tiện Nghi Đỉnh Cao</strong>
+                                    <span data-i18n="vclass.comfort_desc">Khử mùi ion hóa, hệ thống âm thanh cao cấp, cửa sổ trời panorama</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-road"></i>
                                 <div>
-                                    <strong>Lái Xe Thoải Mái</strong>
-                                    <span>Hệ thống treo Airmatic, Cruise Control thích ứng, hỗ trợ lái</span>
+                                    <strong data-i18n="vclass.comfortable_driving">Lái Xe Thoải Mái</strong>
+                                    <span data-i18n="vclass.comfortable_driving_desc">Hệ thống treo Airmatic, Cruise Control thích ứng, hỗ trợ lái</span>
                                 </div>
                             </li>
                         </ul>
@@ -473,72 +426,72 @@
 
                     <!-- Technical Specifications -->
                     <div class="article-section" id="specifications">
-                        <h2>Thông Số Kỹ Thuật</h2>
+                        <h2 data-i18n="detail.specifications">Thông Số Kỹ Thuật</h2>
                         <div class="specs-grid">
                             <div class="spec-card">
                                 <i class="fas fa-engine"></i>
-                                <h4>Động Cơ</h4>
+                                <h4 data-i18n="spec.engine">Động Cơ</h4>
                                 <p>Diesel 4 cylinders<br>163 PS / 380 Nm</p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-tachometer-alt"></i>
-                                <h4>Tăng Tốc</h4>
-                                <p>0-100 km/h<br>10.7 giây</p>
+                                <h4 data-i18n="spec.acceleration">Tăng Tốc</h4>
+                                <p>0-100 km/h<br>10.7 <span data-i18n="spec.seconds">giây</span></p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-gauge-high"></i>
-                                <h4>Tốc Độ Tối Đa</h4>
-                                <p>220 km/h<br>(giới hạn điện tử)</p>
+                                <h4 data-i18n="spec.top_speed">Tốc Độ Tối Đa</h4>
+                                <p>220 km/h<br><span data-i18n="spec.electronic_limit">(giới hạn điện tử)</span></p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-gas-pump"></i>
-                                <h4>Tiêu Hao</h4>
+                                <h4 data-i18n="spec.fuel_consumption">Tiêu Hao</h4>
                                 <p>7.1 l/100km<br>(WLTP)</p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-cog"></i>
-                                <h4>Hộp Số</h4>
-                                <p>9G-TRONIC<br>9 cấp tự động</p>
+                                <h4 data-i18n="spec.gearbox">Hộp Số</h4>
+                                <p>9G-TRONIC<br><span data-i18n="spec.auto_gears_9">9 cấp tự động</span></p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-chairs"></i>
-                                <h4>Số Chỗ</h4>
-                                <p>7 chỗ ngồi<br>Có thể điều chỉnh</p>
+                                <h4 data-i18n="vclass.spec_seats_title">Số Chỗ</h4>
+                                <p><span data-i18n="vclass.spec_seats_desc">7 chỗ ngồi<br>Có thể điều chỉnh</span></p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Use Cases -->
                     <div class="article-section">
-                        <h2>Phù Hợp Cho</h2>
-                        <p>Mercedes V-Class là lựa chọn hoàn hảo cho các dịp:</p>
+                        <h2 data-i18n="detail.suitable_for">Phù Hợp Cho</h2>
+                        <p><span data-i18n="vclass.perfect_choice">Mercedes V-Class là lựa chọn hoàn hảo cho các dịp:</span></p>
                         <ul>
                             <li>
                                 <i class="fas fa-family"></i>
                                 <div>
-                                    <strong>Chuyến Gia Đình</strong>
-                                    <span>Du lịch gia đình, đưa đón trẻ em, chuyến phiêu lưu nhóm</span>
+                                    <strong data-i18n="vclass.family_trip">Chuyến Gia Đình</strong>
+                                    <span data-i18n="vclass.family_trip_desc">Du lịch gia đình, đưa đón trẻ em, chuyến phiêu lưu nhóm</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-business-time"></i>
                                 <div>
-                                    <strong>Sự Kiện Doanh Nghiệp</strong>
-                                    <span>Đưa đón nhóm khách VIP, hội thảo, ghi danh tập thể</span>
+                                    <strong data-i18n="usecase.corporate_events">Sự Kiện Doanh Nghiệp</strong>
+                                    <span data-i18n="vclass.corporate_desc">Đưa đón nhóm khách VIP, hội thảo, ghi danh tập thể</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-plane-departure"></i>
                                 <div>
-                                    <strong>Đưa Đón Sân Bay Nhóm</strong>
-                                    <span>Thoải mái, riêng tư, chuyên nghiệp cho nhóm khách</span>
+                                    <strong data-i18n="vclass.group_airport">Đưa Đón Sân Bay Nhóm</strong>
+                                    <span data-i18n="vclass.group_airport_desc">Thoải mái, riêng tư, chuyên nghiệp cho nhóm khách</span>
                                 </div>
                             </li>
                             <li>
                                 <i class="fas fa-dumbbell"></i>
                                 <div>
-                                    <strong>Sự Kiện Thể Thao & Du Lịch</strong>
-                                    <span>Đội bóng, nhóm du lịch, các tour du lịch đoàn</span>
+                                    <strong data-i18n="vclass.sports_travel">Sự Kiện Thể Thao & Du Lịch</strong>
+                                    <span data-i18n="vclass.sports_travel_desc">Đội bóng, nhóm du lịch, các tour du lịch đoàn</span>
                                 </div>
                             </li>
                         </ul>
@@ -546,33 +499,33 @@
 
                     <!-- Pricing Table -->
                     <div class="article-section">
-                        <h2>Bảng Giá Thuê Xe Mercedes V-Class</h2>
+                        <h2 data-i18n="detail.pricing_table">Bảng Giá Thuê Xe</h2>
                         <div class="pricing-table-wrapper">
                             <table class="pricing-table">
                                 <thead>
                                     <tr>
-                                        <th>Lộ trình</th>
-                                        <th>Thời gian</th>
-                                        <th>Km</th>
-                                        <th>Giá (USD)</th>
+                                        <th data-i18n="pricing_table.route">Lộ trình</th>
+                                        <th data-i18n="pricing_table.time">Thời gian</th>
+                                        <th data-i18n="pricing_table.km">Km</th>
+                                        <th data-i18n="pricing_table.price_usd">Giá (USD)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Đón sân bay</td>
-                                        <td>2 giờ</td>
+                                        <td data-i18n="pricing_table.airport_pickup">Đón sân bay</td>
+                                        <td>2 <span data-i18n="pricing_table.hours">giờ</span></td>
                                         <td>20</td>
                                         <td><strong>$90</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>City tour</td>
-                                        <td>4 giờ</td>
+                                        <td data-i18n="pricing_table.city_tour">City tour</td>
+                                        <td>4 <span data-i18n="pricing_table.hours">giờ</span></td>
                                         <td>50</td>
                                         <td><strong>$210</strong></td>
                                     </tr>
                                     <tr>
-                                        <td>City tour</td>
-                                        <td>8 giờ</td>
+                                        <td data-i18n="pricing_table.city_tour">City tour</td>
+                                        <td>8 <span data-i18n="pricing_table.hours">giờ</span></td>
                                         <td>80</td>
                                         <td><strong>$290</strong></td>
                                     </tr>
@@ -580,21 +533,21 @@
                             </table>
                             
                             <div class="pricing-extra">
-                                <h4>Phát sinh:</h4>
+                                <h4 data-i18n="pricing_table.extra_charges">Phát sinh:</h4>
                                 <ul>
-                                    <li><i class="fas fa-clock"></i> <strong>1 giờ:</strong> $25</li>
-                                    <li><i class="fas fa-road"></i> <strong>1 km:</strong> $3</li>
+                                    <li><i class="fas fa-clock"></i> <strong data-i18n="pricing_table.per_hour">1 giờ:</strong> $25</li>
+                                    <li><i class="fas fa-road"></i> <strong data-i18n="pricing_table.per_km">1 km:</strong> $3</li>
                                 </ul>
                             </div>
 
                             <div class="pricing-included">
-                                <h4>Bao gồm:</h4>
+                                <h4 data-i18n="pricing_table.included">Bao gồm:</h4>
                                 <ul>
-                                    <li><i class="fas fa-check-circle"></i> Tài xế chuyên nghiệp (nói tiếng Anh)</li>
-                                    <li><i class="fas fa-check-circle"></i> Đón tiếp tại sảnh đến sân bay với bảng tên</li>
-                                    <li><i class="fas fa-check-circle"></i> Theo dõi chuyến bay và thời gian chờ</li>
-                                    <li><i class="fas fa-check-circle"></i> Chi phí nhiên liệu, phí cầu đường và phí đậu xe</li>
-                                    <li><i class="fas fa-check-circle"></i> Lộ trình khác liên hệ để có giá tốt nhất</li>
+                                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricing_table.professional_driver_english">Tài xế chuyên nghiệp (nói tiếng Anh)</span></li>
+                                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricing_table.airport_greeting">Đón tiếp tại sảnh đến sân bay với bảng tên</span></li>
+                                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricing_table.flight_tracking">Theo dõi chuyến bay và thời gian chờ</span></li>
+                                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricing_table.fuel_fees">Chi phí nhiên liệu, phí cầu đường và phí đậu xe</span></li>
+                                    <li><i class="fas fa-check-circle"></i> <span data-i18n="pricing_table.contact_custom">Lộ trình khác liên hệ để có giá tốt nhất</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -602,7 +555,7 @@
 
                     <!-- Gallery -->
                     <div class="article-section">
-                        <h2>Thư Viện Ảnh</h2>
+                        <h2 data-i18n="detail.photo_gallery">Thư Viện Ảnh</h2>
                         <div class="gallery-grid">
                             <div class="gallery-item">
                                 <img src="sources/vclass/2 (1).jpg" alt="V-Class">
@@ -624,44 +577,44 @@
                 <aside class="article-sidebar">
                     <!-- Quick Info -->
                     <div class="sidebar-card">
-                        <h3>Thông Tin Nhanh</h3>
+                        <h3 data-i18n="detail.quick_info">Thông Tin Nhanh</h3>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Hãng xe</span>
+                            <span class="sidebar-info-label" data-i18n="detail.car_brand">Hãng xe</span>
                             <span class="sidebar-info-value">Mercedes-Benz</span>
                         </div>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Dòng xe</span>
+                            <span class="sidebar-info-label" data-i18n="detail.car_model">Dòng xe</span>
                             <span class="sidebar-info-value">V-Class</span>
                         </div>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Loại xe</span>
-                            <span class="sidebar-info-value">MPV/Gia đình</span>
+                            <span class="sidebar-info-label" data-i18n="detail.car_type">Loại xe</span>
+                            <span class="sidebar-info-value" data-i18n="sidebar.mpv_family">MPV/Gia đình</span>
                         </div>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Số chỗ</span>
-                            <span class="sidebar-info-value">7 chỗ</span>
+                            <span class="sidebar-info-label" data-i18n="detail.seats">Số chỗ</span>
+                            <span class="sidebar-info-value">7 <span data-i18n="car.seats">chỗ</span></span>
                         </div>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Nhiên liệu</span>
-                            <span class="sidebar-info-value">Xăng</span>
+                            <span class="sidebar-info-label" data-i18n="detail.fuel_type">Nhiên liệu</span>
+                            <span class="sidebar-info-value" data-i18n="sidebar.gasoline">Xăng</span>
                         </div>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Đánh giá</span>
+                            <span class="sidebar-info-label" data-i18n="fleet.rating">Đánh giá</span>
                             <span class="sidebar-info-value">⭐ 4.8/5</span>
                         </div>
 
                         <!-- Pricing -->
                         <div class="sidebar-price">
-                            <div class="sidebar-price-label">Giá thuê từ</div>
-                            <div class="sidebar-price-amount">2.000.000đ</div>
-                            <div class="sidebar-price-period">/ngày</div>
+                            <div class="sidebar-price-label" data-i18n="detail.price_from">Giá thuê từ</div>
+                            <div class="sidebar-price-amount">$60</div>
+                            <div class="sidebar-price-period" data-i18n="detail.per_day">/ngày</div>
                         </div>
 
                         <!-- CTA -->
                         <div class="sidebar-cta">
                             <a href="booking.html?car=v-class" class="btn btn-primary">
                                 <i class="fas fa-calendar-check"></i>
-                                <span>Đặt Xe Ngay</span>
+                                <span data-i18n="detail.book_now">Đặt Xe Ngay</span>
                             </a>
                             <a href="tel:+84903776578" class="sidebar-contact">
                                 <i class="fas fa-phone"></i>
@@ -669,52 +622,6 @@
                             </a>
                         </div>
                     </div>
-
-                    <!-- Related Cars -->
-                    <div class="sidebar-card">
-                        <h3>Dòng Xe Tương Tự</h3>
-                        <div class="related-cars">
-                            <a href="car-detail-s-class.html" class="related-car-item">
-                                <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=200" alt="S-Class" class="related-car-img">
-                                <div class="related-car-info">
-                                    <h4>Mercedes S-Class</h4>
-                                    <p>2.500.000đ/ngày</p>
-                                </div>
-                            </a>
-                            <a href="car-detail-gls.html" class="related-car-item">
-                                <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=200" alt="GLS" class="related-car-img">
-                                <div class="related-car-info">
-                                    <h4>Mercedes GLS</h4>
-                                    <p>3.000.000đ/ngày</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Sẵn Sàng Trải Nghiệm V-Class?</h2>
-                <p class="cta-description">
-                    Đặt xe ngay hôm nay để nhận ưu đãi đặc biệt
-                </p>
-                <div class="cta-buttons">
-                    <a href="booking.html?car=v-class" class="btn btn-primary btn-large">
-                        <span>Đặt Xe Ngay</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="fleet.html" class="btn btn-secondary btn-large">
-                        <span>Xem Dòng Xe Khác</span>
-                        <i class="fas fa-cars"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Footer -->
@@ -725,12 +632,12 @@
                     <div class="footer-logo">
                         <span>CARVIP VIET NAM CO.,LTD</span>
                     </div>
-                    <p class="footer-description">
+                    <p class="footer-description" data-i18n="footer.description">
                         Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
                     </p>
                 </div>
                 <div class="footer-section">
-                    <h3 class="footer-title">Liên Hệ</h3>
+                    <h3 class="footer-title" data-i18n="footer.contact_title">Liên Hệ</h3>
                     <ul class="footer-contact">
                         <li>
                             <i class="fas fa-map-marker-alt"></i>

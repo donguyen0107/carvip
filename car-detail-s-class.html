@@ -251,47 +251,6 @@
             color: var(--color-white);
         }
 
-        /* Related Cars */
-        .related-cars {
-            margin-top: 1.5rem;
-        }
-
-        .related-car-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--color-accent);
-            border-radius: 10px;
-            border: 1px solid var(--color-border);
-            margin-bottom: 1rem;
-            text-decoration: none;
-            transition: var(--transition-base);
-        }
-
-        .related-car-item:hover {
-            border-color: var(--color-white);
-            transform: translateX(5px);
-        }
-
-        .related-car-img {
-            width: 80px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .related-car-info h4 {
-            color: var(--color-white);
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .related-car-info p {
-            color: var(--color-gray);
-            font-size: 0.875rem;
-            margin: 0;
-        }
-
         /* Gallery */
         .gallery-grid {
             display: grid;
@@ -483,12 +442,12 @@
                             <div class="spec-card">
                                 <i class="fas fa-tachometer-alt"></i>
                                 <h4 data-i18n="spec.acceleration">Tăng Tốc</h4>
-                                <p>0-62 mph<br>5.4 giây</p>
+                                <p>0-62 mph<br>5.4 <span data-i18n="spec.seconds">giây</span></p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-gauge-high"></i>
                                 <h4 data-i18n="spec.top_speed">Tốc Độ Tối Đa</h4>
-                                <p>250 km/h<br>(giới hạn điện tử)</p>
+                                <p>250 km/h<br><span data-i18n="spec.electronic_limit">(giới hạn điện tử)</span></p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-gas-pump"></i>
@@ -498,12 +457,12 @@
                             <div class="spec-card">
                                 <i class="fas fa-cog"></i>
                                 <h4 data-i18n="spec.gearbox">Hộp Số</h4>
-                                <p>9G-TRONIC<br>9 cấp tự động</p>
+                                <p>9G-TRONIC<br><span data-i18n="spec.auto_gears_9">9 cấp tự động</span></p>
                             </div>
                             <div class="spec-card">
                                 <i class="fas fa-road"></i>
                                 <h4 data-i18n="spec.drivetrain">Dẫn Động</h4>
-                                <p>4MATIC<br>Dẫn động 4 bánh</p>
+                                <p>4MATIC<br><span data-i18n="spec.four_wheel_drive">Dẫn động 4 bánh</span></p>
                             </div>
                         </div>
                     </div>
@@ -511,7 +470,7 @@
                     <!-- Use Cases -->
                     <div class="article-section">
                         <h2 data-i18n="detail.suitable_for">Phù Hợp Cho</h2>
-                        <p>Mercedes S-Class là lựa chọn hoàn hảo cho các dịp:</p>
+                        <p><span data-i18n="detail.perfect_choice">Mercedes S-Class là lựa chọn hoàn hảo cho các dịp:</span></p>
                         <ul>
                             <li>
                                 <i class="fas fa-business-time"></i>
@@ -648,26 +607,26 @@
                             <span class="sidebar-info-value">4 <span data-i18n="car.seats">chỗ</span></span>
                         </div>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Nhiên liệu</span>
-                            <span class="sidebar-info-value">Xăng</span>
+                            <span class="sidebar-info-label" data-i18n="detail.fuel_type">Nhiên liệu</span>
+                            <span class="sidebar-info-value" data-i18n="sidebar.gasoline">Xăng</span>
                         </div>
                         <div class="sidebar-info-item">
-                            <span class="sidebar-info-label">Đánh giá</span>
+                            <span class="sidebar-info-label" data-i18n="fleet.rating">Đánh giá</span>
                             <span class="sidebar-info-value">⭐ 4.9/5</span>
                         </div>
 
                         <!-- Pricing -->
                         <div class="sidebar-price">
-                            <div class="sidebar-price-label">Giá thuê từ</div>
-                            <div class="sidebar-price-amount">2.500.000đ</div>
-                            <div class="sidebar-price-period">/ngày</div>
+                            <div class="sidebar-price-label" data-i18n="detail.price_from">Giá thuê từ</div>
+                            <div class="sidebar-price-amount">$50</div>
+                            <div class="sidebar-price-period" data-i18n="detail.per_day">/ngày</div>
                         </div>
 
                         <!-- CTA -->
                         <div class="sidebar-cta">
                             <a href="booking.html?car=s-class" class="btn btn-primary">
                                 <i class="fas fa-calendar-check"></i>
-                                <span>Đặt Xe Ngay</span>
+                                <span data-i18n="detail.book_now">Đặt Xe Ngay</span>
                             </a>
                             <a href="tel:+84903776578" class="sidebar-contact">
                                 <i class="fas fa-phone"></i>
@@ -675,52 +634,6 @@
                             </a>
                         </div>
                     </div>
-
-                    <!-- Related Cars -->
-                    <div class="sidebar-card">
-                        <h3 data-i18n="detail.related_cars">Dòng Xe Tương Tự</h3>
-                        <div class="related-cars">
-                            <a href="car-detail-e-class.html" class="related-car-item">
-                                <img src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=200" alt="E-Class" class="related-car-img">
-                                <div class="related-car-info">
-                                    <h4>Mercedes E-Class</h4>
-                                    <p>1.800.000đ/ngày</p>
-                                </div>
-                            </a>
-                            <a href="car-detail-gls.html" class="related-car-item">
-                                <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=200" alt="GLS" class="related-car-img">
-                                <div class="related-car-info">
-                                    <h4>Mercedes GLS</h4>
-                                    <p>3.000.000đ/ngày</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Sẵn Sàng Trải Nghiệm S-Class?</h2>
-                <p class="cta-description">
-                    Đặt xe ngay hôm nay để nhận ưu đãi đặc biệt
-                </p>
-                <div class="cta-buttons">
-                    <a href="booking.html?car=s-class" class="btn btn-primary btn-large">
-                        <span>Đặt Xe Ngay</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="fleet.html" class="btn btn-secondary btn-large">
-                        <span>Xem Dòng Xe Khác</span>
-                        <i class="fas fa-cars"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- Footer -->
@@ -731,12 +644,12 @@
                     <div class="footer-logo">
                         <span>CARVIP VIET NAM CO.,LTD</span>
                     </div>
-                    <p class="footer-description">
+                    <p class="footer-description" data-i18n="footer.description">
                         Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
                     </p>
                 </div>
                 <div class="footer-section">
-                    <h3 class="footer-title">Liên Hệ</h3>
+                    <h3 class="footer-title" data-i18n="footer.contact_title">Liên Hệ</h3>
                     <ul class="footer-contact">
                         <li>
                             <i class="fas fa-map-marker-alt"></i>

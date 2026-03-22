@@ -7,17 +7,17 @@
 
 const EMAILJS_CONFIG = {
     // Public Key từ EmailJS Dashboard
-    publicKey: 'Gfej9tcaaQEDJ0ASz',
+    publicKey: 'NDW5yAKHqGYzF0s98',
     
     // Service ID - Đã cấu hình
-    serviceId: 'service_btzkied',
+    serviceId: 'service_1rkllgm',
     
     // Template ID - Đã cấu hình
     // ✅ Template này phải có các variables: {{from_name}}, {{from_email}}, {{phone}}, {{car_type}}, {{rental_type}}, {{duration}}, {{destination}}, {{pickup_date}}, {{return_date}}, {{pickup_location}}, {{return_location}}, {{special_requests}}, {{promo_code}}, {{total_price}}, {{booking_date}}, {{booking_id}}
-    templateId: 'template_p1atqb7',
+    templateId: 'template_slqx4qv',
     
     // Email admin nhận thông báo
-    adminEmail: 'donguyen072010@gmail.com'
+    adminEmail: 'info@carvip.vn'
 };
 
 // Load EmailJS SDK

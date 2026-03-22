@@ -349,6 +349,9 @@ const translations = {
         'detail.cta_title': 'Sẵn Sàng Trải Nghiệm?',
         'detail.cta_description': 'Liên hệ ngay để đặt xe hoặc tư vấn thêm',
         'detail.contact_now': 'Liên Hệ Ngay',
+        'detail.price_from': 'Giá thuê từ',
+        'detail.per_day': '/ngày',
+        'detail.view_other_fleet': 'Xem Dòng Xe Khác',
 
         // Car Detail - S-Class Specific
         'sclass.subtitle': 'Đỉnh Cao Của Sự Sang Trọng & Công Nghệ',
@@ -441,7 +444,66 @@ const translations = {
         'blog.read_more': 'Đọc thêm',
         'blog.no_posts': 'Không tìm thấy bài viết nào',
         'blog.loading': 'Đang tải...',
+
+        // Car Detail - V-Class Features (unique)
+        'vclass.spacious_space': 'Không Gian Rộng Rãi',
+        'vclass.spacious_space_desc': '7 chỗ ngồi, khoang hành lý lớn, ghế ngồi có thể điều chỉnh',
+        'vclass.safety_desc': 'Hệ thống an toàn chủ động PRE-SAFE®, 8 túi khí, camera 360°',
+        'vclass.engine_desc': 'Diesel 4 cylinders, 1.950cc, 163 PS, tăng tốc 0-100km/h trong 10.7 giây',
+        'vclass.modern_tech': 'Công Nghệ Hiện Đại',
+        'vclass.modern_tech_desc': 'MBUX với AI, màn hình cảm ứng 10.25 inch, Head-up Display',
+        'vclass.comfort_desc': 'Khử mùi ion hóa, hệ thống âm thanh cao cấp, cửa sổ trời panorama',
+        'vclass.comfortable_driving': 'Lái Xe Thoải Mái',
+        'vclass.comfortable_driving_desc': 'Hệ thống treo Airmatic, Cruise Control thích ứng, hỗ trợ lái',
+        'vclass.spec_seats_title': 'Số Chỗ',
+        'vclass.spec_seats_desc': '7 chỗ ngồi<br>Có thể điều chỉnh',
+
+        // V-Class use cases
+        'vclass.family_trip': 'Chuyến Gia Đình',
+        'vclass.family_trip_desc': 'Du lịch gia đình, đưa đón trẻ em, chuyến phiêu lưu nhóm',
+        'vclass.corporate_desc': 'Đưa đón nhóm khách VIP, hội thảo, ghi danh tập thể',
+        'vclass.group_airport': 'Đưa Đón Sân Bay Nhóm',
+        'vclass.group_airport_desc': 'Thoải mái, riêng tư, chuyên nghiệp cho nhóm khách',
+        'vclass.sports_travel': 'Sự Kiện Thể Thao & Du Lịch',
+        'vclass.sports_travel_desc': 'Đội bóng, nhóm du lịch, các tour du lịch đoàn',
+        'vclass.perfect_choice': 'Mercedes V-Class là lựa chọn hoàn hảo cho các dịp:',
+        'sidebar.mpv_family': 'MPV/Gia đình',
+
+        // C-Class / GLC / GLE / GLS intro
+        'cclass.intro_p1': 'Mercedes-Benz S-Class là biểu tượng của sự sang trọng và đẳng cấp trong phân khúc sedan hạng sang. Với lịch sử lâu đời và uy tín vượt trội, S-Class không chỉ là phương tiện di chuyển mà còn là tuyên ngôn về phong cách sống đẳng cấp.',
+        'cclass.intro_p2': 'Được trang bị công nghệ tiên tiến nhất của Mercedes-Benz, S-Class mang đến trải nghiệm lái xe và ngồi xe tuyệt vời nhất. Mỗi chi tiết đều được chế tác tỉ mỉ, từ nội thất da thật cao cấp đến hệ thống giải trí hiện đại.',
+        'cclass.engine_desc': 'V6 3.0L Turbo, 367 mã lực, tăng tốc 0-100km/h trong 5.1 giây',
     },
+
+        // Car Detail - E-Class Specific
+        'eclass.subtitle': 'Cân Bằng Hoàn Hảo Giữa Sang Trọng & Thể Thao',
+        'eclass.intro': 'Mercedes E-Class là dòng sedan cao cấp, mang phong cách sang trọng – tinh tế – vận hành êm ái, phù hợp cho doanh nhân, khách công tác và di chuyển hằng ngày tại TP.HCM. Không gian nội thất thoải mái, thiết kế hiện đại, đảm bảo trải nghiệm chuyên nghiệp và riêng tư.',
+        'eclass.driver_service_desc': 'Dịch vụ xe Mercedes E-Class đi kèm tài xế riêng chuyên nghiệp, thông thạo đường phố, đúng giờ, lịch sự và kín đáo. Phù hợp cho đưa đón sân bay, gặp đối tác, công tác ngắn ngày hoặc di chuyển theo lịch trình linh hoạt.',
+        'eclass.gallery_desc': 'Xem hình ảnh ngoại thất và nội thất Mercedes E-Class, phản ánh chân thực không gian xe và tiêu chuẩn dịch vụ Carvip.',
+
+        // Car Detail - C-Class Specific
+        'cclass.subtitle': 'Đỉnh Cao Của Sự Sang Trọng & Công Nghệ',
+        'cclass.intro_p1': 'Mercedes-Benz S-Class là biểu tượng của sự sang trọng và đẳng cấp trong phân khúc sedan hạng sang. Với lịch sử lâu đời và uy tín vượt trội, S-Class không chỉ là phương tiện di chuyển mà còn là tuyên ngôn về phong cách sống đẳng cấp.',
+        'cclass.intro_p2': 'Được trang bị công nghệ tiên tiến nhất của Mercedes-Benz, S-Class mang đến trải nghiệm lái xe và ngồi xe tuyệt vời nhất. Mỗi chi tiết đều được chế tác tỉ mỉ, từ nội thất da thật cao cấp đến hệ thống giải trí hiện đại.',
+
+        // Car Detail - V-Class Specific
+        'vclass.subtitle': 'Xe Gia Đình Sang Trọng Cho Nhóm Lớn',
+        'vclass.intro': 'Mercedes V-Class là dòng xe MPV cao cấp, phù hợp cho gia đình, nhóm bạn hoặc đoàn công tác từ 4-7 người. Không gian khoang xe rộng rãi, ghế ngồi thoải mái, khoang hành lý lớn, đi kèm tài xế chuyên nghiệp.',
+        'vclass.driver_service_desc': 'Dịch vụ tài xế riêng Mercedes V-Class đáp ứng tiêu chuẩn phục vụ cao cấp: đúng giờ, lịch sự, am hiểu lộ trình, hỗ trợ hành lý. Phù hợp cho đưa đón sân bay, du lịch nhóm và di chuyển gia đình.',
+        'vclass.gallery_desc': 'Khám phá hình ảnh ngoại thất sang trọng và nội thất rộng rãi của Mercedes V-Class.',
+
+        // Spec units
+        'spec.seconds': 'giây',
+        'spec.electronic_limit': '(giới hạn điện tử)',
+        'spec.combined': '(hỗn hợp)',
+        'spec.auto_gears_9': '9 cấp tự động',
+        'spec.four_wheel_drive': 'Dẫn động 4 bánh',
+        'detail.perfect_choice': 'Mercedes S-Class là lựa chọn hoàn hảo cho các dịp:',
+
+        // Engine spec descriptions for specific models
+        'eclass.engine_desc': 'Mild-hybrid I4, 1.999cc, 230 PS, tăng tốc 0-62 mph trong 7.5 giây',
+        'cclass.engine_desc': 'V6 3.0L Turbo, 367 mã lực, tăng tốc 0-100km/h trong 5.1 giây',
+
     en: {
         // Navigation
         'nav.home': 'Home',
@@ -777,6 +839,9 @@ const translations = {
         'detail.cta_title': 'Ready to Experience?',
         'detail.cta_description': 'Contact us now to book or for more information',
         'detail.contact_now': 'Contact Now',
+        'detail.price_from': 'Rental from',
+        'detail.per_day': '/day',
+        'detail.view_other_fleet': 'View Other Fleet',
 
         // Car Detail - S-Class Specific
         'sclass.subtitle': 'The Pinnacle of Luxury & Technology',
@@ -869,6 +934,65 @@ const translations = {
         'blog.read_more': 'Read more',
         'blog.no_posts': 'No posts found',
         'blog.loading': 'Loading...',
+
+        // Car Detail - V-Class Features (unique)
+        'vclass.spacious_space': 'Spacious Interior',
+        'vclass.spacious_space_desc': '7 seats, large luggage compartment, adjustable seating',
+        'vclass.safety_desc': 'Active safety system PRE-SAFE®, 8 airbags, 360° camera',
+        'vclass.engine_desc': 'Diesel 4 cylinders, 1,950cc, 163 PS, 0-100km/h in 10.7 seconds',
+        'vclass.modern_tech': 'Modern Technology',
+        'vclass.modern_tech_desc': 'MBUX with AI, 10.25 inch touchscreen, Head-up Display',
+        'vclass.comfort_desc': 'Ionized air purification, premium sound system, panoramic sunroof',
+        'vclass.comfortable_driving': 'Comfortable Driving',
+        'vclass.comfortable_driving_desc': 'Airmatic suspension, adaptive Cruise Control, driving assist',
+        'vclass.spec_seats_title': 'Seating',
+        'vclass.spec_seats_desc': '7 seats<br>Adjustable',
+
+        // V-Class use cases
+        'vclass.family_trip': 'Family Trip',
+        'vclass.family_trip_desc': 'Family travel, kids pickup, group adventure',
+        'vclass.corporate_desc': 'VIP group pickup, conferences, collective registration',
+        'vclass.group_airport': 'Group Airport Transfer',
+        'vclass.group_airport_desc': 'Comfortable, private, professional for groups',
+        'vclass.sports_travel': 'Sports & Travel Events',
+        'vclass.sports_travel_desc': 'Sports teams, travel groups, group tours',
+        'vclass.perfect_choice': 'Mercedes V-Class is the perfect choice for occasions:',
+        'sidebar.mpv_family': 'MPV/Family',
+
+        // C-Class / GLC / GLE / GLS intro
+        'cclass.intro_p1': 'Mercedes-Benz S-Class is the symbol of luxury and prestige in the premium sedan segment. With a long history and outstanding reputation, S-Class is not just a vehicle but a statement of a prestigious lifestyle.',
+        'cclass.intro_p2': 'Equipped with the most advanced Mercedes-Benz technology, S-Class delivers the ultimate driving and riding experience. Every detail is meticulously crafted, from premium genuine leather interior to modern entertainment systems.',
+        'cclass.engine_desc': 'V6 3.0L Turbo, 367 HP, 0-100km/h in 5.1 seconds',
+
+        // Car Detail - E-Class Specific
+        'eclass.subtitle': 'Perfect Balance Between Luxury & Sport',
+        'eclass.intro': 'Mercedes E-Class is a premium sedan with elegant, refined and smooth driving style, ideal for business executives, corporate travelers and daily commute in Ho Chi Minh City. Comfortable interior, modern design, ensuring professional and private experience.',
+        'eclass.driver_service_desc': 'Mercedes E-Class service comes with professional private driver, familiar with city streets, punctual, courteous and discreet. Perfect for airport transfers, partner meetings, short business trips or flexible schedule travel.',
+        'eclass.gallery_desc': 'View exterior and interior images of Mercedes E-Class, truly reflecting the vehicle space and Carvip service standards.',
+
+        // Car Detail - C-Class Specific
+        'cclass.subtitle': 'The Pinnacle of Luxury & Technology',
+        'cclass.intro_p1': 'Mercedes-Benz S-Class is the symbol of luxury and prestige in the premium sedan segment. With a long history and outstanding reputation, S-Class is not just a vehicle but a statement of a prestigious lifestyle.',
+        'cclass.intro_p2': 'Equipped with the most advanced Mercedes-Benz technology, S-Class delivers the ultimate driving and riding experience. Every detail is meticulously crafted, from premium genuine leather interior to modern entertainment systems.',
+
+        // Car Detail - V-Class Specific
+        'vclass.subtitle': 'Luxury Family Vehicle for Large Groups',
+        'vclass.intro': 'Mercedes V-Class is a premium MPV, suitable for families, groups of friends or business delegations of 4-7 people. Spacious cabin, comfortable seating, large luggage compartment, accompanied by professional driver.',
+        'vclass.driver_service_desc': 'Mercedes V-Class private driver service meets premium service standards: punctual, courteous, route-knowledgeable, luggage assistance. Suitable for airport transfers, group tours and family travel.',
+        'vclass.gallery_desc': 'Explore the luxurious exterior and spacious interior of Mercedes V-Class.',
+
+        // Spec units
+        'spec.seconds': 'seconds',
+        'spec.electronic_limit': '(electronically limited)',
+        'spec.combined': '(combined)',
+        'spec.auto_gears_9': '9-speed automatic',
+        'spec.four_wheel_drive': '4-wheel drive',
+        'detail.perfect_choice': 'Mercedes is the perfect choice for occasions:',
+
+        // Engine spec descriptions for specific models
+        'eclass.engine_desc': 'Mild-hybrid I4, 1,999cc, 230 PS, 0-62 mph in 7.5 seconds',
+        'cclass.engine_desc': 'V6 3.0L Turbo, 367 HP, 0-100km/h in 5.1 seconds',
+
     }
 };
 
@@ -929,7 +1053,12 @@ function updatePageLanguage() {
     // Update all elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
-        element.textContent = t(key);
+        const translation = t(key);
+        if (translation.includes('<')) {
+            element.innerHTML = translation;
+        } else {
+            element.textContent = translation;
+        }
     });
 
     // Update all elements with data-i18n-placeholder attribute

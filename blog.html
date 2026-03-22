@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -407,41 +407,41 @@
 
                     <!-- Categories -->
                     <div class="sidebar-card">
-                        <h3 class="sidebar-title">Danh mục</h3>
+                        <h3 class="sidebar-title" data-i18n="blog.categories_title">Danh mục</h3>
                         <ul class="category-list" id="categoryList">
                             <li class="category-item">
                                 <a href="#" class="category-link" data-category="all">
-                                    <span>Tất cả</span>
+                                    <span data-i18n="blog.filter_all">Tất cả</span>
                                     <span class="category-count" id="count-all">0</span>
                                 </a>
                             </li>
                             <li class="category-item">
                                 <a href="#" class="category-link" data-category="tin-tuc">
-                                    <span>Tin tức</span>
+                                    <span data-i18n="blog.filter_news">Tin tức</span>
                                     <span class="category-count" id="count-tin-tuc">0</span>
                                 </a>
                             </li>
                             <li class="category-item">
                                 <a href="#" class="category-link" data-category="huong-dan">
-                                    <span>Hướng dẫn</span>
+                                    <span data-i18n="blog.filter_guide">Hướng dẫn</span>
                                     <span class="category-count" id="count-huong-dan">0</span>
                                 </a>
                             </li>
                             <li class="category-item">
                                 <a href="#" class="category-link" data-category="khuyen-mai">
-                                    <span>Khuyến mãi</span>
+                                    <span data-i18n="blog.filter_promotion">Khuyến mãi</span>
                                     <span class="category-count" id="count-khuyen-mai">0</span>
                                 </a>
                             </li>
                             <li class="category-item">
                                 <a href="#" class="category-link" data-category="kinh-nghiem">
-                                    <span>Kinh nghiệm</span>
+                                    <span data-i18n="blog.filter_experience">Kinh nghiệm</span>
                                     <span class="category-count" id="count-kinh-nghiem">0</span>
                                 </a>
                             </li>
                             <li class="category-item">
                                 <a href="#" class="category-link" data-category="xe">
-                                    <span>Xe & Dịch vụ</span>
+                                    <span data-i18n="blog.filter_cars">Xe & Dịch vụ</span>
                                     <span class="category-count" id="count-xe">0</span>
                                 </a>
                             </li>
@@ -450,9 +450,9 @@
 
                     <!-- Recent Posts -->
                     <div class="sidebar-card">
-                        <h3 class="sidebar-title">Bài viết gần đây</h3>
+                        <h3 class="sidebar-title" data-i18n="blog.recent_posts_title">Bài viết gần đây</h3>
                         <div class="recent-posts" id="recentPosts">
-                            <p style="color: var(--color-gray); text-align: center;">Đang tải...</p>
+                            <p style="color: var(--color-gray); text-align: center;" data-i18n="blog.loading">Đang tải...</p>
                         </div>
                     </div>
                 </aside>
@@ -468,12 +468,12 @@
                     <div class="footer-logo">
                         <span>CARVIP VIET NAM CO.,LTD</span>
                     </div>
-                    <p class="footer-description">
+                    <p class="footer-description" data-i18n="footer.description">
                         Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
                     </p>
                 </div>
                 <div class="footer-section">
-                    <h3 class="footer-title">Liên Hệ</h3>
+                    <h3 class="footer-title" data-i18n="footer.contact_title">Liên Hệ</h3>
                     <ul class="footer-contact">
                         <li>
                             <i class="fas fa-map-marker-alt"></i>
@@ -573,7 +573,7 @@
                         <h2 class="blog-card-title">${post.title}</h2>
                         <p class="blog-card-excerpt">${post.excerpt || getExcerpt(post.content || '')}</p>
                         <a href="javascript:void(0)" class="blog-card-link">
-                            Đọc thêm <i class="fas fa-arrow-right"></i>
+                            ${t('blog.read_more')} <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </article>
@@ -639,8 +639,8 @@
             blogGrid.innerHTML = `
                 <div class="no-posts">
                     <i class="fas fa-file-alt"></i>
-                    <h3 style="color: var(--color-white); margin-bottom: 0.5rem;">Chưa có bài viết</h3>
-                    <p>Hiện tại chưa có bài viết nào được đăng.</p>
+                    <h3 style="color: var(--color-white); margin-bottom: 0.5rem;">${t('blog.no_posts')}</h3>
+                    <p>${t('blog.no_posts')}</p>
                 </div>
             `;
         }
@@ -675,7 +675,7 @@
             const recentPosts = document.getElementById('recentPosts');
             
             if (posts.length === 0) {
-                recentPosts.innerHTML = '<p style="color: var(--color-gray); text-align: center;">Chưa có bài viết</p>';
+                recentPosts.innerHTML = `<p style="color: var(--color-gray); text-align: center;">${t('blog.no_posts')}</p>`;
                 return;
             }
 
@@ -719,14 +719,15 @@
 
         // Get category name
         function getCategoryName(category) {
-            const names = {
-                'tin-tuc': 'Tin tức',
-                'huong-dan': 'Hướng dẫn',
-                'khuyen-mai': 'Khuyến mãi',
-                'kinh-nghiem': 'Kinh nghiệm',
-                'xe': 'Xe & Dịch vụ'
+            const categoryKeys = {
+                'tin-tuc': 'blog.filter_news',
+                'huong-dan': 'blog.filter_guide',
+                'khuyen-mai': 'blog.filter_promotion',
+                'kinh-nghiem': 'blog.filter_experience',
+                'xe': 'blog.filter_cars'
             };
-            return names[category] || category;
+            const key = categoryKeys[category];
+            return key ? t(key) : category;
         }
 
         // Get excerpt from content
@@ -740,7 +741,8 @@
         // Format date
         function formatDate(dateString) {
             const date = new Date(dateString);
-            return date.toLocaleDateString('vi-VN', { 
+            const locale = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en') ? 'en-US' : 'vi-VN';
+            return date.toLocaleDateString(locale, { 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric' 
