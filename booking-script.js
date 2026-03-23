@@ -29,17 +29,20 @@ const hourlyPrices = {
     'e-class': {
         hourly: 30,
         minimum: 120, // 4 hours minimum
-        daily: 200    // 8 hours
+        daily: 200,   // 8 hours
+        extraPerHour: 15 // extra per hour after 4h
     },
     's-class': {
         hourly: 50,
         minimum: 200, // 4 hours minimum
-        daily: 300    // 8 hours
+        daily: 300,   // 8 hours
+        extraPerHour: 20 // extra per hour after 4h
     },
     'v-class': {
         hourly: 60,
         minimum: 210, // 4 hours minimum
-        daily: 310    // 8 hours
+        daily: 310,   // 8 hours
+        extraPerHour: 20 // extra per hour after 4h
     }
 };
 
@@ -284,16 +287,32 @@ function calculateTotalPrice() {
         const pricing = hourlyPrices[carType];
         if (!pricing) return;
         
-        if (duration >= 8) {
-            // Use daily rate for 8+ hours
-            const days = Math.floor(duration / 8);
-            basePrice = pricing.daily * days;
-        } else if (duration >= 4) {
-            // Use hourly rate for 4-7 hours
-            basePrice = pricing.hourly * duration;
-        } else {
-            // Minimum 4 hours
+        if (duration < 4) {
+            // Under 4h: show minimum price (but booking will be blocked)
             basePrice = pricing.minimum;
+        } else if (duration === 4) {
+            // Exactly 4h: use minimum price
+            basePrice = pricing.minimum;
+        } else if (duration > 4 && duration < 8) {
+            // 5-7h: minimum + extra per hour for each hour over 4
+            const extraHours = duration - 4;
+            basePrice = pricing.minimum + (extraHours * pricing.extraPerHour);
+        } else if (duration === 8) {
+            // Exactly 8h: keep original daily price
+            basePrice = pricing.daily;
+        } else {
+            // Over 8h: full days at daily rate + remaining hours
+            const fullDays = Math.floor(duration / 8);
+            const remainingHours = duration % 8;
+            basePrice = pricing.daily * fullDays;
+            if (remainingHours > 0 && remainingHours < 4) {
+                basePrice += pricing.minimum;
+            } else if (remainingHours === 4) {
+                basePrice += pricing.minimum;
+            } else if (remainingHours > 4) {
+                const extraHours = remainingHours - 4;
+                basePrice += pricing.minimum + (extraHours * pricing.extraPerHour);
+            }
         }
     } else if (rentalType === 'airport') {
         if (!carType || !destination) return;
@@ -406,6 +425,22 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     console.log('🚀 Form submitted!');
+    
+    // Check minimum duration for hourly rental
+    const rentalTypeValue = rentalTypeSelect.value;
+    const durationValue = parseInt(durationInput.value) || 0;
+    if (rentalTypeValue === 'hourly' && durationValue < 4) {
+        const lang = document.documentElement.lang || localStorage.getItem('language') || 'vi';
+        const errorMsg = lang === 'en' 
+            ? '⚠️ Minimum rental duration is 4 hours. Please select at least 4 hours.' 
+            : '⚠️ Thời gian thuê tối thiểu là 4 giờ. Vui lòng chọn ít nhất 4 giờ.';
+        alert(errorMsg);
+        
+        // Focus on duration input
+        durationInput.focus();
+        durationInput.classList.add('error');
+        return;
+    }
     
     // Validate ALL steps before submitting
     let allValid = true;

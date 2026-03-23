@@ -473,6 +473,11 @@ const translations = {
         'cclass.intro_p1': 'Mercedes-Benz S-Class là biểu tượng của sự sang trọng và đẳng cấp trong phân khúc sedan hạng sang. Với lịch sử lâu đời và uy tín vượt trội, S-Class không chỉ là phương tiện di chuyển mà còn là tuyên ngôn về phong cách sống đẳng cấp.',
         'cclass.intro_p2': 'Được trang bị công nghệ tiên tiến nhất của Mercedes-Benz, S-Class mang đến trải nghiệm lái xe và ngồi xe tuyệt vời nhất. Mỗi chi tiết đều được chế tác tỉ mỉ, từ nội thất da thật cao cấp đến hệ thống giải trí hiện đại.',
         'cclass.engine_desc': 'V6 3.0L Turbo, 367 mã lực, tăng tốc 0-100km/h trong 5.1 giây',
+
+        // Video Showcase Section
+        'video.subtitle': 'Trải Nghiệm Sang Trọng',
+        'video.title': 'Khám Phá Hành Trình Đẳng Cấp',
+        'video.description': 'Cùng trải nghiệm dịch vụ xe Mercedes cao cấp qua video thực tế',
     },
 
         // Car Detail - E-Class Specific
@@ -992,6 +997,11 @@ const translations = {
         // Engine spec descriptions for specific models
         'eclass.engine_desc': 'Mild-hybrid I4, 1,999cc, 230 PS, 0-62 mph in 7.5 seconds',
         'cclass.engine_desc': 'V6 3.0L Turbo, 367 HP, 0-100km/h in 5.1 seconds',
+
+        // Video Showcase Section
+        'video.subtitle': 'Luxury Experience',
+        'video.title': 'Discover Our Premium Journey',
+        'video.description': 'Experience our premium Mercedes service through real footage',
 
     }
 };
