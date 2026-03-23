@@ -1,23 +1,84 @@
 // ===== BLOG CAROUSEL FUNCTIONALITY =====
+// Dynamically loads images from car folders and randomizes order
 
 class BlogCarousel {
     constructor() {
-        this.track = document.querySelector('.blog-carousel-track');
-        this.slides = document.querySelectorAll('.blog-carousel-slide');
+        this.track = document.getElementById('car-carousel-track') || document.querySelector('.blog-carousel-track');
+        
+        // All images from car folders (eclass, sclass, vclass)
+        this.carImages = [
+            // E-Class images
+            { src: 'sources/eclass/CARVIP.VN (1500 x 600 px) (680 x 500 px).png', alt: 'Mercedes E-Class', label: 'Mercedes E-Class', desc: 'Sedan sang trọng, tinh tế và vận hành êm ái' },
+            { src: 'sources/eclass/Mercedes-E200-Exclusive-2022-mercedes-vietnam-24.jpg', alt: 'Mercedes E-Class Exterior', label: 'Mercedes E-Class', desc: 'Thiết kế ngoại thất hiện đại, đẳng cấp' },
+            { src: 'sources/eclass/e2001.jpg', alt: 'Mercedes E200', label: 'Mercedes E200', desc: 'Dòng xe E-Class phiên bản E200 thanh lịch' },
+            { src: 'sources/eclass/noi-that-mercedes-e-300-5.png', alt: 'Mercedes E-Class Interior', label: 'Nội Thất E-Class', desc: 'Không gian nội thất cao cấp, tiện nghi đỉnh cao' },
+            // S-Class images
+            { src: 'sources/sclass/CARVIP.VN (29).png', alt: 'Mercedes S-Class', label: 'Mercedes S-Class', desc: 'Biểu tượng của đẳng cấp và sang trọng hàng đầu' },
+            { src: 'sources/sclass/MQF02994.jpg', alt: 'Mercedes S-Class Exterior', label: 'Mercedes S-Class', desc: 'Ngoại thất sang trọng, thiết kế tinh xảo' },
+            { src: 'sources/sclass/Noi that s450.jpg', alt: 'Mercedes S450 Interior', label: 'Nội Thất S450', desc: 'Nội thất xa hoa với vật liệu cao cấp nhất' },
+            { src: 'sources/sclass/noi that s4502.jpg', alt: 'Mercedes S450 Interior Detail', label: 'S-Class Dashboard', desc: 'Bảng điều khiển Mercedes S-Class công nghệ cao' },
+            { src: 'sources/sclass/car9-768x512.jpg', alt: 'Mercedes S-Class Luxury', label: 'S-Class Premium', desc: 'Trải nghiệm đẳng cấp thượng lưu' },
+            { src: 'sources/sclass/techsignin-anh-noi-that-mercedes-benz-e-class-2017-naias-2016-9.jpg', alt: 'Mercedes Interior', label: 'Nội Thất Mercedes', desc: 'Tiêu chuẩn nội thất hàng đầu thế giới' },
+            // V-Class images
+            { src: 'sources/vclass/2 (1).jpg', alt: 'Mercedes V-Class', label: 'Mercedes V-Class', desc: 'Xe gia đình sang trọng cho nhóm lớn' },
+            { src: 'sources/vclass/Black Blue Minimalist Floral Logo (12).png', alt: 'Mercedes V-Class Logo', label: 'CARVIP V-Class', desc: 'Dịch vụ cho thuê V-Class chuyên nghiệp' },
+            { src: 'sources/vclass/z6904030104678_1477300f5fb3fa23da48b445661c3b0c.jpg', alt: 'Mercedes V-Class Service', label: 'V-Class Service', desc: 'Dịch vụ tài xế riêng cao cấp cho nhóm khách' },
+            { src: 'sources/vclass/z7260496269108_8b6cc48fee94f283a2f2c951a3a924a6.jpg', alt: 'Mercedes V-Class Interior', label: 'Nội Thất V-Class', desc: 'Không gian rộng rãi, thoải mái cho 7 người' },
+        ];
         
         this.init();
     }
     
+    // Fisher-Yates shuffle algorithm
+    shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+    
     init() {
-        if (!this.track || this.slides.length === 0) {
-            console.warn('Blog carousel elements not found');
+        if (!this.track) {
+            console.warn('Blog carousel track not found');
             return;
         }
+        
+        // Shuffle images randomly each time
+        const shuffledImages = this.shuffleArray(this.carImages);
+        
+        // Generate slides
+        this.generateSlides(shuffledImages);
+        
+        // Get slides after generation
+        this.slides = this.track.querySelectorAll('.blog-carousel-slide');
         
         // Duplicate slides for infinite loop
         this.duplicateSlides();
         
-        console.log('✅ Blog Carousel initialized with infinite auto-scroll');
+        console.log('✅ Blog Carousel initialized with', shuffledImages.length, 'randomized car images');
+    }
+    
+    generateSlides(images) {
+        this.track.innerHTML = '';
+        
+        images.forEach(img => {
+            const slide = document.createElement('div');
+            slide.className = 'blog-carousel-slide';
+            slide.innerHTML = `
+                <div class="blog-card">
+                    <div class="blog-card-image">
+                        <img src="${img.src}" alt="${img.alt}" loading="lazy">
+                        <div class="blog-card-overlay">
+                            <h3 class="blog-card-title">${img.label}</h3>
+                            <p class="blog-card-excerpt">${img.desc}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            this.track.appendChild(slide);
+        });
     }
     
     duplicateSlides() {

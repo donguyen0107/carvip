@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Bookcarvip | Premium Chauffeur Service</title>
+    <meta name="description" content="Learn about Bookcarvip - Vietnam's premium chauffeur service established in 2004. Luxury Mercedes fleet, professional drivers, reliable transportation.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== ABOUT PAGE STYLES ===== */
+        .about-hero {
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            text-align: center;
+        }
+
+        .about-hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: var(--font-weight-bold);
+            margin-bottom: 1rem;
+            color: var(--color-white);
+        }
+
+        .about-hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* About Content */
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about-card {
+            background: var(--color-secondary);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+        }
+
+        .about-card h2 {
+            font-size: 2rem;
+            color: var(--color-white);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .about-card h2 i {
+            color: var(--color-white);
+            font-size: 1.5rem;
+        }
+
+        .about-card p {
+            font-size: 1.125rem;
+            line-height: 1.9;
+            color: var(--color-gray);
+            margin-bottom: 1.25rem;
+        }
+
+        .about-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Stats Row */
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            background: var(--color-accent);
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 1px solid var(--color-border);
+            transition: var(--transition-base);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-white);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--color-white);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--color-gray);
+            font-size: 1rem;
+        }
+
+        /* Values Grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .value-item {
+            background: var(--color-accent);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--color-border);
+            transition: var(--transition-base);
+        }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-white);
+        }
+
+        .value-item i {
+            font-size: 2rem;
+            color: var(--color-white);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .value-item h4 {
+            color: var(--color-white);
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .value-item p {
+            color: var(--color-gray);
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* CTA */
+        .about-cta {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .about-cta .btn {
+            margin: 0 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-card {
+                padding: 2rem;
+            }
+
+            .about-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-cta .btn {
+                margin-bottom: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header class="header scrolled" id="header">
+        <nav class="nav container">
+            <div class="nav-left">
+                <div class="nav-toggle" id="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="nav-logo">
+                    <a href="index.html">BOOKCARVIP</a>
+                </div>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link" data-i18n="nav.home">Trang Chủ</a></li>
+                    <li class="nav-item"><a href="fleet.html" class="nav-link" data-i18n="nav.fleet">Dòng Xe</a></li>
+                    <li class="nav-item"><a href="index.html#services" class="nav-link" data-i18n="nav.services">Dịch Vụ</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link active" data-i18n="nav.about">Về Chúng Tôi</a></li>
+                    <li class="nav-item"><a href="index.html#reviews" class="nav-link" data-i18n="nav.reviews">Đánh Giá</a></li>
+                    <li class="nav-item"><a href="blog.html" class="nav-link" data-i18n="nav.blog">Blog</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link" data-i18n="nav.contact">Liên Hệ</a></li>
+                </ul>
+                <div class="nav-close" id="nav-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <a href="tel:+84903776578" class="nav-phone">
+                    <i class="fas fa-phone"></i>
+                    <span>0903776578</span>
+                </a>
+                <div class="language-switcher">
+                    <button class="lang-btn" data-lang="vi">VN</button>
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                </div>
+                <a href="booking.html" class="btn btn-primary btn-nav" data-i18n="nav.booking">Đặt Xe Ngay</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1 class="about-hero-title" data-i18n="about.hero_title">Về <span class="gradient-text">Chúng Tôi</span></h1>
+            <p class="about-hero-subtitle" data-i18n="about.hero_subtitle">Dịch vụ tài xế riêng cao cấp từ năm 2004</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="section">
+        <div class="container">
+            <div class="about-content">
+
+                <!-- About Us Card -->
+                <div class="about-card">
+                    <h2><i class="fas fa-building"></i> <span data-i18n="about.story_title">A Journey to Create <span class="gradient-text">Excellence</span></span></h2>
+                    <p data-i18n="about.story_p1">
+                        At Bookcarvip, we take pride in delivering a premium chauffeur service from start to finish. The company was established in 2004 under the Carvip brand, and since then we have continuously expanded our services beyond Ho Chi Minh City to destinations across Vietnam.
+                    </p>
+                    <p data-i18n="about.story_p2">
+                        Our dedicated team of professional chauffeurs understands the importance of every journey, whether it is a short airport transfer or a long-distance trip. With Bookcarvip, you stay in control of your schedule, arrive on time, and enjoy every moment of your journey in comfort and style.
+                    </p>
+                    <p data-i18n="about.story_p3">
+                        Whether you are traveling for business or leisure, you can rely on our experienced team to provide a seamless and luxurious transportation experience. Once you experience the comfort, reliability, and professionalism of Bookcarvip, you will never want to return to ordinary transportation services.
+                    </p>
+                </div>
+
+                <!-- Why Choose Us Card -->
+                <div class="about-card">
+                    <h2><i class="fas fa-star"></i> <span data-i18n="about.why_title">Why Choose Us</span></h2>
+                    <p data-i18n="about.why_desc">
+                        At Bookcarvip, we don't just drive — we create exceptional travel experiences.<br><br>Whether you are traveling for business or leisure, we are ready to provide first-class chauffeur services tailored to your needs. From airport transfers to hourly chauffeur services, our fleet of luxury vehicles is operated by highly trained and multilingual chauffeurs, ensuring a safe, smooth, and comfortable journey to your destination.<br><br>With our commitment to punctuality, professionalism, and premium service, Bookcarvip is the trusted choice for travelers who value reliability and luxury transportation in Vietnam.
+                    </p>
+
+                    <!-- Values Grid -->
+                    <div class="values-grid">
+                        <div class="value-item">
+                            <i class="fas fa-gem"></i>
+                            <h4 data-i18n="about.val_fleet_title">Advanced Premium Fleet</h4>
+                            <p data-i18n="about.val_fleet_desc">Owning a collection of the newest luxury car lines, unconditionally maintained periodically.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-user-tie"></i>
+                            <h4 data-i18n="about.val_driver_title">Professional Drivers</h4>
+                            <p data-i18n="about.val_driver_desc">Well-trained drivers with standard communication and deep understanding of all routes.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-headset"></i>
+                            <h4 data-i18n="about.val_support_title">Dedicated 24/7 Support</h4>
+                            <p data-i18n="about.val_support_desc">Customer care team is always ready to support you anytime, anywhere, anytime.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-tags"></i>
+                            <h4 data-i18n="about.val_price_title">Clear Competitive Pricing</h4>
+                            <p data-i18n="about.val_price_desc">Committed to bringing services worthy of your investment with transparent pricing.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div class="about-cta">
+                    <a href="booking.html" class="btn btn-primary btn-large">
+                        <span data-i18n="about.cta_book">Book Now</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="contact.html" class="btn btn-secondary btn-large">
+                        <span data-i18n="about.cta_contact">Contact Us</span>
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span>CARVIP VIET NAM CO.,LTD</span>
+                    </div>
+                    <p class="footer-description" data-i18n="footer.description">
+                        Dịch vụ cho thuê xe Mercedes cao cấp hàng đầu tại TP. Hồ Chí Minh
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title" data-i18n="footer.contact_title">Liên Hệ</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Melody Residences 869 Âu Cơ - TP.HCM.</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>Zalo/Whatsapp: 0903776578</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>infobook@carvip.vn</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Mercedes Luxury Rental. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="back-to-top" id="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
