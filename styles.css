@@ -1688,45 +1688,60 @@ select.form-control {
     }
     
     .nav-menu {
-        position: fixed;
-        top: 0;
-        left: -100%;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
         width: fit-content;
-        min-width: 200px;
-        max-width: 240px;
-        height: 100vh;
-        background: linear-gradient(135deg, rgba(0,0,0,0.98) 0%, rgba(26,26,26,0.98) 100%);
+        min-width: 250px;
+        height: auto;
+        max-height: calc(100vh - 90px);
+        background: rgba(20, 20, 20, 0.95);
         backdrop-filter: blur(20px);
-        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.8);
-        padding: 3.5rem 1.25rem 2rem 1.25rem;
-        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 3.5rem 1.5rem 1.5rem 1.5rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         overflow-y: auto;
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
         z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px) scale(0.95);
     }
     
     .nav-menu.show {
-        left: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
     }
     
     .nav-list {
         flex-direction: column;
         gap: 0;
         align-items: stretch;
+        width: 100%;
     }
     
     .nav-item {
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
     }
     
     .nav-link {
         display: block;
-        padding: 0.875rem 0.5rem;
-        font-size: 1rem;
+        padding: 1rem 0;
+        font-size: 1.125rem;
         -webkit-text-fill-color: unset;
         color: var(--color-white);
         background: none;
         white-space: nowrap;
+        text-align: center;
+        width: 100%;
     }
     
     .nav-link::after {
@@ -1735,9 +1750,9 @@ select.form-control {
     
     .nav-link:hover,
     .nav-link.active {
-        background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%);
-        padding-left: 0.75rem;
+        background: none;
         color: var(--color-white-pure);
+        transform: scale(1.05);
     }
     
     .nav-close {
@@ -2175,7 +2190,10 @@ select.form-control {
         display: none; /* Hide on very small screens */
     }
     
-    .nav-phone,
+    .nav-phone {
+        display: none;
+    }
+    
     .nav-toggle {
         width: 36px;
         height: 36px;
