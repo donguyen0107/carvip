@@ -31,7 +31,15 @@ export default async function handler(req, res) {
 
         // Lấy tất cả posts
         const postsData = await redis.get('blog-posts');
-        const posts = postsData ? JSON.parse(postsData) : [];
+        let posts = [];
+        if (postsData) {
+            try {
+                const parsed = JSON.parse(postsData);
+                posts = Array.isArray(parsed) ? parsed : (parsed.posts || parsed.data || []);
+            } catch(e) {
+                posts = [];
+            }
+        }
 
         // GET - Lấy 1 post theo ID
         if (req.method === 'GET') {

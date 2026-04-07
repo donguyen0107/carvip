@@ -28,7 +28,15 @@ export default async function handler(req, res) {
         // GET - Lấy tất cả posts
         if (req.method === 'GET') {
             const postsData = await redis.get('blog-posts');
-            const posts = postsData ? JSON.parse(postsData) : [];
+            let posts = [];
+            if (postsData) {
+                try {
+                    const parsed = JSON.parse(postsData);
+                    posts = Array.isArray(parsed) ? parsed : (parsed.posts || parsed.data || []);
+                } catch(e) {
+                    posts = [];
+                }
+            }
             
             // Return array directly (not wrapped in object)
             return res.status(200).json(posts);
@@ -48,7 +56,15 @@ export default async function handler(req, res) {
 
             // Lấy danh sách hiện tại
             const postsData = await redis.get('blog-posts');
-            const posts = postsData ? JSON.parse(postsData) : [];
+            let posts = [];
+            if (postsData) {
+                try {
+                    const parsed = JSON.parse(postsData);
+                    posts = Array.isArray(parsed) ? parsed : (parsed.posts || parsed.data || []);
+                } catch(e) {
+                    posts = [];
+                }
+            }
 
             // Generate slug if not provided
             let finalSlug = slug;
