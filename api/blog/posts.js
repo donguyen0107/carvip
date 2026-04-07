@@ -60,6 +60,22 @@ module.exports = async function handler(req, res) {
                 return res.status(400).json({ success: false, message: 'Vui lòng nhập tiêu đề bài viết' });
             }
 
+            // Kiểm tra kích thước content (giới hạn 200KB để tránh OOM Redis)
+            const contentSize = (content || '').length;
+            if (contentSize > 200 * 1024) {
+                return res.status(413).json({
+                    success: false,
+                    message: `Nội dung bài viết quá lớn (${Math.round(contentSize/1024)}KB). Giới hạn là 200KB. Hãy dùng URL ảnh thay vì upload ảnh trực tiếp.`
+                });
+            }
+
+            // Cảnh báo nếu có base64 image trong content (rất nặng)
+            const cleanContent = (content || '').replace(/src="data:image\/[^;]+;base64,[^"]+"/g,
+                'src="[ảnh đã xóa - dùng URL ảnh thay vì base64]"');
+
+            // Nếu featured image là base64, không lưu vào Redis (quá nặng)
+            const safeImage = (image || '').startsWith('data:image') ? '' : (image || '');
+
             const posts = await getPosts(redis);
 
             // Tạo slug
@@ -80,8 +96,8 @@ module.exports = async function handler(req, res) {
             if (existingIndex !== -1) {
                 posts[existingIndex] = {
                     ...posts[existingIndex], title, slug: uniqueSlug,
-                    content: content || '', excerpt: cleanExcerpt,
-                    category: category || 'tin-tuc', image: image || '',
+                    content: cleanContent, excerpt: cleanExcerpt,
+                    category: category || 'tin-tuc', image: safeImage,
                     status: status || 'draft', author: author || 'Admin',
                     updatedAt: new Date().toISOString()
                 };
@@ -90,8 +106,8 @@ module.exports = async function handler(req, res) {
             } else {
                 const newPost = {
                     id: id || Date.now().toString(), title, slug: uniqueSlug,
-                    content: content || '', excerpt: cleanExcerpt,
-                    category: category || 'tin-tuc', image: image || '',
+                    content: cleanContent, excerpt: cleanExcerpt,
+                    category: category || 'tin-tuc', image: safeImage,
                     status: status || 'draft', author: author || 'Admin',
                     createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
                 };
