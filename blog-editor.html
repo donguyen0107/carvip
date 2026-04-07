@@ -836,7 +836,12 @@
                     alert(status === 'published' ? 'Bài viết đã được xuất bản!' : 'Bài viết đã được lưu nháp!');
                     loadPosts();
                 } else {
-                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                    let errMsg = `Lỗi HTTP ${response.status}`;
+                    try {
+                        const errData = await response.json();
+                        errMsg = errData.message || errMsg;
+                    } catch(e) {}
+                    alert('❌ Lỗi: ' + errMsg);
                 }
             } catch (error) {
                 console.error('Error:', error);

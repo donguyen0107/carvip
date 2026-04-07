@@ -572,9 +572,9 @@
                 return;
             }
 
-            blogGrid.innerHTML = posts.map(post => `
+        blogGrid.innerHTML = posts.map(post => `
                 <article class="blog-card" onclick="window.location.href='blog-post.html?slug=${post.slug || post.id}'">
-                    ${post.image ? `<img src="${post.image}" alt="${post.title}" class="blog-card-image">` : ''}
+                    ${post.image ? `<img src="${post.image}" alt="${post.title}" class="blog-card-image" onerror="this.style.display='none'">` : ''}
                     <div class="blog-card-content">
                         <span class="blog-card-category">${getCategoryName(post.category || 'tin-tuc')}</span>
                         <div class="blog-card-meta">
@@ -583,8 +583,8 @@
                         </div>
                         <h2 class="blog-card-title">${post.title}</h2>
                         <p class="blog-card-excerpt">${post.excerpt || getExcerpt(post.content || '')}</p>
-                        <a href="javascript:void(0)" class="blog-card-link">
-                            ${t('blog.read_more')} <i class="fas fa-arrow-right"></i>
+                        <a href="blog-post.html?slug=${post.slug || post.id}" class="blog-card-link">
+                            ${(typeof t === 'function' ? t('blog.read_more') : null) || 'Đọc thêm'} <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </article>
@@ -650,8 +650,8 @@
             blogGrid.innerHTML = `
                 <div class="no-posts">
                     <i class="fas fa-file-alt"></i>
-                    <h3 style="color: var(--color-white); margin-bottom: 0.5rem;">${t('blog.no_posts')}</h3>
-                    <p>${t('blog.no_posts')}</p>
+                    <h3 style="color: var(--color-white); margin-bottom: 0.5rem;">Chưa có bài viết nào</h3>
+                    <p>Hãy quay lại sau!</p>
                 </div>
             `;
         }
@@ -686,7 +686,7 @@
             const recentPosts = document.getElementById('recentPosts');
             
             if (posts.length === 0) {
-                recentPosts.innerHTML = `<p style="color: var(--color-gray); text-align: center;">${t('blog.no_posts')}</p>`;
+                recentPosts.innerHTML = `<p style="color: var(--color-gray); text-align: center;">Chưa có bài viết</p>`;
                 return;
             }
 
