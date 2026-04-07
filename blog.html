@@ -384,7 +384,13 @@
                     </div>
 
                     <!-- Blog Grid -->
-                    <div id="blogGrid" class="blog-grid"></div>
+                    <div id="blogGrid" class="blog-grid">
+                        <!-- Loading spinner -->
+                        <div id="loadingSpinner" style="text-align:center; padding: 4rem 2rem; color: var(--color-gray);">
+                            <i class="fas fa-spinner" style="font-size:3rem; animation: spin 1s linear infinite;"></i>
+                            <p style="margin-top:1rem;">Đang tải bài viết...</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
@@ -508,52 +514,49 @@
         let allPosts = [];
         let currentCategory = 'all';
 
-        // Load posts từ Vercel KV API
+        // Load posts — LUÔN lấy từ API, không dùng cache
         async function loadPosts() {
             try {
-                console.log('📥 Đang tải bài viết từ Vercel KV...');
-                
-                // Thêm timestamp để vô hiệu hóa cache trình duyệt
-                const response = await fetch(`/api/blog/posts?t=${new Date().getTime()}`, {
-                    headers: {
-                        'Cache-Control': 'no-cache, no-store, must-revalidate',
-                        'Pragma': 'no-cache'
-                    }
+                console.log('📥 Đang tải bài viết từ API...');
+
+                const response = await fetch(`/api/blog/posts?t=${Date.now()}`, {
+                    cache: 'no-store',
+                    headers: { 'Cache-Control': 'no-cache', 'Pragma': 'no-cache' }
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
-                    
-                    // Đảm bảo dữ liệu là mảng, giống như cách editor xử lý
                     const posts = Array.isArray(data) ? data : (data.posts || data.data || []);
                     const publishedPosts = posts.filter(post => post.status === 'published');
-                    
-                    console.log('✅ Đã tải', publishedPosts.length, 'bài viết từ Vercel KV');
-                    
+
+                    console.log('✅ Đã tải', publishedPosts.length, 'bài viết từ API');
+
                     allPosts = publishedPosts;
+
+                    // Lưu cache mới vào LocalStorage
+                    try { localStorage.setItem('blogPosts_v2', JSON.stringify(allPosts)); } catch(e) {}
+
                     displayPosts(allPosts);
                     updateCategoryCounts(allPosts);
                     displayRecentPosts(allPosts.slice(0, 5));
-                    
-                    // Backup vào LocalStorage
-                    localStorage.setItem('blogPosts', JSON.stringify(allPosts));
                 } else {
-                    console.warn('⚠️ Không thể tải từ API, dùng LocalStorage');
+                    console.warn('⚠️ API lỗi HTTP', response.status, '— dùng cache cũ');
                     loadFromLocalStorage();
                 }
             } catch (error) {
-                console.error('❌ Lỗi khi tải từ API:', error);
+                console.error('❌ Không thể gọi API:', error.message);
                 loadFromLocalStorage();
             }
         }
 
-        // Fallback: Load từ LocalStorage
+        // Fallback: Load từ LocalStorage (chỉ dùng khi mất mạng)
         function loadFromLocalStorage() {
-            const localPosts = JSON.parse(localStorage.getItem('blogPosts') || '[]');
+            const cached = localStorage.getItem('blogPosts_v2') || localStorage.getItem('blogPosts');
+            const localPosts = JSON.parse(cached || '[]');
             const publishedPosts = localPosts.filter(post => post.status === 'published');
-            
+
             if (publishedPosts.length > 0) {
-                console.log('💾 Hiển thị bài viết từ LocalStorage (cache)');
+                console.log('💾 Hiển thị từ cache LocalStorage (' + publishedPosts.length + ' bài)');
                 allPosts = publishedPosts;
                 displayPosts(allPosts);
                 updateCategoryCounts(allPosts);
