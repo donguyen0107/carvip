@@ -1,5 +1,5 @@
-// Debug endpoint — kiểm tra Redis connection
-// Mở: https://your-project.vercel.app/api/debug
+// Debug endpoint — kiểm tra Redis + test POST
+// https://your-project.vercel.app/api/debug
 
 module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,11 +11,9 @@ module.exports = async function handler(req, res) {
             REDIS_URL: process.env.REDIS_URL
                 ? '✅ CÓ (' + process.env.REDIS_URL.replace(/\/\/[^:]+:[^@]+@/, '//***:***@') + ')'
                 : '❌ THIẾU',
-            KV_REST_API_URL: process.env.KV_REST_API_URL ? '✅ CÓ' : '❌ KHÔNG CÓ',
-            KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN ? '✅ CÓ' : '❌ KHÔNG CÓ',
         },
         redisTest: null,
-        postCount: null,
+        posts: null,
         error: null
     };
 
@@ -28,28 +26,33 @@ module.exports = async function handler(req, res) {
             tls: url.startsWith('rediss://') ? {} : undefined,
             maxRetriesPerRequest: 3,
             enableReadyCheck: false,
-            lazyConnect: false,
+            lazyConnect: true,
             connectTimeout: 8000,
             commandTimeout: 8000,
             family: 0,
         });
 
-        // PING
-        const ping = await redis.ping();
-        info.redisTest = ping === 'PONG' ? '✅ PONG - Kết nối thành công!' : '⚠️ ' + ping;
+        await redis.connect();
+        info.redisTest = await redis.ping() === 'PONG' ? '✅ PONG' : '❌ No PONG';
 
         // Đọc blog posts
         const raw = await redis.get('blog-posts');
         if (raw) {
             const posts = JSON.parse(raw);
-            info.postCount = '✅ Có ' + (Array.isArray(posts) ? posts.length : '?') + ' bài trong Redis';
+            const arr = Array.isArray(posts) ? posts : [];
+            info.posts = {
+                total: arr.length,
+                published: arr.filter(p => p.status === 'published').length,
+                draft: arr.filter(p => p.status === 'draft').length,
+                titles: arr.map(p => `[${p.status}] ${p.title}`)
+            };
         } else {
-            info.postCount = 'ℹ️ Chưa có dữ liệu blog-posts (Redis key rỗng — bình thường nếu chưa đăng bài)';
+            info.posts = 'Chưa có dữ liệu blog-posts trong Redis';
         }
 
         redis.disconnect();
     } catch (err) {
-        info.error = err.message;
+        info.error = err.message + '\n' + (err.stack || '');
     }
 
     return res.status(200).json(info);
