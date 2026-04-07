@@ -1,11 +1,10 @@
-// API endpoint: GET /api/blog/posts/[id] — lấy 1 bài
-//               PUT /api/blog/posts/[id] — sửa bài
-//               DELETE /api/blog/posts/[id] — xóa bài
+// API: GET    /api/blog/posts/[id] — lấy 1 bài
+//      PUT    /api/blog/posts/[id] — sửa bài
+//      DELETE /api/blog/posts/[id] — xóa bài
 
 const { getPosts, savePosts } = require('../../../lib/redis');
 
-export default async function handler(req, res) {
-    // CORS headers
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT,DELETE');
@@ -26,7 +25,7 @@ export default async function handler(req, res) {
     try {
         const posts = await getPosts();
 
-        // ── GET: lấy 1 bài theo id ──────────────────────────────────────
+        // ── GET ──────────────────────────────────────────────────────────
         if (req.method === 'GET') {
             const post = posts.find(p => p.id === id || p.slug === id);
             if (!post) {
@@ -35,31 +34,26 @@ export default async function handler(req, res) {
             return res.status(200).json(post);
         }
 
-        // ── PUT: cập nhật bài ───────────────────────────────────────────
+        // ── PUT (sửa) ────────────────────────────────────────────────────
         if (req.method === 'PUT') {
-            const postIndex = posts.findIndex(p => p.id === id);
-            if (postIndex === -1) {
+            const idx = posts.findIndex(p => p.id === id);
+            if (idx === -1) {
                 return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết' });
             }
-            const body = req.body || {};
-            posts[postIndex] = {
-                ...posts[postIndex],
-                ...body,
-                id, // giữ nguyên id
+            posts[idx] = {
+                ...posts[idx],
+                ...(req.body || {}),
+                id,
                 updatedAt: new Date().toISOString()
             };
             await savePosts(posts);
-            return res.status(200).json({
-                success: true,
-                message: 'Cập nhật bài viết thành công',
-                post: posts[postIndex]
-            });
+            return res.status(200).json({ success: true, message: 'Cập nhật thành công', post: posts[idx] });
         }
 
-        // ── DELETE: xóa bài ─────────────────────────────────────────────
+        // ── DELETE (xóa) ─────────────────────────────────────────────────
         if (req.method === 'DELETE') {
-            const postIndex = posts.findIndex(p => p.id === id);
-            if (postIndex === -1) {
+            const idx = posts.findIndex(p => p.id === id);
+            if (idx === -1) {
                 return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết' });
             }
             const filtered = posts.filter(p => p.id !== id);
@@ -70,11 +64,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
 
     } catch (error) {
-        console.error('❌ /api/blog/posts/[id] error:', error);
+        console.error('❌ /api/blog/posts/[id] error:', error.message, error.stack);
         return res.status(500).json({
             success: false,
-            message: 'Lỗi server: ' + error.message,
-            error: error.message
+            message: 'Lỗi server: ' + error.message
         });
     }
-}
+};

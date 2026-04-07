@@ -1,10 +1,9 @@
-// API endpoint: GET /api/blog/posts — lấy tất cả bài viết
-//               POST /api/blog/posts — tạo/cập nhật bài viết
+// API: GET /api/blog/posts  — lấy tất cả bài viết
+//      POST /api/blog/posts — tạo/cập nhật bài viết
 
 const { getPosts, savePosts } = require('../../lib/redis');
 
-export default async function handler(req, res) {
-    // CORS headers
+module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT,DELETE');
@@ -17,13 +16,13 @@ export default async function handler(req, res) {
     }
 
     try {
-        // ── GET: trả về tất cả bài ──────────────────────────────────────
+        // ── GET ─────────────────────────────────────────────────────────
         if (req.method === 'GET') {
             const posts = await getPosts();
             return res.status(200).json(posts);
         }
 
-        // ── POST: tạo mới hoặc cập nhật bài ────────────────────────────
+        // ── POST (tạo mới hoặc cập nhật) ────────────────────────────────
         if (req.method === 'POST') {
             const body = req.body || {};
             const { id, title, slug, content, excerpt, category, image, status, author } = body;
@@ -34,7 +33,7 @@ export default async function handler(req, res) {
 
             const posts = await getPosts();
 
-            // Tạo slug từ tiêu đề nếu chưa có
+            // Tạo slug từ tiêu đề
             let finalSlug = slug;
             if (!finalSlug && title) {
                 finalSlug = title
@@ -45,19 +44,17 @@ export default async function handler(req, res) {
                     .replace(/[^a-z0-9\s-]/g, '')
                     .replace(/\s+/g, '-')
                     .replace(/-+/g, '-')
-                    .trim();
+                    .trim() || 'bai-viet';
             }
 
-            // Đảm bảo slug không bị trùng
+            // Đảm bảo slug không trùng
             let uniqueSlug = finalSlug;
             let counter = 1;
             while (posts.some(p => p.slug === uniqueSlug && p.id !== id)) {
                 uniqueSlug = `${finalSlug}-${counter++}`;
             }
 
-            // Lấy excerpt từ content nếu chưa có
             const cleanExcerpt = excerpt || (content || '').replace(/<[^>]*>/g, '').substring(0, 150) + '...';
-
             const existingIndex = id ? posts.findIndex(p => p.id === id) : -1;
 
             if (existingIndex !== -1) {
@@ -108,11 +105,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ success: false, message: 'Method not allowed' });
 
     } catch (error) {
-        console.error('❌ /api/blog/posts error:', error);
+        console.error('❌ /api/blog/posts error:', error.message, error.stack);
         return res.status(500).json({
             success: false,
-            message: 'Lỗi server: ' + error.message,
-            error: error.message
+            message: 'Lỗi server: ' + error.message
         });
     }
-}
+};
