@@ -498,9 +498,24 @@
 
                 <!-- Posts List -->
                 <div style="margin-top: 3rem;">
-                    <h2 style="color: var(--color-white); margin-bottom: 1.5rem;">
-                        <i class="fas fa-list"></i> Danh sách bài viết
-                    </h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                        <h2 style="color: var(--color-white); margin: 0;">
+                            <i class="fas fa-list"></i> Danh sách bài viết
+                        </h2>
+                        <button type="button" class="btn" id="optimizeOldPostsBtn" style="background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); color: white; padding: 0.5rem 1rem; border-radius: 8px; border: none; font-weight: bold; cursor: pointer;">
+                            <i class="fas fa-magic"></i> Tối Ưu Ảnh Base64
+                        </button>
+                    </div>
+                    
+                    <!-- Progress Bar for optimization -->
+                    <div id="optimizationProgress" style="display: none; background: var(--color-accent); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border: 1px solid var(--color-gold);">
+                        <h4 style="color: var(--color-gold); margin-top: 0; margin-bottom: 0.8rem;"><i class="fas fa-spinner fa-spin"></i> Đang tự động thay thế ảnh...</h4>
+                        <div style="width: 100%; background: var(--color-primary); height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 0.8rem;">
+                            <div id="optimizationBar" style="width: 0%; background: var(--color-gold); height: 100%; transition: width 0.3s ease;"></div>
+                        </div>
+                        <p id="optimizationStatus" style="color: var(--color-white); font-size: 0.9rem; margin: 0;">Đang chuẩn bị dữ liệu...</p>
+                    </div>
+                    
                     <div id="postsList" class="posts-list"></div>
                 </div>
             </div>
@@ -576,14 +591,24 @@
         const IMGBB_API_KEY = 'fef2cb2b8872380a60939b29d2d4c770';
 
         // Function to upload image to ImgBB
-        async function uploadImageToImgBB(file) {
+        async function uploadImageToImgBB(fileOrBase64Url) {
             if (!IMGBB_API_KEY) {
                 alert('Trang web đang chờ chủ sở hữu điền API Key ImgBB ẩn ở dưới nền. Vui lòng thử lại sau!');
                 return null;
             }
             
             const formData = new FormData();
-            formData.append('image', file);
+            
+            if (typeof fileOrBase64Url === 'string') {
+                if (fileOrBase64Url.startsWith('data:image')) {
+                    const base64Data = fileOrBase64Url.split(',')[1];
+                    formData.append('image', base64Data);
+                } else {
+                    return fileOrBase64Url; // It's already an IP/Web URL, pass bypass
+                }
+            } else {
+                formData.append('image', fileOrBase64Url);
+            }
             
             try {
                 const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
@@ -595,12 +620,11 @@
                 if (data.success) {
                     return data.data.url; // Trả về direct url
                 } else {
-                    alert('Lỗi khi upload ảnh lên ImgBB: ' + (data.error?.message || 'Unknown error'));
+                    console.error('Lỗi khi upload ảnh lên ImgBB: ' + (data.error?.message || 'Unknown error'));
                     return null;
                 }
             } catch (error) {
                 console.error('Error uploading image to ImgBB:', error);
-                alert('Đã xảy ra lỗi mạng khi upload ảnh.');
                 return null;
             }
         }
@@ -1036,6 +1060,121 @@
                 alert('Lỗi kết nối. Vui lòng thử lại.');
             }
         }
+
+        // Optimize Old Posts Logic
+        document.getElementById('optimizeOldPostsBtn').addEventListener('click', async () => {
+            if (!confirm('Tính năng này sẽ TỰ ĐỘNG Quét & Chuyển Đổi tất cả ảnh Base64 cũ trong mọi bài viết thành Link ImgBB để giảm tải Redis.\n\nQuá trình này có thể mất vài phút. Vui lòng KHÔNG ĐÓNG TRÌNH DUYỆT trong khi chạy. Bạn đã sẵn sàng chưa?')) return;
+            
+            const btn = document.getElementById('optimizeOldPostsBtn');
+            const progressContainer = document.getElementById('optimizationProgress');
+            const progressBar = document.getElementById('optimizationBar');
+            const statusText = document.getElementById('optimizationStatus');
+            
+            btn.style.display = 'none';
+            progressContainer.style.display = 'block';
+            
+            statusText.textContent = 'Đang tải danh sách bài viết từ máy chủ...';
+            
+            try {
+                const response = await fetch('/api/blog/posts', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) throw new Error('Không lấy được danh sách bài viết');
+                
+                const data = await response.json();
+                const posts = Array.isArray(data) ? data : (data.posts || []);
+                
+                let totalOptimizedImages = 0;
+                let totalOptimizedPosts = 0;
+                
+                for (let i = 0; i < posts.length; i++) {
+                    const post = posts[i];
+                    progressBar.style.width = `${((i) / posts.length) * 100}%`;
+                    statusText.textContent = `Đang kiểm tra bài ${i + 1}/${posts.length}: ${post.title}...`;
+                    
+                    let isPostDirty = false;
+                    
+                    // 1. Optimize featured image
+                    if (post.image && post.image.startsWith('data:image/')) {
+                        statusText.textContent = `Bài ${i+1}/${posts.length}: Đang đẩy lên ImgBB ảnh đại diện bài viết...`;
+                        const newUrl = await uploadImageToImgBB(post.image);
+                        if (newUrl) {
+                            post.image = newUrl;
+                            isPostDirty = true;
+                            totalOptimizedImages++;
+                        }
+                    }
+                    
+                    // 2. Optimize content images
+                    if (post.content && post.content.includes('data:image/')) {
+                        statusText.textContent = `Bài ${i+1}/${posts.length}: Đang tìm và xử lý các ảnh bên trong nội dung...`;
+                        
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(post.content, 'text/html');
+                        const images = doc.getElementsByTagName('img');
+                        let hasContentImagesDirty = false;
+                        
+                        for (let j = 0; j < images.length; j++) {
+                            const img = images[j];
+                            if (img.src && img.src.startsWith('data:image/')) {
+                                statusText.textContent = `Bài ${i+1}/${posts.length}: Đang upload ảnh ${j+1}/${images.length} của nội dung bài lên ImgBB...`;
+                                const newUrl = await uploadImageToImgBB(img.src);
+                                if (newUrl) {
+                                    img.src = newUrl;
+                                    hasContentImagesDirty = true;
+                                    totalOptimizedImages++;
+                                }
+                            }
+                        }
+                        
+                        if (hasContentImagesDirty) {
+                            post.content = doc.body.innerHTML; 
+                            isPostDirty = true;
+                        }
+                    }
+                    
+                    // 3. Auto Save
+                    if (isPostDirty) {
+                        statusText.textContent = `Bài ${i+1}/${posts.length}: Đang lưu bài viết gọn nhẹ vào Redis...`;
+                        try {
+                            const saveResponse = await fetch('/api/blog/posts', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                },
+                                body: JSON.stringify(post)
+                            });
+                            
+                            if (saveResponse.ok) {
+                                totalOptimizedPosts++;
+                            }
+                        } catch (saveErr) {
+                            console.error(`Lỗi mạng khi lưu bài ${post.id}`, saveErr);
+                        }
+                    }
+                }
+                
+                progressBar.style.width = '100%';
+                statusText.innerHTML = `<b>HOÀN TẤT!</b> Đã giải phóng Redis thành công.<br>Quét qua ${posts.length} bài. Đã sửa lại ${totalOptimizedPosts} bài (với ${totalOptimizedImages} bức ảnh).`;
+                statusText.style.color = '#4CAF50';
+                
+                setTimeout(() => {
+                    alert(`Hoàn tất dọn dẹp không gian lưu trữ!\nĐã chuyển ${totalOptimizedImages} ảnh Base64 sang ImgBB Link.`);
+                    loadPosts();
+                    btn.style.display = 'block';
+                    progressContainer.style.display = 'none';
+                    progressBar.style.width = '0%';
+                    statusText.style.color = 'var(--color-white)';
+                }, 2500);
+                
+            } catch (error) {
+                console.error(error);
+                statusText.innerHTML = `<b style="color:#ff6b6b">ĐÃ XẢY RA LỖI MẠNG:</b> Vui lòng Refresh trang và chạy lại.`;
+                btn.style.display = 'block';
+            }
+        });
 
         // Load posts on page load
         loadPosts();
