@@ -1,17 +1,18 @@
-// API endpoint for single blog post on Vercel
-// Path: /api/blog/posts/[id]
-// Methods: GET (single post), PUT (update), DELETE (delete)
+// API endpoint: GET /api/blog/posts/[id] — lấy 1 bài
+//               PUT /api/blog/posts/[id] — sửa bài
+//               DELETE /api/blog/posts/[id] — xóa bài
 
-const { getRedisClient } = require('../../../lib/redis');
+const { getPosts, savePosts } = require('../../../lib/redis');
 
 export default async function handler(req, res) {
-    // Set CORS headers
+    // CORS headers
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST,PUT,DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
 
-    // Handle OPTIONS request for CORS preflight
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
@@ -19,112 +20,60 @@ export default async function handler(req, res) {
     const { id } = req.query;
 
     if (!id) {
-        return res.status(400).json({
-            success: false,
-            message: 'Post ID is required'
-        });
+        return res.status(400).json({ success: false, message: 'Thiếu post ID' });
     }
 
     try {
-        const redis = getRedisClient();
-        await redis.connect().catch(() => {}); // Connect if not connected
+        const posts = await getPosts();
 
-        // Lấy tất cả posts
-        const postsData = await redis.get('blog-posts');
-        let posts = [];
-        if (postsData) {
-            try {
-                const parsed = JSON.parse(postsData);
-                posts = Array.isArray(parsed) ? parsed : (parsed.posts || parsed.data || []);
-            } catch(e) {
-                posts = [];
-            }
-        }
-
-        // GET - Lấy 1 post theo ID
+        // ── GET: lấy 1 bài theo id ──────────────────────────────────────
         if (req.method === 'GET') {
-            const post = posts.find(p => p.id === id);
-            
+            const post = posts.find(p => p.id === id || p.slug === id);
             if (!post) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Post not found'
-                });
+                return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết' });
             }
-
-            // Return post directly
             return res.status(200).json(post);
         }
 
-        // PUT - Cập nhật post
+        // ── PUT: cập nhật bài ───────────────────────────────────────────
         if (req.method === 'PUT') {
-            const { title, content, excerpt, coverImage, status, author } = req.body;
-
             const postIndex = posts.findIndex(p => p.id === id);
-            
             if (postIndex === -1) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Post not found'
-                });
+                return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết' });
             }
-
-            // Cập nhật post
+            const body = req.body || {};
             posts[postIndex] = {
                 ...posts[postIndex],
-                title: title || posts[postIndex].title,
-                content: content || posts[postIndex].content,
-                excerpt: excerpt || posts[postIndex].excerpt,
-                coverImage: coverImage !== undefined ? coverImage : posts[postIndex].coverImage,
-                status: status || posts[postIndex].status,
-                author: author || posts[postIndex].author,
+                ...body,
+                id, // giữ nguyên id
                 updatedAt: new Date().toISOString()
             };
-
-            // Cập nhật trong Redis
-            await redis.set('blog-posts', JSON.stringify(posts));
-
+            await savePosts(posts);
             return res.status(200).json({
                 success: true,
-                message: 'Post updated successfully',
+                message: 'Cập nhật bài viết thành công',
                 post: posts[postIndex]
             });
         }
 
-        // DELETE - Xóa post
+        // ── DELETE: xóa bài ─────────────────────────────────────────────
         if (req.method === 'DELETE') {
             const postIndex = posts.findIndex(p => p.id === id);
-            
             if (postIndex === -1) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'Post not found'
-                });
+                return res.status(404).json({ success: false, message: 'Không tìm thấy bài viết' });
             }
-
-            // Xóa post
-            const filteredPosts = posts.filter(p => p.id !== id);
-
-            // Lưu lại
-            await redis.set('blog-posts', JSON.stringify(filteredPosts));
-
-            return res.status(200).json({
-                success: true,
-                message: 'Post deleted successfully'
-            });
+            const filtered = posts.filter(p => p.id !== id);
+            await savePosts(filtered);
+            return res.status(200).json({ success: true, message: 'Xóa bài viết thành công' });
         }
 
-        // Method not allowed
-        return res.status(405).json({
-            success: false,
-            message: 'Method not allowed'
-        });
+        return res.status(405).json({ success: false, message: 'Method not allowed' });
 
     } catch (error) {
-        console.error('API Error:', error);
+        console.error('❌ /api/blog/posts/[id] error:', error);
         return res.status(500).json({
             success: false,
-            message: 'Internal server error',
+            message: 'Lỗi server: ' + error.message,
             error: error.message
         });
     }
