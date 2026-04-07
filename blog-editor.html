@@ -461,7 +461,7 @@
                                 </button>
                             </div>
                             <small style="color: var(--color-gray); font-size: 0.85rem; margin-top: 0.25rem; display: block;">
-                                Ảnh sẽ được chuyển thành Base64 và lưu trực tiếp vào bài viết
+                                Ảnh sẽ được tự động đẩy lên máy chủ <b>ImgBB</b> và chỉ lưu URL (tiết kiệm dụng lượng Redis)
                             </small>
                         </div>
                         
@@ -572,28 +572,99 @@
             window.location.href = 'admin-login.html';
         }
 
+        // ImgBB API Key
+        const IMGBB_API_KEY = 'fef2cb2b8872380a60939b29d2d4c770';
+
+        // Function to upload image to ImgBB
+        async function uploadImageToImgBB(file) {
+            if (!IMGBB_API_KEY) {
+                alert('Trang web đang chờ chủ sở hữu điền API Key ImgBB ẩn ở dưới nền. Vui lòng thử lại sau!');
+                return null;
+            }
+            
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            try {
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    return data.data.url; // Trả về direct url
+                } else {
+                    alert('Lỗi khi upload ảnh lên ImgBB: ' + (data.error?.message || 'Unknown error'));
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error uploading image to ImgBB:', error);
+                alert('Đã xảy ra lỗi mạng khi upload ảnh.');
+                return null;
+            }
+        }
+
         // Initialize Quill editor
         const quill = new Quill('#editor', {
             theme: 'snow',
             placeholder: 'Bắt đầu viết nội dung bài viết của bạn... (Hỗ trợ HTML: in đậm, in nghiêng, header, màu sắc, v.v.)',
             modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    [{ 'font': [] }],
-                    [{ 'size': ['small', false, 'large', 'huge'] }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    [{ 'color': [] }, { 'background': [] }],
-                    [{ 'script': 'sub'}, { 'script': 'super' }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],
-                    [{ 'direction': 'rtl' }],
-                    [{ 'align': [] }],
-                    ['blockquote', 'code-block'],
-                    ['link', 'image', 'video'],
-                    ['clean']
-                ]
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        [{ 'font': [] }],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'script': 'sub'}, { 'script': 'super' }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'indent': '-1'}, { 'indent': '+1' }],
+                        [{ 'direction': 'rtl' }],
+                        [{ 'align': [] }],
+                        ['blockquote', 'code-block'],
+                        ['link', 'image', 'video'],
+                        ['clean']
+                    ],
+                    handlers: {
+                        image: imageHandler
+                    }
+                }
             }
         });
+
+        // Quill Custom Image Handler
+        function imageHandler() {
+            if (!IMGBB_API_KEY) {
+                alert('Hệ thống đang cấu hình ImgBB API Key. Vui lòng chờ admin cập nhật!');
+                return;
+            }
+            
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.click();
+
+            input.onchange = async () => {
+                const file = input.files[0];
+                if (file) {
+                    // Start Loading pointer
+                    const tooltip = document.createElement('div');
+                    tooltip.innerText = 'Đang tải ảnh lên...';
+                    tooltip.style.cssText = 'position: fixed; top: 10px; right: 10px; background: orange; color: white; padding: 10px; z-index: 9999; border-radius: 5px;';
+                    document.body.appendChild(tooltip);
+
+                    const imageUrl = await uploadImageToImgBB(file);
+                    
+                    if (imageUrl) {
+                        const range = quill.getSelection(true);
+                        quill.insertEmbed(range.index, 'image', imageUrl);
+                    }
+                    
+                    document.body.removeChild(tooltip);
+                }
+            };
+        }
 
         // Toggle HTML Mode
         let isHtmlMode = false;
@@ -670,7 +741,7 @@
         });
 
         // Handle File Upload
-        document.getElementById('postImageFile').addEventListener('change', (e) => {
+        document.getElementById('postImageFile').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (file) {
                 if (!file.type.startsWith('image/')) {
@@ -678,27 +749,34 @@
                     return;
                 }
                 
-                // Check file size (max 2MB)
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('Ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 2MB.');
+                // Check file size (max 32MB for ImgBB)
+                if (file.size > 32 * 1024 * 1024) {
+                    alert('Ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 32MB.');
                     return;
                 }
                 
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const base64Image = event.target.result;
-                    document.getElementById('postImage').value = base64Image;
+                const uploadBtn = document.getElementById('uploadImageBtn');
+                const originalHtml = uploadBtn.innerHTML;
+                uploadBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i><span> Đang tải lên ImgBB...</span>`;
+                uploadBtn.style.pointerEvents = 'none';
+                
+                const imageUrl = await uploadImageToImgBB(file);
+                
+                if (imageUrl) {
+                    document.getElementById('postImage').value = imageUrl;
                     
                     const preview = document.getElementById('imagePreview');
-                    preview.src = base64Image;
+                    preview.src = imageUrl;
                     preview.classList.add('show');
                     
-                    document.getElementById('uploadImageBtn').innerHTML = `
-                        <i class="fas fa-check-circle"></i>
-                        <span>Đã tải lên: ${file.name}</span>
+                    uploadBtn.innerHTML = `
+                        <i class="fas fa-check-circle" style="color: #4CAF50;"></i>
+                        <span> Đã tải lên: ${file.name}</span>
                     `;
-                };
-                reader.readAsDataURL(file);
+                } else {
+                    uploadBtn.innerHTML = originalHtml;
+                }
+                uploadBtn.style.pointerEvents = 'auto';
             }
         });
 
