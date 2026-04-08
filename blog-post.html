@@ -6,6 +6,7 @@
     <title>Blog Post | BOOKCARVIP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.core.css" rel="stylesheet">
     <style>
         .post-hero {
             padding: 8rem 0 4rem;
@@ -68,11 +69,22 @@
             line-height: 1.8;
         }
 
+        .post-content.ql-editor {
+            padding: 0;
+        }
+
         .post-content h1,
         .post-content h2,
         .post-content h3 {
             color: var(--color-white);
             margin: 2rem 0 1rem;
+        }
+
+        .post-content h4,
+        .post-content h5,
+        .post-content h6 {
+            color: var(--color-white);
+            margin: 1.5rem 0 0.75rem;
         }
 
         .post-content p {
@@ -102,6 +114,90 @@
 
         .post-content a:hover {
             opacity: 0.8;
+        }
+
+        .post-content .ql-align-center {
+            text-align: center;
+        }
+
+        .post-content .ql-align-right {
+            text-align: right;
+        }
+
+        .post-content .ql-align-justify {
+            text-align: justify;
+        }
+
+        .post-content .ql-direction-rtl {
+            direction: rtl;
+            text-align: inherit;
+        }
+
+        .post-content .ql-size-small {
+            font-size: 0.75em;
+        }
+
+        .post-content .ql-size-large {
+            font-size: 1.5em;
+        }
+
+        .post-content .ql-size-huge {
+            font-size: 2.5em;
+        }
+
+        .post-content .ql-font-serif {
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        .post-content .ql-font-monospace {
+            font-family: "Courier New", monospace;
+        }
+
+        .post-content .ql-indent-1 {
+            padding-left: 3em;
+        }
+
+        .post-content .ql-indent-2 {
+            padding-left: 6em;
+        }
+
+        .post-content .ql-indent-3 {
+            padding-left: 9em;
+        }
+
+        .post-content .ql-indent-4 {
+            padding-left: 12em;
+        }
+
+        .post-content .ql-indent-5 {
+            padding-left: 15em;
+        }
+
+        .post-content .ql-indent-6 {
+            padding-left: 18em;
+        }
+
+        .post-content .ql-indent-7 {
+            padding-left: 21em;
+        }
+
+        .post-content .ql-indent-8 {
+            padding-left: 24em;
+        }
+
+        .post-content pre.ql-syntax {
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--color-white);
+            padding: 1rem;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .post-content blockquote {
+            border-left: 4px solid rgba(255, 255, 255, 0.2);
+            margin: 1.5rem 0;
+            padding: 0.5rem 0 0.5rem 1rem;
+            color: var(--color-white);
         }
 
         .post-share {
@@ -371,7 +467,7 @@
             document.getElementById('postContent').innerHTML = `
                 <div class="post-content-wrapper">
                     ${post.image ? `<img src="${post.image}" alt="${post.title}" class="post-featured-image">` : ''}
-                    <div class="post-content">${post.content}</div>
+                    <div class="post-content ql-editor">${post.content}</div>
                     
                     <div class="post-share">
                         <h3 class="share-title">Chia sẻ bài viết</h3>
