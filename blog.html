@@ -625,10 +625,14 @@
                         .post-image { width: 100%; border-radius: 15px; margin-bottom: 2rem; }
                         .post-content { color: var(--color-gray); font-size: 1.125rem; line-height: 1.8; }
                         .post-content.ql-editor { padding: 0; }
-                        .post-content h1, .post-content h2, .post-content h3 { color: var(--color-white); margin: 2rem 0 1rem; }
-                        .post-content h4, .post-content h5, .post-content h6 { color: var(--color-white); margin: 1.5rem 0 0.75rem; }
+                        .post-content > * { margin-top: 0; margin-bottom: 0; }
+                        .post-content > * + * { margin-top: 0.9rem; }
+                        .post-content h1, .post-content h2, .post-content h3 { color: var(--color-white); margin-top: 1.6rem; margin-bottom: 0.7rem; }
+                        .post-content h4, .post-content h5, .post-content h6 { color: var(--color-white); margin-top: 1.3rem; margin-bottom: 0.6rem; }
                         .post-content img { max-width: 100%; border-radius: 10px; margin: 2rem 0; }
-                        .post-content p { margin-bottom: 1.5rem; }
+                        .post-content p { margin: 0; }
+                        .post-content img { margin: 1.4rem 0; }
+                        .post-content ul, .post-content ol { margin: 1rem 0; padding-left: 2rem; }
                         .post-content .ql-align-center { text-align: center; }
                         .post-content .ql-align-right { text-align: right; }
                         .post-content .ql-align-justify { text-align: justify; }
@@ -646,8 +650,8 @@
                         .post-content .ql-indent-6 { padding-left: 18em; }
                         .post-content .ql-indent-7 { padding-left: 21em; }
                         .post-content .ql-indent-8 { padding-left: 24em; }
-                        .post-content pre.ql-syntax { background: rgba(0, 0, 0, 0.3); color: var(--color-white); padding: 1rem; border-radius: 10px; overflow-x: auto; }
-                        .post-content blockquote { border-left: 4px solid rgba(255, 255, 255, 0.2); margin: 1.5rem 0; padding: 0.5rem 0 0.5rem 1rem; color: var(--color-white); }
+                        .post-content pre.ql-syntax { background: rgba(0, 0, 0, 0.3); color: var(--color-white); padding: 1rem; border-radius: 10px; overflow-x: auto; margin: 1.2rem 0; }
+                        .post-content blockquote { border-left: 4px solid rgba(255, 255, 255, 0.2); margin: 1.2rem 0; padding: 0.5rem 0 0.5rem 1rem; color: var(--color-white); }
                         .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-gray); text-decoration: none; margin-bottom: 2rem; transition: all 0.3s; }
                         .back-link:hover { color: var(--color-white); gap: 1rem; }
                     </style>
