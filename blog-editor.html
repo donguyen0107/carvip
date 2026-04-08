@@ -245,6 +245,41 @@
             display: block;
         }
 
+        .media-upload-card {
+            background: var(--color-accent);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .media-upload-btn {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            border: 2px dashed var(--color-border);
+            border-radius: 10px;
+            color: var(--color-white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: var(--transition-base);
+        }
+
+        .media-upload-btn:hover {
+            border-color: var(--color-white);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .upload-status {
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--color-gray);
+            line-height: 1.5;
+        }
+
         .posts-list {
             margin-top: 1rem;
         }
@@ -489,6 +524,16 @@
                                 <li>Editor tự động lưu nội dung dưới dạng <strong>HTML</strong></li>
                             </ul>
                         </div>
+                        <div class="media-upload-card">
+                            <button type="button" id="uploadVideoBtn" class="media-upload-btn">
+                                <i class="fas fa-video"></i>
+                                <span>Tải video lên Cloudinary và chèn vào bài viết</span>
+                            </button>
+                            <input type="file" id="postVideoFile" accept="video/mp4,video/webm,video/ogg,video/quicktime" style="display: none;">
+                            <div id="videoUploadStatus" class="upload-status">
+                                Video sẽ upload thẳng lên Cloudinary. Redis chỉ lưu HTML và URL video.
+                            </div>
+                        </div>
                         <div class="editor-content" id="editorWrapper">
                             <div id="editor"></div>
                         </div>
@@ -589,6 +634,15 @@
 
         // ImgBB API Key
         const IMGBB_API_KEY = 'fef2cb2b8872380a60939b29d2d4c770';
+        const MAX_VIDEO_SIZE_BYTES = 120 * 1024 * 1024;
+
+        function setVideoStatus(message, isError = false) {
+            const statusEl = document.getElementById('videoUploadStatus');
+            if (!statusEl) return;
+
+            statusEl.textContent = message;
+            statusEl.style.color = isError ? '#ff8a80' : 'var(--color-gray)';
+        }
 
         // Function to upload image to ImgBB
         async function uploadImageToImgBB(fileOrBase64Url) {
@@ -651,11 +705,33 @@
                         ['clean']
                     ],
                     handlers: {
-                        image: imageHandler
+                        image: imageHandler,
+                        video: videoHandler
                     }
                 }
             }
         });
+
+        const toolbarModule = quill.getModule('toolbar');
+        if (toolbarModule) {
+            toolbarModule.addHandler('video', videoHandler);
+        }
+
+        const videoToolbarButton = document.querySelector('.ql-video');
+        if (videoToolbarButton) {
+            videoToolbarButton.setAttribute('title', 'Tải video lên Cloudinary');
+            videoToolbarButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const tooltip = quill.theme && quill.theme.tooltip;
+                if (tooltip) {
+                    tooltip.hide();
+                }
+
+                videoHandler();
+            });
+        }
 
         // Quill Custom Image Handler
         function imageHandler() {
@@ -688,6 +764,112 @@
                     document.body.removeChild(tooltip);
                 }
             };
+        }
+
+        async function getCloudinaryVideoSignature() {
+            const response = await fetch('/api/cloudinary/video-signature', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ purpose: 'blog-video-upload' })
+            });
+
+            const data = await response.json();
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Không lấy được chữ ký upload video.');
+            }
+
+            return data;
+        }
+
+        async function uploadVideoToCloudinary(file) {
+            const signatureData = await getCloudinaryVideoSignature();
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('api_key', signatureData.apiKey);
+            formData.append('timestamp', signatureData.timestamp);
+            formData.append('signature', signatureData.signature);
+            formData.append('folder', signatureData.folder);
+
+            const uploadUrl = `https://api.cloudinary.com/v1_1/${signatureData.cloudName}/${signatureData.resourceType}/upload`;
+            const response = await fetch(uploadUrl, {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error?.message || 'Cloudinary từ chối upload video.');
+            }
+
+            return data;
+        }
+
+        function insertVideoIntoEditor(videoData) {
+            const videoMime = videoData.format ? `video/${videoData.format}` : 'video/mp4';
+            const videoHtml = `
+                <p class="ql-align-center">
+                    <video controls preload="metadata" playsinline style="max-width: 100%; width: 100%; border-radius: 12px;" data-cloudinary-public-id="${videoData.public_id}">
+                        <source src="${videoData.secure_url}" type="${videoMime}">
+                        Trình duyệt của bạn không hỗ trợ phát video.
+                    </video>
+                </p>
+            `;
+
+            const range = quill.getSelection(true);
+            const index = range ? range.index : quill.getLength();
+            quill.clipboard.dangerouslyPasteHTML(index, videoHtml);
+            quill.setSelection(Math.min(index + 1, quill.getLength()), 0);
+        }
+
+        async function handleVideoFileUpload(file) {
+            if (!file) return;
+
+            if (!file.type.startsWith('video/')) {
+                setVideoStatus('Vui lòng chọn file video hợp lệ.', true);
+                alert('Vui lòng chọn file video hợp lệ.');
+                return;
+            }
+
+            if (file.size > MAX_VIDEO_SIZE_BYTES) {
+                const maxMb = Math.round(MAX_VIDEO_SIZE_BYTES / 1024 / 1024);
+                setVideoStatus(`Video vượt quá giới hạn ${maxMb}MB.`, true);
+                alert(`Video vượt quá giới hạn ${maxMb}MB.`);
+                return;
+            }
+
+            const uploadBtn = document.getElementById('uploadVideoBtn');
+            const originalHtml = uploadBtn.innerHTML;
+
+            try {
+                uploadBtn.disabled = true;
+                uploadBtn.style.pointerEvents = 'none';
+                uploadBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i><span>Đang tải video lên Cloudinary...</span>`;
+                setVideoStatus(`Đang tải "${file.name}" lên Cloudinary...`);
+
+                const videoData = await uploadVideoToCloudinary(file);
+                insertVideoIntoEditor(videoData);
+                setVideoStatus(`Đã tải video thành công: ${file.name}`);
+            } catch (error) {
+                console.error('Video upload error:', error);
+                setVideoStatus(error.message || 'Tải video thất bại.', true);
+                alert(error.message || 'Tải video thất bại.');
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.style.pointerEvents = 'auto';
+                uploadBtn.innerHTML = originalHtml;
+                document.getElementById('postVideoFile').value = '';
+            }
+        }
+
+        function videoHandler() {
+            const tooltip = quill.theme && quill.theme.tooltip;
+            if (tooltip) {
+                tooltip.hide();
+            }
+            document.getElementById('postVideoFile').click();
         }
 
         // Toggle HTML Mode
@@ -762,6 +944,15 @@
         // Upload Image Button Click
         document.getElementById('uploadImageBtn').addEventListener('click', () => {
             document.getElementById('postImageFile').click();
+        });
+
+        document.getElementById('uploadVideoBtn').addEventListener('click', () => {
+            document.getElementById('postVideoFile').click();
+        });
+
+        document.getElementById('postVideoFile').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            await handleVideoFileUpload(file);
         });
 
         // Handle File Upload
@@ -857,6 +1048,7 @@
             document.getElementById('postStatus').textContent = 'Chưa lưu';
             document.getElementById('lastUpdate').textContent = '-';
             manualSlugEdit = false; // Reset slug auto-generate flag
+            setVideoStatus('Video sẽ upload thẳng lên Cloudinary. Redis chỉ lưu HTML và URL video.');
         });
 
         // Preview post
@@ -884,6 +1076,7 @@
                         .preview-content h4, .preview-content h5, .preview-content h6 { color: var(--color-white); margin-top: 1.3rem; margin-bottom: 0.6rem; }
                         .preview-content p { margin: 0; }
                         .preview-content img { max-width: 100%; border-radius: 10px; margin: 1.4rem 0; }
+                        .preview-content video, .preview-content iframe { display: block; width: 100%; max-width: 100%; border: 0; border-radius: 12px; background: #000; aspect-ratio: 16 / 9; margin: 1.4rem auto; }
                         .preview-content ul, .preview-content ol { margin: 1rem 0; padding-left: 2rem; }
                         .preview-content li { margin-bottom: 0.75rem; }
                         .preview-content a { color: var(--color-white); text-decoration: underline; }

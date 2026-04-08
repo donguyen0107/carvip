@@ -4,6 +4,7 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
+const crypto = require('crypto');
 const multer = require('multer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -201,6 +202,38 @@ app.post('/api/blog/posts', authenticateToken, async (req, res) => {
             message: 'Lỗi khi lưu bài viết: ' + error.message 
         });
     }
+});
+
+// ===== API: KÝ UPLOAD VIDEO CLOUDINARY =====
+app.post('/api/cloudinary/video-signature', authenticateToken, (req, res) => {
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'djl2iqba5';
+    const apiKey = process.env.CLOUDINARY_API_KEY || '757436475645599';
+    const apiSecret = process.env.CLOUDINARY_API_SECRET || 'UdZ7bVgoAxafKjo-WVMLzOLGT9E';
+
+    if (!cloudName || !apiKey || !apiSecret) {
+        return res.status(500).json({
+            success: false,
+            message: 'Thiếu cấu hình Cloudinary trên server.'
+        });
+    }
+
+    const folder = process.env.CLOUDINARY_VIDEO_FOLDER || 'bookcarvip/blog/videos';
+    const timestamp = Math.floor(Date.now() / 1000);
+    const paramsToSign = `folder=${folder}&resource_type=video&timestamp=${timestamp}`;
+    const signature = crypto
+        .createHash('sha1')
+        .update(paramsToSign + apiSecret)
+        .digest('hex');
+
+    res.json({
+        success: true,
+        cloudName,
+        apiKey,
+        folder,
+        resourceType: 'video',
+        timestamp,
+        signature
+    });
 });
 
 // ===== API: XÓA BÀI VIẾT =====
