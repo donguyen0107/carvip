@@ -1,11 +1,85 @@
 // API: GET  /api/blog/posts  — lấy tất cả bài viết
 //      POST /api/blog/posts  — tạo / cập nhật bài viết (cần auth)
 
-const { getPosts, saveOnePost, savePosts } = require('../../lib/redis');
+const Redis = require('ioredis');
 
-// ─── Auth helper ─────────────────────────────────────────────────────────────
-// Token được tạo bởi /api/admin/login dạng base64("admin:timestamp")
-// Chỉ cần decode và check username đúng là đủ
+// TTL 10 năm (giây) — tránh eviction trên Upstash free
+const TTL = 10 * 365 * 24 * 60 * 60;
+
+// ─── Redis client ─────────────────────────────────────────────────────────────
+function createRedis() {
+    const url = process.env.REDIS_URL;
+    if (!url) throw new Error('Thiếu REDIS_URL trong Vercel Environment Variables!');
+    return new Redis(url, {
+        tls: url.startsWith('rediss://') ? {} : undefined,
+        maxRetriesPerRequest: 3,
+        enableReadyCheck: false,
+        lazyConnect: true,
+        connectTimeout: 10000,
+        commandTimeout: 10000,
+        family: 0,
+        retryStrategy: (t) => t > 3 ? null : Math.min(t * 200, 2000)
+    });
+}
+
+// ─── Lấy tất cả bài: ưu tiên index riêng, fallback về blob cũ ────────────────
+async function getPosts(redis) {
+    // Thử đọc index mới trước (post:{id} keys)
+    const indexRaw = await redis.get('posts:index');
+    if (indexRaw) {
+        try {
+            const ids = JSON.parse(indexRaw);
+            if (Array.isArray(ids) && ids.length > 0) {
+                const values = await redis.mget(...ids.map(id => `post:${id}`));
+                const posts = values.map(v => {
+                    if (!v) return null;
+                    try { return JSON.parse(v); } catch { return null; }
+                }).filter(Boolean);
+                // Gia hạn TTL index mỗi lần đọc
+                redis.expire('posts:index', TTL).catch(() => {});
+                return posts;
+            }
+        } catch { /* tiếp tục fallback */ }
+    }
+    // Fallback: blob cũ blog-posts
+    const raw = await redis.get('blog-posts');
+    if (!raw) return [];
+    try {
+        const p = JSON.parse(raw);
+        return Array.isArray(p) ? p : (p.posts || p.data || []);
+    } catch {
+        // KHÔNG return [] để tránh ghi đè mất dữ liệu
+        throw new Error('Redis data corrupted. Please check manually.');
+    }
+}
+
+// ─── Lưu 1 bài vào key riêng + cập nhật index + backup blob ──────────────────
+async function saveOnePost(redis, post) {
+    const pipeline = redis.pipeline();
+    // 1. Key riêng cho bài này
+    pipeline.set(`post:${post.id}`, JSON.stringify(post), 'EX', TTL);
+
+    // 2. Cập nhật index
+    const indexRaw = await redis.get('posts:index');
+    let ids = [];
+    if (indexRaw) { try { ids = JSON.parse(indexRaw); } catch { ids = []; } }
+    if (!ids.includes(post.id)) ids.unshift(post.id);
+    pipeline.set('posts:index', JSON.stringify(ids), 'EX', TTL);
+
+    await pipeline.exec();
+}
+
+// ─── Cập nhật blob backup (chạy background, không block response) ─────────────
+async function updateBlobBackup(redis, posts) {
+    try {
+        await redis.set('blog-posts', JSON.stringify(posts), 'EX', TTL);
+    } catch (e) {
+        console.error('updateBlobBackup error:', e.message);
+    }
+}
+
+// ─── Auth ─────────────────────────────────────────────────────────────────────
+// Token từ /api/admin/login là base64("admin:timestamp")
 function isAuthorized(req) {
     const auth = req.headers['authorization'] || '';
     if (!auth.startsWith('Bearer ')) return false;
@@ -14,14 +88,11 @@ function isAuthorized(req) {
     try {
         const decoded = Buffer.from(token, 'base64').toString('utf8');
         const username = decoded.split(':')[0];
-        const validUser = process.env.ADMIN_USERNAME || 'admin';
-        return username === validUser;
-    } catch {
-        return false;
-    }
+        return username === (process.env.ADMIN_USERNAME || 'admin');
+    } catch { return false; }
 }
 
-// ─── CORS headers ─────────────────────────────────────────────────────────────
+// ─── CORS ─────────────────────────────────────────────────────────────────────
 function setCors(res) {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,28 +102,27 @@ function setCors(res) {
     res.setHeader('Pragma', 'no-cache');
 }
 
+// ─── Handler ──────────────────────────────────────────────────────────────────
 module.exports = async function handler(req, res) {
     setCors(res);
     if (req.method === 'OPTIONS') return res.status(200).end();
 
-    // ── GET ───────────────────────────────────────────────────────────────────
-    if (req.method === 'GET') {
-        try {
-            const posts = await getPosts();
+    const redis = createRedis();
+    try {
+        await redis.connect();
+
+        // ── GET ───────────────────────────────────────────────────────────────
+        if (req.method === 'GET') {
+            const posts = await getPosts(redis);
             return res.status(200).json(posts);
-        } catch (error) {
-            console.error('❌ GET /api/blog/posts error:', error.message);
-            return res.status(500).json({ success: false, message: 'Lỗi server: ' + error.message });
-        }
-    }
-
-    // ── POST (tạo mới hoặc cập nhật) ─────────────────────────────────────────
-    if (req.method === 'POST') {
-        if (!isAuthorized(req)) {
-            return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
 
-        try {
+        // ── POST ──────────────────────────────────────────────────────────────
+        if (req.method === 'POST') {
+            if (!isAuthorized(req)) {
+                return res.status(401).json({ success: false, message: 'Unauthorized' });
+            }
+
             const body = req.body || {};
             const { id, title, slug, content, excerpt, category, image, status, author } = body;
 
@@ -60,35 +130,32 @@ module.exports = async function handler(req, res) {
                 return res.status(400).json({ success: false, message: 'Vui lòng nhập tiêu đề bài viết' });
             }
 
-            // Kiểm tra kích thước content (giới hạn 200KB để tránh OOM Redis)
-            const contentSize = (content || '').length;
-            if (contentSize > 200 * 1024) {
+            // Giới hạn 200KB tránh OOM
+            if ((content || '').length > 200 * 1024) {
                 return res.status(413).json({
                     success: false,
-                    message: `Nội dung bài viết quá lớn (${Math.round(contentSize / 1024)}KB). Giới hạn là 200KB. Hãy dùng URL ảnh thay vì upload ảnh trực tiếp.`
+                    message: `Nội dung quá lớn (${Math.round((content||'').length/1024)}KB). Giới hạn 200KB. Hãy dùng URL ảnh thay vì base64.`
                 });
             }
 
-            // Xóa base64 images trong content (rất nặng)
-            const cleanContent = (content || '').replace(/src="data:image\/[^;]+;base64,[^"]+"/g,
-                'src="[ảnh đã xóa - dùng URL ảnh thay vì base64]"');
-
-            // Nếu featured image là base64, không lưu vào Redis
+            // Xóa base64 trong content
+            const cleanContent = (content || '').replace(
+                /src="data:image\/[^;]+;base64,[^"]+"/g,
+                'src="[ảnh đã xóa - dùng URL ảnh]"'
+            );
             const safeImage = (image || '').startsWith('data:image') ? '' : (image || '');
 
-            // Lấy danh sách bài hiện tại để check slug trùng
-            const posts = await getPosts();
+            const posts = await getPosts(redis);
 
-            // Tạo slug
-            let finalSlug = slug || title
+            // Tạo slug duy nhất
+            let baseSlug = slug || title
                 .toLowerCase().normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd')
                 .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-')
                 .replace(/-+/g, '-').trim() || 'bai-viet';
-
-            let uniqueSlug = finalSlug, counter = 1;
-            while (posts.some(p => p.slug === uniqueSlug && p.id !== id)) {
-                uniqueSlug = `${finalSlug}-${counter++}`;
+            let finalSlug = baseSlug, counter = 1;
+            while (posts.some(p => p.slug === finalSlug && p.id !== id)) {
+                finalSlug = `${baseSlug}-${counter++}`;
             }
 
             const cleanExcerpt = excerpt || (content || '').replace(/<[^>]*>/g, '').substring(0, 150) + '...';
@@ -97,41 +164,36 @@ module.exports = async function handler(req, res) {
 
             const updatedPost = {
                 ...(existing || {}),
-                id: postId,
-                title,
-                slug: uniqueSlug,
-                content: cleanContent,
-                excerpt: cleanExcerpt,
-                category: category || 'tin-tuc',
-                image: safeImage,
-                status: status || 'draft',
-                author: author || 'Admin',
+                id: postId, title, slug: finalSlug,
+                content: cleanContent, excerpt: cleanExcerpt,
+                category: category || 'tin-tuc', image: safeImage,
+                status: status || 'draft', author: author || 'Admin',
                 createdAt: existing ? existing.createdAt : new Date().toISOString(),
                 updatedAt: new Date().toISOString()
             };
 
-            // Dùng saveOnePost: chỉ ghi 1 key riêng + cập nhật index → không đụng đến bài khác
-            await saveOnePost(updatedPost);
+            // Lưu key riêng
+            await saveOnePost(redis, updatedPost);
 
-            // Đồng thời cập nhật blob backup (blog-posts) để đồng bộ
+            // Backup blob (background)
             const updatedAll = existing
                 ? posts.map(p => p.id === postId ? updatedPost : p)
                 : [updatedPost, ...posts];
-            // Chạy background, không block response
-            savePosts(updatedAll).catch(e => console.error('savePosts background error:', e.message));
+            updateBlobBackup(redis, updatedAll); // không await
 
-            const isNew = !existing;
-            return res.status(isNew ? 201 : 200).json({
+            return res.status(existing ? 200 : 201).json({
                 success: true,
-                message: isNew ? 'Đăng bài viết thành công' : 'Cập nhật bài viết thành công',
+                message: existing ? 'Cập nhật bài viết thành công' : 'Đăng bài viết thành công',
                 post: updatedPost
             });
-
-        } catch (error) {
-            console.error('❌ POST /api/blog/posts error:', error.message);
-            return res.status(500).json({ success: false, message: 'Lỗi server: ' + error.message });
         }
-    }
 
-    return res.status(405).json({ success: false, message: 'Method not allowed' });
+        return res.status(405).json({ success: false, message: 'Method not allowed' });
+
+    } catch (error) {
+        console.error('❌ /api/blog/posts error:', error.message);
+        return res.status(500).json({ success: false, message: 'Lỗi server: ' + error.message });
+    } finally {
+        redis.disconnect();
+    }
 };
