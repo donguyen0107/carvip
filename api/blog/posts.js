@@ -4,11 +4,21 @@
 const { getPosts, saveOnePost, savePosts } = require('../../lib/redis');
 
 // ─── Auth helper ─────────────────────────────────────────────────────────────
+// Token được tạo bởi /api/admin/login dạng base64("admin:timestamp")
+// Chỉ cần decode và check username đúng là đủ
 function isAuthorized(req) {
-    const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
-    if (!ADMIN_TOKEN) return true; // Nếu chưa cấu hình token, cho qua (backward compat)
     const auth = req.headers['authorization'] || '';
-    return auth === `Bearer ${ADMIN_TOKEN}`;
+    if (!auth.startsWith('Bearer ')) return false;
+    const token = auth.slice(7);
+    if (!token) return false;
+    try {
+        const decoded = Buffer.from(token, 'base64').toString('utf8');
+        const username = decoded.split(':')[0];
+        const validUser = process.env.ADMIN_USERNAME || 'admin';
+        return username === validUser;
+    } catch {
+        return false;
+    }
 }
 
 // ─── CORS headers ─────────────────────────────────────────────────────────────
