@@ -10,7 +10,6 @@ class BlogCarousel {
             // E-Class images
             { src: 'sources/eclass/CARVIP.VN (1500 x 600 px) (680 x 500 px).png', alt: 'Mercedes E-Class', label: 'Mercedes E-Class', desc: 'Sedan sang trọng, tinh tế và vận hành êm ái' },
             { src: 'sources/eclass/Mercedes-E200-Exclusive-2022-mercedes-vietnam-24.jpg', alt: 'Mercedes E-Class Exterior', label: 'Mercedes E-Class', desc: 'Thiết kế ngoại thất hiện đại, đẳng cấp' },
-            { src: 'sources/eclass/e2001.jpg', alt: 'Mercedes E200', label: 'Mercedes E200', desc: 'Dòng xe E-Class phiên bản E200 thanh lịch' },
             { src: 'sources/eclass/noi-that-mercedes-e-300-5.png', alt: 'Mercedes E-Class Interior', label: 'Nội Thất E-Class', desc: 'Không gian nội thất cao cấp, tiện nghi đỉnh cao' },
             // S-Class images
             { src: 'sources/sclass/CARVIP.VN (29).png', alt: 'Mercedes S-Class', label: 'Mercedes S-Class', desc: 'Biểu tượng của đẳng cấp và sang trọng hàng đầu' },
@@ -22,9 +21,7 @@ class BlogCarousel {
             // V-Class images
             { src: 'sources/vclass/2 (1).jpg', alt: 'Mercedes V-Class', label: 'Mercedes V-Class', desc: 'Xe gia đình sang trọng cho nhóm lớn' },
             { src: 'sources/vclass/Black Blue Minimalist Floral Logo (12).png', alt: 'Mercedes V-Class Logo', label: 'CARVIP V-Class', desc: 'Dịch vụ cho thuê V-Class chuyên nghiệp' },
-            { src: 'sources/vclass/z6904030104678_1477300f5fb3fa23da48b445661c3b0c.jpg', alt: 'Mercedes V-Class Service', label: 'V-Class Service', desc: 'Dịch vụ tài xế riêng cao cấp cho nhóm khách' },
-            { src: 'sources/vclass/z7260496269108_8b6cc48fee94f283a2f2c951a3a924a6.jpg', alt: 'Mercedes V-Class Interior', label: 'Nội Thất V-Class', desc: 'Không gian rộng rãi, thoải mái cho 7 người' },
-        ];
+            { src: 'sources/vclass/z6904030104678_1477300f5fb3fa23da48b445661c3b0c.jpg', alt: 'Mercedes V-Class Service', label: 'V-Class Service', desc: 'Dịch vụ tài xế riêng cao cấp cho nhóm khách' },        ];
         
         this.init();
     }
